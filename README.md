@@ -17,7 +17,14 @@ $ go get -u github.com/cybozu-go/etcdpasswd/...
 Usage
 -----
 
-TODO
+1. Create config file as `/etc/etcdpasswd.yml`.
+
+    ```yaml
+    servers:
+      - http://12.34.56.78:2379
+    username: cybozu
+    password: xxxxxxxx
+    ```
 
 Specifications
 --------------
