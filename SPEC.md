@@ -23,10 +23,11 @@ Subcommands:
 - `user list`
 - `user get NAME`
 - `user add [OPTIONS] NAME`
+- `user update [OPTIONS] NAME`
 - `user remove NAME`
 - `cert list NAME`
 - `cert add NAME [FILE]`
-- `cert del NAME INDEX`
+- `cert remove NAME INDEX`
 - `group list`
 - `group add NAME`
 - `group remove NAME`
@@ -123,6 +124,18 @@ If this key does not exist, the next user will have `start-uid` as their UID.
 ```json
 2008
 ```
+
+### Deleted users
+
+`<prefix>/deleted-users/<name>` indicates that `<name>` user has been deleted.
+
+When a new user with the same name is to be created, this key will be removed in the same transaction.
+
+### Deleted groups
+
+`<prefix>/deleted-groups/<name>` indicates that `<name>` group has been deleted.
+
+When a new group with the same name is to be created, this key will be removed in the same transaction.
 
 ### Unmanaged users to be locked
 
