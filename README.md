@@ -1,3 +1,7 @@
+[![GoDoc](https://godoc.org/github.com/cybozu-go/etcdpasswd?status.svg)][godoc]
+[![CircleCI](https://circleci.com/gh/cybozu-go/etcdpasswd.svg?style=svg)](https://circleci.com/gh/cybozu-go/etcdpasswd)
+[![Go Report Card](https://goreportcard.com/badge/github.com/cybozu-go/etcdpasswd)](https://goreportcard.com/report/github.com/cybozu-go/etcdpasswd)
+
 etcdpasswd
 ==========
 
@@ -35,3 +39,5 @@ License
 -------
 
 MIT
+
+[godoc]: https://godoc.org/github.com/cybozu-go/etcdpasswd
