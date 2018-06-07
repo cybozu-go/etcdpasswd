@@ -17,6 +17,22 @@ var (
 	flgConfigPath = flag.String("config", "/etc/etcdpasswd.yml", "configuration file path")
 )
 
+func loadConfig(p string) (*etcdpasswd.EtcdConfig, error) {
+	f, err := os.Open(p)
+	if err != nil {
+		return nil, err
+	}
+	defer f.Close()
+
+	cfg := etcdpasswd.NewEtcdConfig()
+	err = yaml.NewDecoder(f).Decode(cfg)
+	if err != nil {
+		return nil, err
+	}
+
+	return cfg, nil
+}
+
 func main() {
 	subcommands.Register(subcommands.HelpCommand(), "misc")
 	subcommands.Register(subcommands.FlagsCommand(), "misc")
@@ -31,14 +47,7 @@ func main() {
 	flag.Parse()
 	cmd.LogConfig{}.Apply()
 
-	f, err := os.Open(*flgConfigPath)
-	if err != nil {
-		log.ErrorExit(err)
-	}
-	defer f.Close()
-
-	cfg := etcdpasswd.NewEtcdConfig()
-	err = yaml.NewDecoder(f).Decode(cfg)
+	cfg, err := loadConfig(*flgConfigPath)
 	if err != nil {
 		log.ErrorExit(err)
 	}
@@ -47,6 +56,7 @@ func main() {
 	if err != nil {
 		log.ErrorExit(err)
 	}
+	defer etcd.Close()
 
 	client := etcdpasswd.Client{
 		EtcdConfig: cfg,

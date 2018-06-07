@@ -11,6 +11,7 @@ func testConfigGet(t *testing.T) {
 
 	ctx := context.Background()
 	client := newTestClient(t)
+	defer client.Close()
 
 	config, rev, err := client.GetConfig(ctx)
 	if err != nil {
@@ -65,6 +66,7 @@ func testConfigSet(t *testing.T) {
 
 	ctx := context.Background()
 	client := newTestClient(t)
+	defer client.Close()
 
 	config, rev, err := client.GetConfig(ctx)
 	if err != nil {
