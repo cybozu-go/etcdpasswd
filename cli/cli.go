@@ -1,11 +1,10 @@
 package cli
 
-import "github.com/coreos/etcd/clientv3"
+import "github.com/cybozu-go/etcdpasswd"
 
-var (
-	etcdClient *clientv3.Client
-)
+var client etcdpasswd.Client
 
-func Setup(client *clientv3.Client) {
-	etcdClient = client
+// Setup setups this package.
+func Setup(c etcdpasswd.Client) {
+	client = c
 }

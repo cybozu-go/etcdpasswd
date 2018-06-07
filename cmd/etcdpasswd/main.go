@@ -23,11 +23,11 @@ func main() {
 	subcommands.Register(subcommands.CommandsCommand(), "misc")
 	subcommands.Register(cli.SetCommand(), "")
 	subcommands.Register(cli.GetCommand(), "")
-	subcommands.Register(cli.LockCommand(), "")
-	subcommands.Register(cli.UnlockCommand(), "")
-	subcommands.Register(cli.UserCommand(), "")
-	subcommands.Register(cli.CertCommand(), "")
-	subcommands.Register(cli.GroupCommand(), "")
+	// subcommands.Register(cli.LockCommand(), "")
+	// subcommands.Register(cli.UnlockCommand(), "")
+	// subcommands.Register(cli.UserCommand(), "")
+	// subcommands.Register(cli.CertCommand(), "")
+	// subcommands.Register(cli.GroupCommand(), "")
 	flag.Parse()
 	cmd.LogConfig{}.Apply()
 
@@ -37,18 +37,21 @@ func main() {
 	}
 	defer f.Close()
 
-	etcdConfig := etcdpasswd.NewEtcdConfig()
-	err = yaml.NewDecoder(f).Decode(etcdConfig)
+	cfg := etcdpasswd.NewEtcdConfig()
+	err = yaml.NewDecoder(f).Decode(cfg)
 	if err != nil {
 		log.ErrorExit(err)
 	}
 
-	client, err := etcdConfig.Client()
+	etcd, err := cfg.Client()
 	if err != nil {
 		log.ErrorExit(err)
 	}
-	defer client.Close()
 
+	client := etcdpasswd.Client{
+		EtcdConfig: cfg,
+		Client:     etcd,
+	}
 	cli.Setup(client)
 
 	exitStatus := subcommands.ExitSuccess

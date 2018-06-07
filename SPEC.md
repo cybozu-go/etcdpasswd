@@ -9,25 +9,46 @@ Usage: `etcdpasswd [OPTIONS] SUBCOMMAND`
 Options:
 - `-config`: configuration file path (default: `/etc/etcdpasswd.yml`)
 
+Configuration file is a YAML file with these fields:
+- `servers`: list of etcd endpoint URLs
+- `prefix`: key prefix of etcd objects (default: `/passwd/`)
+- `username`: username for etcd authentication
+- `password`: password for etcd authentication
+
 Subcommands:
 - `set CONFIG VALUE`
 - `get CONFIG`
+- `lock NAME`
+- `unlock NAME`
 - `user list`
 - `user get NAME`
 - `user add [OPTIONS] NAME`
 - `user remove NAME`
+- `cert list NAME`
+- `cert add NAME [FILE]`
+- `cert del NAME INDEX`
 - `group list`
 - `group add NAME`
 - `group remove NAME`
-- `lock NAME`
-- `unlock NAME`
 
-Configurations:
+### `set` and `get`
+
+Set/get etcdpasswd configurations.
+
+Configurations are:
 - `start-uid`: starting UID for users managed by etcdpasswd.
 - `start-gid`: starting GID for groups managed by etcdpasswd.
 - `default-group`: default primary group name.
 - `default-groups`: comma-separated list of default supplementary group names.
 - `default-shell`: default shell program.
+
+### `lock` and `unlock`
+
+### `user`
+
+### `cert`
+
+### `group`
 
 etcd schema
 -----------
