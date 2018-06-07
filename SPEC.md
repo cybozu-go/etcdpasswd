@@ -1,10 +1,42 @@
 Specifications
 ==============
 
+etcdpasswd CLI
+--------------
+
+Usage: `etcdpasswd [OPTIONS] SUBCOMMAND`
+
+Options:
+- `-config`: configuration file path (default: `/etc/etcdpasswd.yml`)
+
+Subcommands:
+- `set CONFIG VALUE`
+- `get CONFIG`
+- `user list`
+- `user get NAME`
+- `user add [OPTIONS] NAME`
+- `user remove NAME`
+- `group list`
+- `group add NAME`
+- `group remove NAME`
+- `lock NAME`
+- `unlock NAME`
+
+Configurations:
+- `start-uid`: starting UID for users managed by etcdpasswd.
+- `start-gid`: starting GID for groups managed by etcdpasswd.
+- `default-group`: default primary group name.
+- `default-groups`: comma-separated list of default supplementary group names.
+- `default-shell`: default shell program.
+
 etcd schema
 -----------
 
 etcdpasswd stores following data in etcd.
+
+### Prefix
+
+The default prefix of keys in etcd is `/passwd/`.
 
 ### Configuration
 
