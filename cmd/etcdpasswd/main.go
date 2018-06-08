@@ -59,8 +59,7 @@ func main() {
 	defer etcd.Close()
 
 	client := etcdpasswd.Client{
-		EtcdConfig: cfg,
-		Client:     etcd,
+		Client: etcd,
 	}
 	cli.Setup(client)
 

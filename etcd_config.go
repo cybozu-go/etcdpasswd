@@ -1,10 +1,10 @@
 package etcdpasswd
 
 import (
-	"path"
 	"time"
 
 	"github.com/coreos/etcd/clientv3"
+	"github.com/coreos/etcd/clientv3/namespace"
 )
 
 const (
@@ -26,15 +26,6 @@ func NewEtcdConfig() *EtcdConfig {
 	}
 }
 
-// Key returns etcd key with prefix.
-func (ec *EtcdConfig) Key(p string) string {
-	key := path.Join(ec.Prefix, p)
-	if len(key) < len(ec.Prefix) {
-		return ec.Prefix
-	}
-	return key
-}
-
 // Client creates etcd client.
 func (ec *EtcdConfig) Client() (*clientv3.Client, error) {
 	etcdCfg := clientv3.Config{
@@ -43,5 +34,13 @@ func (ec *EtcdConfig) Client() (*clientv3.Client, error) {
 		Username:    ec.Username,
 		Password:    ec.Password,
 	}
-	return clientv3.New(etcdCfg)
+	client, err := clientv3.New(etcdCfg)
+	if err != nil {
+		return nil, err
+	}
+	client.KV = namespace.NewKV(client.KV, ec.Prefix)
+	client.Watcher = namespace.NewWatcher(client.Watcher, ec.Prefix)
+	client.Lease = namespace.NewLease(client.Lease, ec.Prefix)
+
+	return client, nil
 }

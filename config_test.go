@@ -37,7 +37,7 @@ func testConfigGet(t *testing.T) {
   "default-groups": ["cybozu"]
 }
 `
-	_, err = client.Put(ctx, client.Key(KeyConfig), j)
+	_, err = client.Put(ctx, KeyConfig, j)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -101,7 +101,7 @@ func testConfigSet(t *testing.T) {
   "default-groups": ["cybozu"]
 }
 `
-	_, err = client.Put(ctx, client.Key(KeyConfig), j)
+	_, err = client.Put(ctx, KeyConfig, j)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -8,7 +8,6 @@ import (
 
 // Client provides high-level API to edit etcd database.
 type Client struct {
-	*EtcdConfig
 	*clientv3.Client
 }
 

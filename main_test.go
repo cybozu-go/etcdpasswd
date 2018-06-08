@@ -69,5 +69,5 @@ func newTestClient(t *testing.T) *Client {
 		t.Fatal(err)
 	}
 
-	return &Client{cfg, etcd}
+	return &Client{etcd}
 }
