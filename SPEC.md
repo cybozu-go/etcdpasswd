@@ -70,6 +70,7 @@ If this key does not exist, the next user will have `start-uid` as their UID.
 
 ```json
 {
+  "name": "cybozu",
   "uid": 2006,
   "display-name": "Cy Bozu",
   "group": "cybozu",

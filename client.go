@@ -1,8 +1,6 @@
 package etcdpasswd
 
 import (
-	"errors"
-
 	"github.com/coreos/etcd/clientv3"
 )
 
@@ -10,6 +8,3 @@ import (
 type Client struct {
 	*clientv3.Client
 }
-
-// ErrCASFailure indicates compare-and-swap failure
-var ErrCASFailure = errors.New("CAS failed")
