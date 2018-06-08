@@ -30,6 +30,14 @@ Usage
     password: xxxxxxxx
     ```
 
+### Locking user
+
+`etcdpasswd lock` adds a user to etcd database to instruct ep-agent to lock the user by `passwd -l`.
+
+`etcdpasswd unlock` removes the user from etcd database.
+It does not unlock the user's password.
+Administrators need to manually unlock the user by `passwd -u`.
+
 Specifications
 --------------
 
