@@ -11,8 +11,6 @@ Options:
 Subcommands:
 - `set CONFIG VALUE`
 - `get CONFIG`
-- `lock NAME`
-- `unlock NAME`
 - `user list`
 - `user get NAME`
 - `user add [OPTIONS] NAME`
@@ -24,6 +22,9 @@ Subcommands:
 - `group list`
 - `group add NAME`
 - `group remove NAME`
+- `locker list`
+- `locker lock NAME`
+- `locker unlock NAME`
 
 ## `set CONFIG VALUE` and `get CONFIG`
 
@@ -36,16 +37,23 @@ Configurations are:
 - `default-groups`: comma-separated list of default supplementary group names.
 - `default-shell`: default shell program.
 
-
-## `lock NAME` and `unlock NAME`
-
-`lock` adds a user to etcd database to instruct ep-agent to lock the user by `passwd -l`.
-
-`unlock` removes the user from etcd database.  It does not unlock the user's password.
-Administrators need to manually unlock the user by `passwd -u`.
-
 ## `user`
 
 ## `cert`
 
 ## `group`
+
+## `locker`
+
+Lock passwords to prevent logins using password.
+
+`locker add NAME` adds the named user to the list of password-locked users in the database.
+The list is watched by `ep-agent` who will lock passwords of users in the list by `passwd -l`.
+
+The user is not limited to users added by `etcdpasswd`; local users including `root` may
+be locked by this.
+
+`locker remove NAME` removes the name from the list, but `ep-agent` does *not* unlock
+passwords.  Unlocking passwords should be done by administrators later on.
+
+`locker list` shows names in the list.

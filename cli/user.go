@@ -9,11 +9,11 @@ import (
 	"github.com/google/subcommands"
 )
 
-type userCmd struct{}
+type user struct{}
 
-func (c userCmd) SetFlags(f *flag.FlagSet) {}
+func (c user) SetFlags(f *flag.FlagSet) {}
 
-func (c userCmd) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitStatus {
+func (c user) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitStatus {
 	newc := NewCommander(f, "user")
 	newc.Register(userListCommand(), "")
 	newc.Register(userGetCommand(), "")
@@ -26,18 +26,18 @@ func (c userCmd) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitS
 // UserCommand implements "user" subcommand.
 func UserCommand() subcommands.Command {
 	return subcmd{
-		userCmd{},
+		user{},
 		"user",
 		"manage user database",
 		"user ACTION ...",
 	}
 }
 
-type userListCmd struct{}
+type userList struct{}
 
-func (c userListCmd) SetFlags(f *flag.FlagSet) {}
+func (c userList) SetFlags(f *flag.FlagSet) {}
 
-func (c userListCmd) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitStatus {
+func (c userList) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitStatus {
 	users, err := client.ListUser(ctx)
 	if err != nil {
 		return handleError(err)
@@ -51,18 +51,18 @@ func (c userListCmd) Execute(ctx context.Context, f *flag.FlagSet) subcommands.E
 
 func userListCommand() subcommands.Command {
 	return subcmd{
-		userListCmd{},
+		userList{},
 		"list",
 		"list users",
 		"list",
 	}
 }
 
-type userGetCmd struct{}
+type userGet struct{}
 
-func (c userGetCmd) SetFlags(f *flag.FlagSet) {}
+func (c userGet) SetFlags(f *flag.FlagSet) {}
 
-func (c userGetCmd) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitStatus {
+func (c userGet) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitStatus {
 	if f.NArg() != 1 {
 		f.Usage()
 		return subcommands.ExitUsageError
@@ -86,28 +86,28 @@ public-keys: %v
 
 func userGetCommand() subcommands.Command {
 	return subcmd{
-		userGetCmd{},
+		userGet{},
 		"get",
 		"get user information",
 		"get NAME",
 	}
 }
 
-type userAddCmd struct {
+type userAdd struct {
 	displayName string
 	group       string
 	groups      commaStrings
 	shell       string
 }
 
-func (c *userAddCmd) SetFlags(f *flag.FlagSet) {
+func (c *userAdd) SetFlags(f *flag.FlagSet) {
 	f.StringVar(&c.displayName, "display", "", "display name")
 	f.StringVar(&c.group, "group", "", "primary group")
 	f.Var(&c.groups, "groups", "comma-separated supplementary groups")
 	f.StringVar(&c.shell, "shell", etcdpasswd.DefaultShell, "shell program")
 }
 
-func (c *userAddCmd) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitStatus {
+func (c *userAdd) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitStatus {
 	if f.NArg() != 1 {
 		f.Usage()
 		return subcommands.ExitUsageError
@@ -128,28 +128,28 @@ func (c *userAddCmd) Execute(ctx context.Context, f *flag.FlagSet) subcommands.E
 
 func userAddCommand() subcommands.Command {
 	return subcmd{
-		&userAddCmd{},
+		&userAdd{},
 		"add",
 		"add a new user",
 		"add [OPTIONS] NAME",
 	}
 }
 
-type userUpdateCmd struct {
+type userUpdate struct {
 	displayName string
 	group       string
 	groups      commaStrings
 	shell       string
 }
 
-func (c *userUpdateCmd) SetFlags(f *flag.FlagSet) {
+func (c *userUpdate) SetFlags(f *flag.FlagSet) {
 	f.StringVar(&c.displayName, "display", "", "display name")
 	f.StringVar(&c.group, "group", "", "primary group")
 	f.Var(&c.groups, "groups", "comma-separated supplementary groups")
 	f.StringVar(&c.shell, "shell", "", "shell program")
 }
 
-func (c *userUpdateCmd) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitStatus {
+func (c *userUpdate) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitStatus {
 	if f.NArg() != 1 {
 		f.Usage()
 		return subcommands.ExitUsageError
@@ -180,18 +180,18 @@ func (c *userUpdateCmd) Execute(ctx context.Context, f *flag.FlagSet) subcommand
 
 func userUpdateCommand() subcommands.Command {
 	return subcmd{
-		&userUpdateCmd{},
+		&userUpdate{},
 		"update",
 		"update an existing user",
 		"update [OPTIONS] NAME",
 	}
 }
 
-type userRemoveCmd struct{}
+type userRemove struct{}
 
-func (c userRemoveCmd) SetFlags(f *flag.FlagSet) {}
+func (c userRemove) SetFlags(f *flag.FlagSet) {}
 
-func (c userRemoveCmd) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitStatus {
+func (c userRemove) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitStatus {
 	if f.NArg() != 1 {
 		f.Usage()
 		return subcommands.ExitUsageError
@@ -204,7 +204,7 @@ func (c userRemoveCmd) Execute(ctx context.Context, f *flag.FlagSet) subcommands
 
 func userRemoveCommand() subcommands.Command {
 	return subcmd{
-		userRemoveCmd{},
+		userRemove{},
 		"remove",
 		"remove an existing user",
 		"remove NAME",

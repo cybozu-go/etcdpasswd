@@ -3,15 +3,63 @@ package cli
 import (
 	"context"
 	"flag"
+	"fmt"
 
 	"github.com/google/subcommands"
 )
 
-type lockCommand struct{}
+type locker struct{}
 
-func (c lockCommand) SetFlags(f *flag.FlagSet) {}
+func (c locker) SetFlags(f *flag.FlagSet) {}
 
-func (c lockCommand) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitStatus {
+func (c locker) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitStatus {
+	newc := NewCommander(f, "locker")
+	newc.Register(lockerListCommand(), "")
+	newc.Register(lockerAddCommand(), "")
+	newc.Register(lockerRemoveCommand(), "")
+	return newc.Execute(ctx)
+}
+
+// LockerCommand implements "locker" subcommand.
+func LockerCommand() subcommands.Command {
+	return subcmd{
+		locker{},
+		"locker",
+		"lock user passwords",
+		"locker ACTION ...",
+	}
+}
+
+type lockerList struct{}
+
+func (c lockerList) SetFlags(f *flag.FlagSet) {}
+
+func (c lockerList) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitStatus {
+	users, err := client.ListLocked(ctx)
+	if err != nil {
+		return handleError(err)
+	}
+
+	for _, u := range users {
+		fmt.Println(u)
+	}
+	return handleError(nil)
+}
+
+func lockerListCommand() subcommands.Command {
+	return subcmd{
+		lockerList{},
+		"list",
+		"list password-locked users",
+		"locker list",
+	}
+}
+
+type lockerAdd struct{}
+
+func (c lockerAdd) SetFlags(f *flag.FlagSet) {}
+
+func (c lockerAdd) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitStatus {
 	if f.NArg() != 1 {
 		f.Usage()
 		return subcommands.ExitUsageError
@@ -22,21 +70,20 @@ func (c lockCommand) Execute(ctx context.Context, f *flag.FlagSet) subcommands.E
 	return handleError(err)
 }
 
-// LockCommand implements "lock" subcommand.
-func LockCommand() subcommands.Command {
+func lockerAddCommand() subcommands.Command {
 	return subcmd{
-		lockCommand{},
-		"lock",
-		"add NAME to locked user database",
-		"lock NAME",
+		lockerAdd{},
+		"add",
+		"add NAME to the list of password-locked users",
+		"locker add NAME",
 	}
 }
 
-type unlockCommand struct{}
+type lockerRemove struct{}
 
-func (c unlockCommand) SetFlags(f *flag.FlagSet) {}
+func (c lockerRemove) SetFlags(f *flag.FlagSet) {}
 
-func (c unlockCommand) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitStatus {
+func (c lockerRemove) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitStatus {
 	if f.NArg() != 1 {
 		f.Usage()
 		return subcommands.ExitUsageError
@@ -47,12 +94,11 @@ func (c unlockCommand) Execute(ctx context.Context, f *flag.FlagSet) subcommands
 	return handleError(err)
 }
 
-// UnlockCommand implements "lock" subcommand.
-func UnlockCommand() subcommands.Command {
+func lockerRemoveCommand() subcommands.Command {
 	return subcmd{
-		unlockCommand{},
-		"unlock",
-		"remove NAME from locked user database",
-		"unlock NAME",
+		lockerRemove{},
+		"remove",
+		"remove NAME from the list of password-locked users",
+		"locker remove NAME",
 	}
 }

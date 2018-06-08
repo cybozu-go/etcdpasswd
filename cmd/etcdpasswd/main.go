@@ -39,11 +39,10 @@ func main() {
 	subcommands.Register(subcommands.CommandsCommand(), "misc")
 	subcommands.Register(cli.SetCommand(), "")
 	subcommands.Register(cli.GetCommand(), "")
-	subcommands.Register(cli.LockCommand(), "")
-	subcommands.Register(cli.UnlockCommand(), "")
 	subcommands.Register(cli.UserCommand(), "")
 	// subcommands.Register(cli.CertCommand(), "")
 	// subcommands.Register(cli.GroupCommand(), "")
+	subcommands.Register(cli.LockerCommand(), "")
 	flag.Parse()
 	cmd.LogConfig{}.Apply()
 

@@ -13,11 +13,11 @@ import (
 	"github.com/google/subcommands"
 )
 
-type setCommand struct{}
+type configSet struct{}
 
-func (c setCommand) SetFlags(f *flag.FlagSet) {}
+func (c configSet) SetFlags(f *flag.FlagSet) {}
 
-func (c setCommand) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitStatus {
+func (c configSet) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitStatus {
 	if f.NArg() != 2 {
 		f.Usage()
 		return subcommands.ExitUsageError
@@ -64,7 +64,7 @@ RETRY:
 // SetCommand implements "set" subcommand.
 func SetCommand() subcommands.Command {
 	return subcmd{
-		setCommand{},
+		configSet{},
 		"set",
 		"set configuration",
 		fmt.Sprintf(`Usage: %s set CONFIG VALUE
@@ -79,11 +79,11 @@ CONFIG is one of:
 	}
 }
 
-type getCommand struct{}
+type configGet struct{}
 
-func (c getCommand) SetFlags(f *flag.FlagSet) {}
+func (c configGet) SetFlags(f *flag.FlagSet) {}
 
-func (c getCommand) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitStatus {
+func (c configGet) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitStatus {
 	if f.NArg() != 1 {
 		f.Usage()
 		return subcommands.ExitUsageError
@@ -118,7 +118,7 @@ func (c getCommand) Execute(ctx context.Context, f *flag.FlagSet) subcommands.Ex
 // GetCommand implements "get" subcommand.
 func GetCommand() subcommands.Command {
 	return subcmd{
-		getCommand{},
+		configGet{},
 		"get",
 		"get configurations",
 		fmt.Sprintf(`Usage: %s get CONFIG

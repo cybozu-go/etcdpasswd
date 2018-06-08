@@ -40,18 +40,7 @@ func (u *User) Validate() error {
 // ListUser lists all user named registered in the database.
 // The result is sorted alphabetically.
 func (c Client) ListUser(ctx context.Context) ([]string, error) {
-	key := KeyUsers + "/"
-	resp, err := c.Get(ctx, key, clientv3.WithPrefix(),
-		clientv3.WithSort(clientv3.SortByKey, clientv3.SortAscend))
-	if err != nil {
-		return nil, err
-	}
-
-	ret := make([]string, resp.Count)
-	for i, kv := range resp.Kvs {
-		ret[i] = string(kv.Key[len(key):])
-	}
-	return ret, nil
+	return c.list(ctx, KeyUsers+"/")
 }
 
 // GetUser looks up named user from the database.
