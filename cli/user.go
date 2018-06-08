@@ -79,8 +79,8 @@ display-name: %s
 group: %s
 groups: %v
 shell: %s
-public-keys: %v
-`, user.UID, user.DisplayName, user.Group, user.Groups, user.Shell, user.PubKeys)
+public-keys: %d
+`, user.UID, user.DisplayName, user.Group, user.Groups, user.Shell, len(user.PubKeys))
 	return handleError(nil)
 }
 
