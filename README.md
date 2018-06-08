@@ -18,10 +18,15 @@ Build
 $ go get -u github.com/cybozu-go/etcdpasswd/...
 ```
 
-Usage
------
+Installation
+------------
 
-1. Create config file as `/etc/etcdpasswd.yml`.
+1. Prepare an etcd cluster.
+
+1. Create `/etc/etcdpasswd.yml`.
+
+    This file provides parameters to connect to the etcd cluster.  
+    A sample configuration looks like this:
 
     ```yaml
     servers:
@@ -30,13 +35,31 @@ Usage
     password: xxxxxxxx
     ```
 
-### Locking user
+1. Run `ep-agent`.
 
-`etcdpasswd lock` adds a user to etcd database to instruct ep-agent to lock the user by `passwd -l`.
+    A sample systemd unit file is available at [cmd/ep-agent/ep-agent.service](cmd/ep-agent/ep-agent.service).
+    Use it to run `ep-agent` as a systemd service as follows:
 
-`etcdpasswd unlock` removes the user from etcd database.
-It does not unlock the user's password.
-Administrators need to manually unlock the user by `passwd -u`.
+    ```console
+    $ sudo cp $GOPATH/bin/ep-agent /usr/local/sbin
+    $ sudo cp ep-agent.service /etc/systemd/system
+    $ sudo systemctl daemon-reload
+    $ sudo systemctl start ep-agent.service
+    ```
+
+1. Use `etcdpasswd` to initialize the database.
+
+    ```console
+    $ etcdpasswd set start-uid 2000
+    $ etcdpasswd set start-gid 2000
+    $ etcdpasswd set default-group cybozu
+    $ etcdpasswd set default-groups sudo,adm
+    ```
+
+Usage
+-----
+
+See [cmd/etcdpasswd/USAGE.md](cmd/etcdpasswd/USAGE.md).
 
 Specifications
 --------------
