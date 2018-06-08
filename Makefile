@@ -11,5 +11,6 @@ mocks/auth.go: auth.go
 	go get github.com/golang/mock/gomock
 	go get github.com/golang/mock/mockgen
 	go generate ./...
+	goimports -w $@
 
 .PHONY: all test setup_test
