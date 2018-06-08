@@ -13,5 +13,6 @@ const (
 )
 
 const (
-	defaultShell = "/bin/bash"
+	// DefaultShell is the default shell program.
+	DefaultShell = "/bin/bash"
 )

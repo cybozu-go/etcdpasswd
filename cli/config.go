@@ -5,6 +5,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"os"
 	"strconv"
 	"strings"
 
@@ -66,7 +67,15 @@ func SetCommand() subcommands.Command {
 		setCommand{},
 		"set",
 		"set configuration",
-		"set CONFIG VALUE",
+		fmt.Sprintf(`Usage: %s set CONFIG VALUE
+
+CONFIG is one of:
+    start-uid:      the beginning UID assigned to managed users.
+    start-gid:      the beginning GID assigned to managed users.
+    default-group:  default primary group.
+    default-groups: comma-separated list of supplementary groups.
+    default-shell:  default shell program.
+`, os.Args[0]),
 	}
 }
 
@@ -112,6 +121,14 @@ func GetCommand() subcommands.Command {
 		getCommand{},
 		"get",
 		"get configurations",
-		"get CONFIG",
+		fmt.Sprintf(`Usage: %s get CONFIG
+
+CONFIG is one of:
+    start-uid:      the beginning UID assigned to managed users.
+    start-gid:      the beginning GID assigned to managed users.
+    default-group:  default primary group.
+    default-groups: comma-separated list of supplementary groups.
+    default-shell:  default shell program.
+`, os.Args[0]),
 	}
 }

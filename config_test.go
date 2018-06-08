@@ -21,7 +21,7 @@ func testConfigGet(t *testing.T) {
 		t.Fatal("config must not be nil")
 	}
 
-	if config.DefaultShell != defaultShell {
+	if config.DefaultShell != DefaultShell {
 		t.Error("wrong default shell:", config.DefaultShell)
 	}
 	if config.StartUID != 0 {

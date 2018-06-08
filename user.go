@@ -22,6 +22,8 @@ type User struct {
 	PubKeys     []string `json:"public-keys"`
 }
 
+// Validate validates User attributes.
+// If some attribute is not valid, a non-nil error is returned.
 func (u *User) Validate() error {
 	if !IsValidUserName(u.Name) {
 		return errors.New("invalid user name: " + u.Name)
@@ -33,6 +35,23 @@ func (u *User) Validate() error {
 		return errors.New("shell must be specified")
 	}
 	return nil
+}
+
+// ListUser lists all user named registered in the database.
+// The result is sorted alphabetically.
+func (c Client) ListUser(ctx context.Context) ([]string, error) {
+	key := KeyUsers + "/"
+	resp, err := c.Get(ctx, key, clientv3.WithPrefix(),
+		clientv3.WithSort(clientv3.SortByKey, clientv3.SortAscend))
+	if err != nil {
+		return nil, err
+	}
+
+	ret := make([]string, resp.Count)
+	for i, kv := range resp.Kvs {
+		ret[i] = string(kv.Key[len(key):])
+	}
+	return ret, nil
 }
 
 // GetUser looks up named user from the database.

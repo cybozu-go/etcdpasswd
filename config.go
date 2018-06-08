@@ -19,7 +19,7 @@ type Config struct {
 
 func (c Client) initializeConfig(ctx context.Context) error {
 	config := &Config{
-		DefaultShell: defaultShell,
+		DefaultShell: DefaultShell,
 	}
 	j, err := json.Marshal(config)
 	if err != nil {

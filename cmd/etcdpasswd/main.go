@@ -49,6 +49,7 @@ func main() {
 
 	cfg, err := loadConfig(*flgConfigPath)
 	if err != nil {
+		flag.Usage()
 		log.ErrorExit(err)
 	}
 
