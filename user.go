@@ -37,7 +37,7 @@ func (u *User) Validate() error {
 	return nil
 }
 
-// ListUser lists all user named registered in the database.
+// ListUser lists all user names registered in the database.
 // The result is sorted alphabetically.
 func (c Client) ListUser(ctx context.Context) ([]string, error) {
 	return c.list(ctx, KeyUsers+"/")
