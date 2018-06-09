@@ -41,7 +41,7 @@ func main() {
 	subcommands.Register(cli.GetCommand(), "")
 	subcommands.Register(cli.UserCommand(), "")
 	subcommands.Register(cli.CertCommand(), "")
-	// subcommands.Register(cli.GroupCommand(), "")
+	subcommands.Register(cli.GroupCommand(), "")
 	subcommands.Register(cli.LockerCommand(), "")
 	flag.Parse()
 	cmd.LogConfig{}.Apply()
