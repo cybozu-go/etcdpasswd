@@ -3,17 +3,19 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"os"
 
 	"github.com/cybozu-go/cmd"
 	"github.com/cybozu-go/etcdpasswd"
-	"github.com/cybozu-go/etcdpasswd/cli"
+	"github.com/cybozu-go/etcdpasswd/syncer"
 	"github.com/cybozu-go/log"
 	yaml "gopkg.in/yaml.v2"
 )
 
 var (
 	flgConfigPath = flag.String("config", "/etc/etcdpasswd.yml", "configuration file path")
+	flgSyncer     = flag.String("syncer", "os", "user sync driver [os,dummy]")
 )
 
 func loadConfig(p string) (*etcdpasswd.EtcdConfig, error) {
@@ -47,22 +49,30 @@ func main() {
 	}
 	defer etcd.Close()
 
-	client := etcdpasswd.Client{
-		Client: etcd,
+	var sc etcdpasswd.Syncer
+	switch *flgSyncer {
+	case "os":
+		sc = syncer.UbuntuSyncer{}
+	case "dummy":
+		sc = syncer.DummySyncer{}
+	default:
+		fmt.Fprintln(os.Stderr, "no such syncer: "+*flgSyncer)
+		os.Exit(1)
 	}
-	cli.Setup(client)
 
-	updateCh := make(chan struct{}, 1)
+	agent := etcdpasswd.Agent{Client: etcd, Syncer: sc}
+
+	updateCh := make(chan int64, 1)
 	cmd.Go(func(ctx context.Context) error {
-		return client.StartWatching(ctx, updateCh)
+		return agent.StartWatching(ctx, updateCh)
 	})
 	cmd.Go(func(ctx context.Context) error {
-		return client.StartUpdater(ctx, updateCh)
+		return agent.StartUpdater(ctx, updateCh)
 	})
 	cmd.Stop()
 
 	err = cmd.Wait()
-	if !cmd.IsSignaled(err) && err != nil {
+	if err != nil && !cmd.IsSignaled(err) {
 		log.ErrorExit(err)
 	}
 }
