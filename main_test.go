@@ -51,7 +51,7 @@ func TestMain(m *testing.M) {
 	os.Exit(testMain(m))
 }
 
-func newTestClient(t *testing.T) *Client {
+func newTestClient(t *testing.T) Client {
 	var clientURL string
 	circleci := os.Getenv("CIRCLECI") == "true"
 	if circleci {
@@ -69,5 +69,5 @@ func newTestClient(t *testing.T) *Client {
 		t.Fatal(err)
 	}
 
-	return &Client{etcd}
+	return Client{etcd}
 }

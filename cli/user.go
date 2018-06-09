@@ -38,7 +38,7 @@ type userList struct{}
 func (c userList) SetFlags(f *flag.FlagSet) {}
 
 func (c userList) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitStatus {
-	users, err := client.ListUser(ctx)
+	users, err := client.ListUsers(ctx)
 	if err != nil {
 		return handleError(err)
 	}

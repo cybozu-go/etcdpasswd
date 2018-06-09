@@ -37,9 +37,9 @@ func (u *User) Validate() error {
 	return nil
 }
 
-// ListUser lists all user names registered in the database.
+// ListUsers lists all user names registered in the database.
 // The result is sorted alphabetically.
-func (c Client) ListUser(ctx context.Context) ([]string, error) {
+func (c Client) ListUsers(ctx context.Context) ([]string, error) {
 	return c.list(ctx, KeyUsers+"/")
 }
 
@@ -64,36 +64,6 @@ func (c Client) GetUser(ctx context.Context, name string) (*User, int64, error) 
 	}
 
 	return u, resp.Kvs[0].ModRevision, nil
-}
-
-func (c Client) getLastUID(ctx context.Context, startUID int) (_ int, rev int64, e error) {
-RETRY:
-	resp, err := c.Get(ctx, KeyLastUID)
-	if err != nil {
-		e = err
-		return
-	}
-
-	if resp.Count == 0 {
-		v := strconv.Itoa(startUID)
-		_, err = c.Txn(ctx).
-			If(clientv3util.KeyMissing(KeyLastUID)).
-			Then(clientv3.OpPut(KeyLastUID, v)).
-			Commit()
-		if err != nil {
-			e = err
-			return
-		}
-		goto RETRY
-	}
-
-	uid, err := strconv.Atoi(string(resp.Kvs[0].Value))
-	if err != nil {
-		e = err
-		return
-	}
-
-	return uid, resp.Kvs[0].ModRevision, nil
 }
 
 // AddUser adds a new managed user to the database.
@@ -126,7 +96,7 @@ func (c Client) AddUser(ctx context.Context, user *User) error {
 	delKey := path.Join(KeyDeletedUsers, user.Name)
 
 RETRY:
-	uid, rev, err := c.getLastUID(ctx, cfg.StartUID)
+	uid, rev, err := c.getLastID(ctx, KeyLastUID, cfg.StartUID)
 	if err != nil {
 		return err
 	}

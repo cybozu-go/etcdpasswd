@@ -10,7 +10,7 @@ import (
 	"github.com/golang/mock/gomock"
 )
 
-func clearEtcd(ctx context.Context, client *Client, t *testing.T) {
+func clearEtcd(ctx context.Context, client Client, t *testing.T) {
 	for _, key := range []string{KeyUsers, KeyDeletedUsers, KeyGroups, KeyDeletedGroups, KeyLocked} {
 		_, err := client.Delete(ctx, key, clientv3.WithPrefix())
 		if err != nil {
