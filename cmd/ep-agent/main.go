@@ -8,6 +8,7 @@ import (
 
 	"github.com/cybozu-go/cmd"
 	"github.com/cybozu-go/etcdpasswd"
+	"github.com/cybozu-go/etcdpasswd/agent"
 	"github.com/cybozu-go/etcdpasswd/syncer"
 	"github.com/cybozu-go/log"
 	yaml "gopkg.in/yaml.v2"
@@ -60,7 +61,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	agent := etcdpasswd.Agent{Client: etcd, Syncer: sc}
+	agent := agent.Agent{Client: etcd, Syncer: sc}
 
 	updateCh := make(chan int64, 1)
 	cmd.Go(func(ctx context.Context) error {

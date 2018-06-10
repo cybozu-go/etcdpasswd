@@ -55,7 +55,7 @@ func testPrepareDatabase(ctx context.Context, t *testing.T, client Client) int64
 	return resp.Header.Revision
 }
 
-func testGetDatabase(t *testing.T) {
+func TestGetDatabase(t *testing.T) {
 	t.Parallel()
 
 	ctx := context.Background()
@@ -131,8 +131,4 @@ func testGetDatabase(t *testing.T) {
 	if db.LockedUsers[0] != "user4" {
 		t.Error(`db.LockedUsers[0] != "user4"`)
 	}
-}
-
-func TestDatabase(t *testing.T) {
-	t.Run("Get", testGetDatabase)
 }

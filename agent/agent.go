@@ -1,9 +1,10 @@
-package etcdpasswd
+package agent
 
 import (
 	"context"
 
 	"github.com/coreos/etcd/clientv3"
+	"github.com/cybozu-go/etcdpasswd"
 	"github.com/cybozu-go/log"
 )
 
@@ -11,7 +12,7 @@ import (
 // users and groups with the database entries.
 type Agent struct {
 	*clientv3.Client
-	Syncer
+	etcdpasswd.Syncer
 }
 
 // StartWatching is a goroutine to watch etcd and notify updater.
@@ -54,10 +55,16 @@ func (a Agent) StartUpdater(ctx context.Context, updateCh <-chan int64) error {
 			log.Info("start sync", map[string]interface{}{
 				"rev": rev,
 			})
-			err := a.sync(ctx, rev)
+
+			db, err := etcdpasswd.GetDatabase(ctx, a.Client, rev)
 			if err != nil {
 				return err
 			}
+			err = synchronize(ctx, db, a.Syncer)
+			if err != nil {
+				return err
+			}
+
 			log.Info("finish sync", map[string]interface{}{
 				"rev": rev,
 			})
@@ -65,13 +72,4 @@ func (a Agent) StartUpdater(ctx context.Context, updateCh <-chan int64) error {
 			return nil
 		}
 	}
-}
-
-func (a Agent) sync(ctx context.Context, rev int64) error {
-	db, err := GetDatabase(ctx, a.Client, rev)
-	if err != nil {
-		return err
-	}
-
-	return db.Sync(ctx, a.Syncer)
 }
