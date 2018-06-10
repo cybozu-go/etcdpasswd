@@ -137,4 +137,106 @@ func TestSynchronize(t *testing.T) {
 	if !reflect.DeepEqual(sc, expected) {
 		t.Errorf(`!reflect.DeepEqual(sc, expected): %#v`, sc)
 	}
+
+	// remove a user
+	db.Users = db.Users[:2]
+	db.DeletedUsers = []string{"user3"}
+	delete(expected.Users, "user3")
+
+	err = synchronize(ctx, db, sc)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(sc, expected) {
+		t.Errorf(`!reflect.DeepEqual(sc, expected): %#v`, sc)
+	}
+
+	// recreate a user
+	db.Users[1] = &User{
+		Name:        "user2",
+		UID:         2005,
+		DisplayName: "u ser 2",
+		Group:       "group1",
+		Shell:       "/bin/zsh",
+	}
+	expected.Users["user2"] = &User{
+		Name:        "user2",
+		UID:         2005,
+		DisplayName: "u ser 2",
+		Group:       "group1",
+		Shell:       "/bin/zsh",
+	}
+
+	err = synchronize(ctx, db, sc)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(sc, expected) {
+		t.Errorf(`!reflect.DeepEqual(sc, expected): %#v`, sc)
+	}
+
+	// update user attributes
+	db.Users[1] = &User{
+		Name:        "user2",
+		UID:         2005,
+		DisplayName: "The One",
+		Group:       "group3",
+		Groups:      []string{"system-group2"},
+		Shell:       "/bin/bash",
+		PubKeys:     []string{"pubkey1", "pubkey2"},
+	}
+	expected.Users["user2"] = &User{
+		Name:        "user2",
+		UID:         2005,
+		DisplayName: "The One",
+		Group:       "group3",
+		Groups:      []string{"system-group2"},
+		Shell:       "/bin/bash",
+		PubKeys:     []string{"pubkey1", "pubkey2"},
+	}
+
+	err = synchronize(ctx, db, sc)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(sc, expected) {
+		t.Errorf(`!reflect.DeepEqual(sc, expected): %#v`, sc)
+	}
+
+	// add a group
+	db.Groups = append(db.Groups, Group{Name: "group4", GID: 3003})
+	expected.Groups["group4"] = &Group{Name: "group4", GID: 3003}
+
+	err = synchronize(ctx, db, sc)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(sc, expected) {
+		t.Errorf(`!reflect.DeepEqual(sc, expected): %#v`, sc)
+	}
+
+	// remove a group
+	db.Groups = db.Groups[0 : len(db.Groups)-1]
+	db.DeletedGroups = append(db.DeletedGroups, "group4")
+	delete(expected.Groups, "group4")
+
+	err = synchronize(ctx, db, sc)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(sc, expected) {
+		t.Errorf(`!reflect.DeepEqual(sc, expected): %#v`, sc)
+	}
+
+	// recreate a group
+	db.Groups[0] = Group{Name: "group1", GID: 3004}
+	expected.Groups["group1"] = &Group{Name: "group1", GID: 3004}
+
+	err = synchronize(ctx, db, sc)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if !reflect.DeepEqual(sc, expected) {
+		t.Errorf(`!reflect.DeepEqual(sc, expected): %#v`, sc)
+	}
 }
