@@ -55,7 +55,7 @@ func main() {
 	case "os":
 		sc = syncer.UbuntuSyncer{}
 	case "dummy":
-		sc = syncer.DummySyncer{}
+		sc = syncer.NewDummySyncer()
 	default:
 		fmt.Fprintln(os.Stderr, "no such syncer: "+*flgSyncer)
 		os.Exit(1)
