@@ -2,8 +2,12 @@ package syncer
 
 import (
 	"bufio"
+	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
+
+	"github.com/cybozu-go/log"
 )
 
 func parseAuthorizedKeys(p string) ([]string, error) {
@@ -46,4 +50,56 @@ func getPubKeys(homedir string) ([]string, error) {
 	}
 
 	return append(pubkeys, pubkeys2...), nil
+}
+
+func savePubKeys(homedir string, uid, gid int, pubkeys []string) error {
+	sshDir := filepath.Join(homedir, ".ssh")
+	_, err := os.Stat(sshDir)
+	if err != nil {
+		if !os.IsNotExist(err) {
+			return err
+		}
+		err = os.Mkdir(sshDir, 0700)
+		if err != nil {
+			return err
+		}
+		err = os.Chown(sshDir, uid, gid)
+		if err != nil {
+			return err
+		}
+	}
+
+	// remove alternative file, if any.
+	err = os.Remove(filepath.Join(sshDir, "authorized_keys2"))
+	if err == nil {
+		log.Info("removed authorized_keys2", map[string]interface{}{
+			"dir": sshDir,
+		})
+	}
+
+	f, err := ioutil.TempFile(sshDir, ".gp")
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	err = f.Chown(uid, gid)
+	if err != nil {
+		return err
+	}
+	err = f.Chmod(0600)
+	if err != nil {
+		return err
+	}
+
+	_, err = f.WriteString(strings.Join(pubkeys, "\n") + "\n")
+	if err != nil {
+		return err
+	}
+	err = f.Sync()
+	if err != nil {
+		return err
+	}
+
+	return os.Rename(f.Name(), filepath.Join(sshDir, "authorized_keys"))
 }
