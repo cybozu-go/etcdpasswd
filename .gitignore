@@ -3,4 +3,6 @@
 .#*
 .*.swp
 
-/mocks
+/*.deb
+/debian
+!/debian/DEBIAN

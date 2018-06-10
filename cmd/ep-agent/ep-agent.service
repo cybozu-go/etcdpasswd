@@ -1,0 +1,14 @@
+[Unit]
+Description=etcdpasswd sync agent
+After=network-online.target
+Wants=network-online.target
+ConditionPathExists=/etc/etcdpasswd.yml
+
+[Service]
+Type=simple
+Restart=on-failure
+RestartForceExitStatus=SIGPIPE
+ExecStart=/usr/sbin/ep-agent -logformat json
+
+[Install]
+WantedBy=multi-user.target

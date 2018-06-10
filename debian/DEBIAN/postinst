@@ -1,0 +1,16 @@
+#!/bin/sh -e
+
+SERVICE=ep-agent
+
+configure() {
+    if [ -d /run/systemd/system ]; then
+        systemctl daemon-reload
+        systemctl enable $SERVICE.service
+    fi
+}
+
+if test "$1" = "configure"; then
+    configure
+fi
+
+exit 0
