@@ -1,16 +1,11 @@
 all:
+	go get -d ./...
 	go install ./...
 
-test: setup_test
-	go test -race -v ./...
+test:
+	go get -d -t ./...
+	go test -race -count 1 -v ./...
+	test -z "$$(goimports -d . | tee /dev/stderr)"
+	golint -set_exit_status ./...
 
-setup_test: mocks/auth.go
-
-mocks/auth.go: auth.go
-	mkdir -p mocks
-	go get github.com/golang/mock/gomock
-	go get github.com/golang/mock/mockgen
-	go generate ./...
-	goimports -w $@
-
-.PHONY: all test setup_test
+.PHONY: all test
