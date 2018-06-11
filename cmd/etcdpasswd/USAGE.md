@@ -23,8 +23,8 @@ Subcommands:
 - `group add NAME`
 - `group remove NAME`
 - `locker list`
-- `locker lock NAME`
-- `locker unlock NAME`
+- `locker add NAME`
+- `locker remove NAME`
 
 ## `set CONFIG VALUE` and `get CONFIG`
 

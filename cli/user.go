@@ -104,7 +104,7 @@ func (c *userAdd) SetFlags(f *flag.FlagSet) {
 	f.StringVar(&c.displayName, "display", "", "display name")
 	f.StringVar(&c.group, "group", "", "primary group")
 	f.Var(&c.groups, "groups", "comma-separated supplementary groups")
-	f.StringVar(&c.shell, "shell", etcdpasswd.DefaultShell, "shell program")
+	f.StringVar(&c.shell, "shell", "", "shell program")
 }
 
 func (c *userAdd) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitStatus {
