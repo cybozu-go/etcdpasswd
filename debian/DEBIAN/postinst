@@ -6,6 +6,7 @@ configure() {
     if [ -d /run/systemd/system ]; then
         systemctl daemon-reload
         systemctl enable $SERVICE.service
+        systemctl start $SERVICE.service
     fi
 }
 

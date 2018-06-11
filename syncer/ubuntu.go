@@ -59,6 +59,7 @@ func (s UbuntuSyncer) AddUser(ctx context.Context, u *etcdpasswd.User) error {
 		args = append(args, "-G")
 		args = append(args, strings.Join(u.Groups, ","))
 	}
+	args = append(args, u.Name)
 
 	// use background context to ignore cancellation.
 	return cmd.CommandContext(context.Background(), "useradd", args...).Run()
