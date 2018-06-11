@@ -1,10 +1,26 @@
 Specifications
 ==============
 
+`/etc/etcdpasswd.yml`
+---------------------
+
+This file provides following parameters to connect to etd cluster.
+
+Name       | Type           | Required | Description
+---------- | -------------- | -------- | -----------
+`servers`  | list of string | Yes      | List of etcd end point URLs.
+`prefix`   | string         | No       | Key prefix of etcd objects.  Default is `/passwd/`.
+`username` | string         | No       | Username for etcd authentication.
+`password` | string         | No       | Password for etcd authentication.
+
 etcd schema
 -----------
 
 etcdpasswd stores following data in etcd.
+
+### Prefix
+
+The default prefix of keys in etcd is `/passwd/`.
 
 ### Configuration
 
@@ -54,6 +70,7 @@ If this key does not exist, the next user will have `start-uid` as their UID.
 
 ```json
 {
+  "name": "cybozu",
   "uid": 2006,
   "display-name": "Cy Bozu",
   "group": "cybozu",
@@ -70,6 +87,18 @@ If this key does not exist, the next user will have `start-uid` as their UID.
 ```json
 2008
 ```
+
+### Deleted users
+
+`<prefix>/deleted-users/<name>` indicates that `<name>` user has been deleted.
+
+When a new user with the same name is to be created, this key will be removed in the same transaction.
+
+### Deleted groups
+
+`<prefix>/deleted-groups/<name>` indicates that `<name>` group has been deleted.
+
+When a new group with the same name is to be created, this key will be removed in the same transaction.
 
 ### Unmanaged users to be locked
 

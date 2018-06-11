@@ -1,0 +1,8 @@
+Package: etcdpasswd
+Version: 0.1-1
+Maintainer: Cybozu <oss@cybozu.com>
+Architecture: amd64
+Depends: passwd
+Suggests: etcd-server
+Homepage: https://github.com/cybozu-go/etcdpasswd
+Description: Distributed user/group synchronization tool using etcd.

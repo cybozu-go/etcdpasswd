@@ -1,0 +1,14 @@
+#!/bin/sh -e
+
+SERVICE=ep-agent
+
+prerm() {
+    if [ -d /run/systemd/system ]; then
+        systemctl stop $SERVICE.service
+        systemctl disable $SERVICE.service
+    fi
+}
+
+prerm
+
+exit 0
