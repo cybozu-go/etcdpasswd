@@ -1,11 +1,12 @@
 package syncer
 
 import (
-	"os/exec"
+	"context"
 	"os/user"
 	"strconv"
 	"strings"
 
+	"github.com/cybozu-go/cmd"
 	"github.com/cybozu-go/etcdpasswd"
 )
 
@@ -40,7 +41,7 @@ func makeUser(uu *user.User) (*etcdpasswd.User, error) {
 	}
 	u.Groups = gnames
 
-	out, err := exec.Command("getent", "passwd", uu.Name).Output()
+	out, err := cmd.CommandContext(context.Background(), "getent", "passwd", uu.Username).Output()
 	if err != nil {
 		return nil, err
 	}
