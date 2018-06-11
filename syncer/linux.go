@@ -35,9 +35,12 @@ func makeUser(uu *user.User) (*etcdpasswd.User, error) {
 	if err != nil {
 		return nil, err
 	}
-	gnames := make([]string, len(gids))
-	for i, gid := range gids {
-		gnames[i] = gid2Name(gid)
+	gnames := make([]string, 0, len(gids))
+	for _, gid := range gids {
+		if gid == uu.Gid {
+			continue
+		}
+		gnames = append(gnames, gid2Name(gid))
 	}
 	u.Groups = gnames
 

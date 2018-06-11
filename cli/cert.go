@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"flag"
@@ -8,9 +9,9 @@ import (
 	"io/ioutil"
 	"os"
 	"strconv"
-	"strings"
 
 	"github.com/google/subcommands"
+	"golang.org/x/crypto/ssh"
 )
 
 type cert struct{}
@@ -36,11 +37,11 @@ func CertCommand() subcommands.Command {
 }
 
 func pprintPubKey(pubkey string) string {
-	fields := strings.Fields(pubkey)
-	if len(fields) >= 3 {
-		return fmt.Sprintf("%s (%s)", fields[2], fields[0])
+	pk, comment, _, _, err := ssh.ParseAuthorizedKey([]byte(pubkey))
+	if err != nil {
+		return pubkey
 	}
-	return pubkey
+	return fmt.Sprintf("%s (%s)", comment, pk.Type())
 }
 
 type certList struct{}
@@ -111,7 +112,7 @@ func (c certAdd) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitS
 		return handleError(err)
 	}
 
-	user.PubKeys = append(user.PubKeys, string(pubkey))
+	user.PubKeys = append(user.PubKeys, string(bytes.TrimSpace(pubkey)))
 	err = client.UpdateUser(ctx, user, rev)
 	return handleError(err)
 }
