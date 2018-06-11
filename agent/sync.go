@@ -47,6 +47,25 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 		})
 	}
 
+	// remove users
+	for _, name := range db.DeletedUsers {
+		lu, err := sc.LookupUser(ctx, name)
+		if err != nil {
+			return err
+		}
+		if lu == nil {
+			continue
+		}
+		err = sc.RemoveUser(ctx, name)
+		if err != nil {
+			return err
+		}
+		log.Info("removed a user", map[string]interface{}{
+			"user": name,
+			"uid":  lu.UID,
+		})
+	}
+
 	// remove groups
 	for _, name := range db.DeletedGroups {
 		lg, err := sc.LookupGroup(ctx, name)
@@ -97,25 +116,6 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 		log.Info("added a group", map[string]interface{}{
 			"group": g.Name,
 			"gid":   g.GID,
-		})
-	}
-
-	// remove users
-	for _, name := range db.DeletedUsers {
-		lu, err := sc.LookupUser(ctx, name)
-		if err != nil {
-			return err
-		}
-		if lu == nil {
-			continue
-		}
-		err = sc.RemoveUser(ctx, name)
-		if err != nil {
-			return err
-		}
-		log.Info("removed a user", map[string]interface{}{
-			"user": name,
-			"uid":  lu.UID,
 		})
 	}
 
