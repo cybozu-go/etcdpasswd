@@ -26,10 +26,10 @@ deb:
 	fakeroot dpkg-deb --build debian .
 
 clean:
-	rm *.deb
+	rm -f *.deb
 	rm -rf debian/usr debian/lib
 
 setup:
-	apt-get -y --no-install-recommends install $(PACKAGES)
+	sudo apt-get -y --no-install-recommends install $(PACKAGES)
 
 .PHONY: all test deb clean setup
