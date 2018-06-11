@@ -137,7 +137,7 @@ func testGroupRemove(t *testing.T) {
 	}
 
 	delKey := path.Join(KeyDeletedGroups, "test1")
-	resp, err := client.Get(ctx, delKey, clientv3.WithCountOnly())
+	resp, _ := client.Get(ctx, delKey, clientv3.WithCountOnly())
 	if resp.Count != 1 {
 		t.Error(`deleted group should have been registered`)
 	}

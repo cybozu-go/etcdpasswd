@@ -44,6 +44,7 @@ Installation
     $ sudo cp $GOPATH/bin/ep-agent /usr/local/sbin
     $ sudo cp ep-agent.service /etc/systemd/system
     $ sudo systemctl daemon-reload
+    $ sudo systemctl enable ep-agent.service
     $ sudo systemctl start ep-agent.service
     ```
 
