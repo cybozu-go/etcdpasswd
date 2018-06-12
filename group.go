@@ -3,7 +3,6 @@ package etcdpasswd
 import (
 	"context"
 	"errors"
-	"path"
 	"strconv"
 
 	"github.com/coreos/etcd/clientv3"
@@ -19,7 +18,7 @@ type Group struct {
 // ListGroups lists all groups registered in the database.
 // The result is sorted alphabetically.
 func (c Client) ListGroups(ctx context.Context) ([]Group, error) {
-	prefix := KeyGroups + "/"
+	prefix := KeyGroups
 	resp, err := c.Get(ctx, prefix, clientv3.WithPrefix(),
 		clientv3.WithSort(clientv3.SortByKey, clientv3.SortAscend))
 	if err != nil {
@@ -53,8 +52,8 @@ func (c Client) AddGroup(ctx context.Context, name string) error {
 		return errors.New("invalid group name: " + name)
 	}
 
-	key := path.Join(KeyGroups, name)
-	delKey := path.Join(KeyDeletedGroups, name)
+	key := KeyGroups + name
+	delKey := KeyDeletedGroups + name
 
 RETRY:
 	gid, rev, err := c.getLastID(ctx, KeyLastGID, cfg.StartGID)
@@ -96,8 +95,8 @@ RETRY:
 // RemoveGroup removes an existing managed group.
 // If the group does not exist, ErrNotFound will be returned.
 func (c Client) RemoveGroup(ctx context.Context, name string) error {
-	key := path.Join(KeyGroups, name)
-	delKey := path.Join(KeyDeletedGroups, name)
+	key := KeyGroups + name
+	delKey := KeyDeletedGroups + name
 
 	resp, err := c.Txn(ctx).
 		If(clientv3util.KeyExists(key)).

@@ -2,7 +2,6 @@ package etcdpasswd
 
 import (
 	"context"
-	"path"
 	"testing"
 )
 
@@ -39,15 +38,15 @@ func testPrepareDatabase(ctx context.Context, t *testing.T, client Client) int64
 		t.Fatal(err)
 	}
 
-	_, err = client.Put(ctx, path.Join(KeyDeletedUsers, "user3"), "")
+	_, err = client.Put(ctx, KeyDeletedUsers+"user3", "")
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = client.Put(ctx, path.Join(KeyDeletedGroups, "group2"), "")
+	_, err = client.Put(ctx, KeyDeletedGroups+"group2", "")
 	if err != nil {
 		t.Fatal(err)
 	}
-	resp, err := client.Put(ctx, path.Join(KeyLocked, "user4"), "")
+	resp, err := client.Put(ctx, KeyLocked+"user4", "")
 	if err != nil {
 		t.Fatal(err)
 	}

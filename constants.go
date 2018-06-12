@@ -5,11 +5,11 @@ const (
 	KeyConfig        = "config"
 	KeyLastUID       = "last-uid"
 	KeyLastGID       = "last-gid"
-	KeyUsers         = "users"
-	KeyDeletedUsers  = "deleted-users"
-	KeyGroups        = "groups"
-	KeyDeletedGroups = "deleted-groups"
-	KeyLocked        = "locked"
+	KeyUsers         = "users/"
+	KeyDeletedUsers  = "deleted-users/"
+	KeyGroups        = "groups/"
+	KeyDeletedGroups = "deleted-groups/"
+	KeyLocked        = "locked/"
 )
 
 const (

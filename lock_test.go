@@ -2,7 +2,6 @@ package etcdpasswd
 
 import (
 	"context"
-	"path"
 	"testing"
 
 	"github.com/coreos/etcd/clientv3"
@@ -25,7 +24,7 @@ func TestLock(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	resp, err := client.Get(ctx, path.Join(KeyLocked, "cybozu"), clientv3.WithCountOnly())
+	resp, err := client.Get(ctx, KeyLocked+"cybozu", clientv3.WithCountOnly())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -51,7 +50,7 @@ func TestUnlock(t *testing.T) {
 		t.Error("failed to unlock non-locked user")
 	}
 
-	_, err = client.Put(ctx, path.Join(KeyLocked, "cybozu"), "")
+	_, err = client.Put(ctx, KeyLocked+"cybozu", "")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -61,7 +60,7 @@ func TestUnlock(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	resp, err := client.Get(ctx, path.Join(KeyLocked, "cybozu"), clientv3.WithCountOnly())
+	resp, err := client.Get(ctx, KeyLocked+"cybozu", clientv3.WithCountOnly())
 	if err != nil {
 		t.Fatal(err)
 	}

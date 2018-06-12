@@ -22,7 +22,7 @@ type Database struct {
 func GetDatabase(ctx context.Context, etcd *clientv3.Client, rev int64) (*Database, error) {
 	db := new(Database)
 
-	resp, err := etcd.Get(ctx, KeyUsers+"/",
+	resp, err := etcd.Get(ctx, KeyUsers,
 		clientv3.WithPrefix(),
 		clientv3.WithRev(rev),
 		clientv3.WithSort(clientv3.SortByKey, clientv3.SortAscend))
@@ -42,8 +42,7 @@ func GetDatabase(ctx context.Context, etcd *clientv3.Client, rev int64) (*Databa
 		db.Users = users
 	}
 
-	gprefix := KeyGroups + "/"
-	resp, err = etcd.Get(ctx, gprefix,
+	resp, err = etcd.Get(ctx, KeyGroups,
 		clientv3.WithPrefix(),
 		clientv3.WithRev(rev),
 		clientv3.WithSort(clientv3.SortByKey, clientv3.SortAscend))
@@ -53,7 +52,7 @@ func GetDatabase(ctx context.Context, etcd *clientv3.Client, rev int64) (*Databa
 	if resp.Count > 0 {
 		groups := make([]Group, resp.Count)
 		for i, kv := range resp.Kvs {
-			name := string(kv.Key[len(gprefix):])
+			name := string(kv.Key[len(KeyGroups):])
 			gid, err := strconv.Atoi(string(kv.Value))
 			if err != nil {
 				return nil, err
@@ -82,19 +81,19 @@ func GetDatabase(ctx context.Context, etcd *clientv3.Client, rev int64) (*Databa
 		return ret, nil
 	}
 
-	delus, err := getKeys(KeyDeletedUsers + "/")
+	delus, err := getKeys(KeyDeletedUsers)
 	if err != nil {
 		return nil, err
 	}
 	db.DeletedUsers = delus
 
-	delgs, err := getKeys(KeyDeletedGroups + "/")
+	delgs, err := getKeys(KeyDeletedGroups)
 	if err != nil {
 		return nil, err
 	}
 	db.DeletedGroups = delgs
 
-	locked, err := getKeys(KeyLocked + "/")
+	locked, err := getKeys(KeyLocked)
 	if err != nil {
 		return nil, err
 	}
