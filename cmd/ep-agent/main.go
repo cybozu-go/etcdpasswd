@@ -63,7 +63,7 @@ func main() {
 
 	agent := agent.Agent{Client: etcd, Syncer: sc}
 
-	updateCh := make(chan int64, 1)
+	updateCh := make(chan struct{}, 1)
 	cmd.Go(func(ctx context.Context) error {
 		return agent.StartWatching(ctx, updateCh)
 	})
