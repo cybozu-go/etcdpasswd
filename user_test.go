@@ -2,7 +2,6 @@ package etcdpasswd
 
 import (
 	"context"
-	"path"
 	"reflect"
 	"testing"
 
@@ -51,7 +50,7 @@ func testUserGet(t *testing.T) {
 		t.Error("user cybozu should not be found")
 	}
 
-	key := path.Join(KeyUsers, "cybozu")
+	key := KeyUsers + "cybozu"
 	_, err = client.Put(ctx, key, testUserData)
 	if err != nil {
 		t.Fatal(err)
@@ -148,7 +147,7 @@ func testUserAdd(t *testing.T) {
 		t.Error(`gu.Shell != "/bin/zsh"`)
 	}
 
-	delKey := path.Join(KeyDeletedUsers, "cybozu3")
+	delKey := KeyDeletedUsers + "cybozu3"
 	_, err = client.Put(ctx, delKey, "")
 	if err != nil {
 		t.Fatal(err)
@@ -193,7 +192,7 @@ func testUserUpdate(t *testing.T) {
 	client := newTestClient(t)
 	defer client.Close()
 
-	key := path.Join(KeyUsers, "cybozu")
+	key := KeyUsers + "cybozu"
 	_, err := client.Put(ctx, key, testUserData)
 	if err != nil {
 		t.Fatal(err)
@@ -260,7 +259,7 @@ func testUserRemove(t *testing.T) {
 		t.Fatal("non-existing user should not be removed")
 	}
 
-	key := path.Join(KeyUsers, "cybozu")
+	key := KeyUsers + "cybozu"
 	_, err = client.Put(ctx, key, testUserData)
 	if err != nil {
 		t.Fatal(err)
@@ -271,7 +270,7 @@ func testUserRemove(t *testing.T) {
 		t.Error(err)
 	}
 
-	delKey := path.Join(KeyDeletedUsers, "cybozu")
+	delKey := KeyDeletedUsers + "cybozu"
 	resp, _ := client.Get(ctx, delKey, clientv3.WithCountOnly())
 	if resp.Count != 1 {
 		t.Error(`deleted user should have been registered`)

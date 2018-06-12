@@ -2,7 +2,6 @@ package etcdpasswd
 
 import (
 	"context"
-	"path"
 	"reflect"
 	"testing"
 
@@ -11,19 +10,19 @@ import (
 
 func testGroupPrepare(t *testing.T, client Client) {
 	ctx := context.Background()
-	_, err := client.Put(ctx, path.Join(KeyGroups, "test1"), "12345")
+	_, err := client.Put(ctx, KeyGroups+"test1", "12345")
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = client.Put(ctx, path.Join(KeyGroups, "test2"), "12346")
+	_, err = client.Put(ctx, KeyGroups+"test2", "12346")
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = client.Put(ctx, path.Join(KeyGroups, "abc"), "12347")
+	_, err = client.Put(ctx, KeyGroups+"abc", "12347")
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = client.Put(ctx, path.Join(KeyDeletedGroups, "test0"), "12344")
+	_, err = client.Put(ctx, KeyDeletedGroups+"test0", "12344")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -82,7 +81,7 @@ func testGroupAdd(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	delKey := path.Join(KeyDeletedGroups, "test0")
+	delKey := KeyDeletedGroups + "test0"
 	resp, err := client.Get(ctx, delKey, clientv3.WithCountOnly())
 	if err != nil {
 		t.Fatal(err)
@@ -90,7 +89,7 @@ func testGroupAdd(t *testing.T) {
 	if resp.Count != 0 {
 		t.Error(`resp.Count != 0`, resp.Count)
 	}
-	resp2, err := client.Get(ctx, path.Join(KeyGroups, "test0"))
+	resp2, err := client.Get(ctx, KeyGroups+"test0")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -105,7 +104,7 @@ func testGroupAdd(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	resp3, err := client.Get(ctx, path.Join(KeyGroups, "zzz"))
+	resp3, err := client.Get(ctx, KeyGroups+"zzz")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -136,7 +135,7 @@ func testGroupRemove(t *testing.T) {
 		t.Error(err)
 	}
 
-	delKey := path.Join(KeyDeletedGroups, "test1")
+	delKey := KeyDeletedGroups + "test1"
 	resp, _ := client.Get(ctx, delKey, clientv3.WithCountOnly())
 	if resp.Count != 1 {
 		t.Error(`deleted group should have been registered`)

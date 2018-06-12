@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"path"
 	"strconv"
 
 	"github.com/coreos/etcd/clientv3"
@@ -40,13 +39,13 @@ func (u *User) Validate() error {
 // ListUsers lists all user names registered in the database.
 // The result is sorted alphabetically.
 func (c Client) ListUsers(ctx context.Context) ([]string, error) {
-	return c.list(ctx, KeyUsers+"/")
+	return c.list(ctx, KeyUsers)
 }
 
 // GetUser looks up named user from the database.
 // If the user is not found, this returns ErrNotFound.
 func (c Client) GetUser(ctx context.Context, name string) (*User, int64, error) {
-	key := path.Join(KeyUsers, name)
+	key := KeyUsers + name
 
 	resp, err := c.Get(ctx, key)
 	if err != nil {
@@ -92,8 +91,8 @@ func (c Client) AddUser(ctx context.Context, user *User) error {
 		return err
 	}
 
-	key := path.Join(KeyUsers, user.Name)
-	delKey := path.Join(KeyDeletedUsers, user.Name)
+	key := KeyUsers + user.Name
+	delKey := KeyDeletedUsers + user.Name
 
 RETRY:
 	uid, rev, err := c.getLastID(ctx, KeyLastUID, cfg.StartUID)
@@ -145,7 +144,7 @@ func (c Client) UpdateUser(ctx context.Context, user *User, rev int64) error {
 		return err
 	}
 
-	key := path.Join(KeyUsers, user.Name)
+	key := KeyUsers + user.Name
 	j, err := json.Marshal(user)
 	if err != nil {
 		return err
@@ -170,8 +169,8 @@ func (c Client) UpdateUser(ctx context.Context, user *User, rev int64) error {
 // RemoveUser removes an existing managed user.
 // If the user does not exist, ErrNotFound will be returned.
 func (c Client) RemoveUser(ctx context.Context, name string) error {
-	key := path.Join(KeyUsers, name)
-	delKey := path.Join(KeyDeletedUsers, name)
+	key := KeyUsers + name
+	delKey := KeyDeletedUsers + name
 
 	resp, err := c.Txn(ctx).
 		If(clientv3util.KeyExists(key)).
