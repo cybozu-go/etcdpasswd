@@ -151,6 +151,15 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 			"user": u.Name,
 			"uid":  u.UID,
 		})
+		if len(u.PubKeys) > 0 {
+			err = sc.SetPubKeys(ctx, u.Name, u.PubKeys)
+			if err != nil {
+				return err
+			}
+			log.Info("install public keys", map[string]interface{}{
+				"user": u.Name,
+			})
+		}
 		continue
 
 	UPDATE:
