@@ -57,13 +57,13 @@ The UID of the new user is taken in sequence from `start-uid` in the configurati
 `user add` returns an error if, but not only if:
 - `NAME` is used by another managed user.
 - `NAME` is not a valid user name.
-- at least one of the specified group names is not a valid group name.
-- primary group name is not given either by the command line or the configuration.
+- At least one of the specified group names is not a valid group name.
+- Primary group name is not given either by the command line or the configuration.
 - `start-uid` has not been set.
 
 `user add` does NOT return an error in the following cases, but `ep-agent` will fail to reflect the change:
 - UID is used by an unmanaged user.
-- at least one of the specified groups does not exist on the system.
+- At least one of the specified groups does not exist on the system.
 
 It is NOT an error for `user add` or `ep-agent` that `NAME` is used by an unmanaged user.
 `ep-agent` first removes the unmanaged user and then creates a new managed user on each system.
@@ -78,8 +78,8 @@ Only the attributes specified by options with non-empty values are updated.
 
 `user update` returns an error if, but not only if:
 - `NAME` is not a managed user's name.
-- at least one of the specified group names is not a valid group name.
-- the user is being updated concurrently.
+- At least one of the specified group names is not a valid group name.
+- The user is being updated concurrently.
 
 ### `user remove`
 
@@ -147,7 +147,7 @@ It is NOT an error for `group add` or `ep-agent` that `NAME` is used by an unman
 `group remove` returns an error if `NAME` is not a managed group's name.
 
 `group remove` does NOT return an error in the following case, but `ep-agent` will fail to reflect the change:
-- the group is referred as a primary group by some user.
+- The group is referred as a primary group by some user.
 
 ### `group list`
 
