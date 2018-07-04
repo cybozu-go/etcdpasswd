@@ -73,7 +73,7 @@ func (s UbuntuSyncer) RemoveUser(ctx context.Context, name string) error {
 	}
 
 	// use background context to ignore cancellation.
-	return cmd.CommandContext(context.Background(), "userdel", "-f", name).Run()
+	return cmd.CommandContext(context.Background(), "userdel", "-f", "-r", name).Run()
 }
 
 func userMod(args ...string) error {
