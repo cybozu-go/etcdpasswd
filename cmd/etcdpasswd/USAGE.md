@@ -86,7 +86,7 @@ Only the attributes specified by options with non-empty values are updated.
 `user remove NAME` removes an existing managed user from the database.
 `ep-agent` watches the database to actually remove the user from each Unix system.
 
-The home directory of the user is preserved after user removal.
+The home directory of the user is also removed.
 
 `user remove` returns an error if `NAME` is not a managed user's name.
 
