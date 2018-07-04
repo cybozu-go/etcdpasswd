@@ -168,3 +168,7 @@ be locked by this.
 passwords.  Unlocking passwords should be done by administrators later on.
 
 `locker list` shows names in the list.
+
+## Valid name
+
+A user/group name is valid if it matches the pattern of `^[a-z][-a-z0-9_]*$` and it does not conflict with system names such as "root" or "nobody".
