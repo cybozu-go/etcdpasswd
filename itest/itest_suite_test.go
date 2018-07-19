@@ -9,8 +9,11 @@ import (
 )
 
 func TestItest(t *testing.T) {
+	if len(sshKeyFile) == 0 {
+		t.Skip("no SSH_PRIVKEY envvar")
+	}
 	RegisterFailHandler(Fail)
-	RunSpecs(t, "Itest Suite")
+	RunSpecs(t, "Integration test for etcdpasswd")
 }
 
 var _ = BeforeSuite(func() {
@@ -24,6 +27,8 @@ var _ = BeforeSuite(func() {
 
 	err = runEPAgent()
 	Expect(err).NotTo(HaveOccurred())
+
+	time.Sleep(time.Second)
 })
 
 var _ = Describe("etcdpasswd is working", func() {

@@ -3,16 +3,20 @@ package itest
 import (
 	"bytes"
 	"errors"
+	"io/ioutil"
+	"os"
 	"time"
 
 	"golang.org/x/crypto/ssh"
 )
 
+const sshTimeout = 3 * time.Minute
+
 var (
 	sshClients = make(map[string]*ssh.Client)
 )
 
-func sshTo(address string) (*ssh.Client, error) {
+func sshTo(address string, sshKey ssh.Signer) (*ssh.Client, error) {
 	config := &ssh.ClientConfig{
 		User: "ubuntu",
 		Auth: []ssh.AuthMethod{
@@ -25,7 +29,23 @@ func sshTo(address string) (*ssh.Client, error) {
 }
 
 func prepareSshClients(addresses ...string) error {
-	ch := time.After(time.Minute)
+	f, err := os.Open(os.Getenv("SSH_PRIVKEY"))
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+
+	data, err := ioutil.ReadAll(f)
+	if err != nil {
+		return err
+	}
+
+	sshKey, err := ssh.ParsePrivateKey(data)
+	if err != nil {
+		return err
+	}
+
+	ch := time.After(sshTimeout)
 	for _, a := range addresses {
 	RETRY:
 		select {
@@ -33,7 +53,7 @@ func prepareSshClients(addresses ...string) error {
 			return errors.New("timed out")
 		default:
 		}
-		client, err := sshTo(a)
+		client, err := sshTo(a, sshKey)
 		if err != nil {
 			time.Sleep(time.Second)
 			goto RETRY
