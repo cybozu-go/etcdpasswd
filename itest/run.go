@@ -5,8 +5,10 @@ import (
 	"errors"
 	"io/ioutil"
 	"os"
+	"strings"
 	"time"
 
+	. "github.com/onsi/gomega"
 	"golang.org/x/crypto/ssh"
 )
 
@@ -60,6 +62,7 @@ func prepareSshClients(addresses ...string) error {
 		}
 		sshClients[a] = client
 	}
+
 	return nil
 }
 
@@ -90,7 +93,7 @@ func runEPAgent() error {
 	return nil
 }
 
-func runCommand(host, command string) (stdout, stderr []byte, e error) {
+func execAt(host string, args ...string) (stdout, stderr []byte, e error) {
 	client := sshClients[host]
 	sess, err := client.NewSession()
 	if err != nil {
@@ -102,6 +105,12 @@ func runCommand(host, command string) (stdout, stderr []byte, e error) {
 	errBuf := new(bytes.Buffer)
 	sess.Stdout = outBuf
 	sess.Stderr = errBuf
-	err = sess.Run(command)
+	err = sess.Run(strings.Join(args, " "))
 	return outBuf.Bytes(), errBuf.Bytes(), err
+}
+
+func execSafeAt(host string, args ...string) string {
+	stdout, _, err := execAt(host, args...)
+	ExpectWithOffset(1, err).To(Succeed())
+	return string(stdout)
 }

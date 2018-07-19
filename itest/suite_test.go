@@ -1,6 +1,7 @@
 package itest
 
 import (
+	"fmt"
 	"testing"
 	"time"
 
@@ -17,8 +18,14 @@ func TestItest(t *testing.T) {
 }
 
 var _ = BeforeSuite(func() {
+	fmt.Println("Preparing...")
 	err := prepareSshClients(host1, host2, host3)
 	Expect(err).NotTo(HaveOccurred())
+
+	// sync VM root filesystem to store newly generated SSH host keys.
+	for h := range sshClients {
+		execSafeAt(h, "sync")
+	}
 
 	err = runEtcd(sshClients[host1])
 	Expect(err).NotTo(HaveOccurred())
@@ -29,12 +36,5 @@ var _ = BeforeSuite(func() {
 	Expect(err).NotTo(HaveOccurred())
 
 	time.Sleep(time.Second)
-})
-
-var _ = Describe("etcdpasswd is working", func() {
-	It("should not fail", func(done Done) {
-		_, _, err := runCommand(host1, "/data/etcdpasswd get start-uid")
-		Expect(err).NotTo(HaveOccurred())
-		close(done)
-	}, 10)
+	fmt.Println("Begin tests...")
 })
