@@ -8,10 +8,15 @@ HOST3 = 10.0.0.103
 PLACEMAT = $(GOPATH)/bin/placemat
 ETCD_VERSION = 3.3.8
 
+export BRIDGE_ADDRESS HOST1 HOST2 HOST3 PLACEMAT
+
 # non-configuration variables
 ETCD_ARCHIVE := etcd-v$(ETCD_VERSION)-linux-amd64.tar.gz
 SSH_PRIVKEY := ./itest_key
 OUTPUT := ./output
+UBUNTU_IMAGE := ubuntu-18.04-server-cloudimg-amd64.img
+
+export SSH_PRIVKEY
 
 GENERATED_FILES = $(OUTPUT)/etcd  $(OUTPUT)/etcdctl \
 	$(OUTPUT)/etcdpasswd $(OUTPUT)/ep-agent \
@@ -19,12 +24,20 @@ GENERATED_FILES = $(OUTPUT)/etcd  $(OUTPUT)/etcdctl \
 	$(OUTPUT)/user-data.yml \
 	$(OUTPUT)/network1.yml \
 	$(OUTPUT)/network2.yml \
-	$(OUTPUT)/network3.yml
+	$(OUTPUT)/network3.yml \
+	$(OUTPUT)/$(UBUNTU_IMAGE)
 
 all: test
 
 $(ETCD_ARCHIVE):
-	curl -sSLf https://github.com/coreos/etcd/releases/download/v$(ETCD_VERSION)/etcd-v$(ETCD_VERSION)-linux-amd64.tar.gz
+	curl -sSLf -o $@ https://github.com/coreos/etcd/releases/download/v$(ETCD_VERSION)/etcd-v$(ETCD_VERSION)-linux-amd64.tar.gz
+
+$(UBUNTU_IMAGE):
+	curl -sSLf -o $@ https://cloud-images.ubuntu.com/releases/18.04/release/$@
+
+$(OUTPUT)/$(UBUNTU_IMAGE): $(UBUNTU_IMAGE)
+	mkdir -p $(OUTPUT)
+	cp $< $@ 
 
 $(OUTPUT)/etcd $(OUTPUT)/etcdctl: $(ETCD_ARCHIVE)
 	mkdir -p $(OUTPUT)
