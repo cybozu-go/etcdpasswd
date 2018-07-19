@@ -6,9 +6,10 @@ HOST1 = 10.0.0.101
 HOST2 = 10.0.0.102
 HOST3 = 10.0.0.103
 PLACEMAT = $(GOPATH)/bin/placemat
+GINKGO = $(GOPATH)/bin/ginkgo
 ETCD_VERSION = 3.3.8
 
-export BRIDGE_ADDRESS HOST1 HOST2 HOST3 PLACEMAT
+export BRIDGE_ADDRESS HOST1 HOST2 HOST3 PLACEMAT GINKGO
 
 # non-configuration variables
 ETCD_ARCHIVE := etcd-v$(ETCD_VERSION)-linux-amd64.tar.gz
@@ -25,7 +26,7 @@ GENERATED_FILES = $(OUTPUT)/etcd  $(OUTPUT)/etcdctl \
 	$(OUTPUT)/network1.yml \
 	$(OUTPUT)/network2.yml \
 	$(OUTPUT)/network3.yml \
-	$(OUTPUT)/$(UBUNTU_IMAGE)
+	$(UBUNTU_IMAGE)
 
 all: test
 
@@ -34,10 +35,6 @@ $(ETCD_ARCHIVE):
 
 $(UBUNTU_IMAGE):
 	curl -sSLf -o $@ https://cloud-images.ubuntu.com/releases/18.04/release/$@
-
-$(OUTPUT)/$(UBUNTU_IMAGE): $(UBUNTU_IMAGE)
-	mkdir -p $(OUTPUT)
-	cp $< $@ 
 
 $(OUTPUT)/etcd $(OUTPUT)/etcdctl: $(ETCD_ARCHIVE)
 	mkdir -p $(OUTPUT)
@@ -54,25 +51,25 @@ $(OUTPUT)/cluster.yml: cluster.yml
 
 $(OUTPUT)/user-data.yml: user-data.yml
 	mkdir -p $(OUTPUT)
-	cp $< $@
+	sed 's/@HOST1@/$(HOST1)/' $< > $@
 
 $(OUTPUT)/network1.yml: network.yml
 	mkdir -p $(OUTPUT)
 	sed -e 's/@BRIDGE_ADDRESS@/$(BRIDGE_ADDRESS)/' \
-            -e 's/@HOST1@/$(HOST1)/' $< > $@
+            -e 's/@HOST@/$(HOST1)/' $< > $@
 
 $(OUTPUT)/network2.yml: network.yml
 	mkdir -p $(OUTPUT)
 	sed -e 's/@BRIDGE_ADDRESS@/$(BRIDGE_ADDRESS)/' \
-            -e 's/@HOST2@/$(HOST2)/' $< > $@
+            -e 's/@HOST@/$(HOST2)/' $< > $@
 
 $(OUTPUT)/network3.yml: network.yml
 	mkdir -p $(OUTPUT)
 	sed -e 's/@BRIDGE_ADDRESS@/$(BRIDGE_ADDRESS)/' \
-            -e 's/@HOST3@/$(HOST3)/' $< > $@
+            -e 's/@HOST@/$(HOST3)/' $< > $@
 
 test: $(GENERATED_FILES)
-	ginkgo
+	./test.sh
 
 clean:
 	rm -rf $(OUTPUT)

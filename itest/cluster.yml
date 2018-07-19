@@ -19,7 +19,7 @@ files:
 ---
 kind: Image
 name: ubuntu
-file: ubuntu-18.04-server-cloudimg-amd64.img
+file: ../ubuntu-18.04-server-cloudimg-amd64.img
 ---
 kind: Node
 name: host1

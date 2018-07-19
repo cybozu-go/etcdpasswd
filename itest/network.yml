@@ -4,7 +4,7 @@ config:
   name: ens3
   subnets:
   - type: static
-    address: @HOST1@
+    address: @HOST@
     netmask: 255.255.255.0
     routes:
     - network: 0.0.0.0
