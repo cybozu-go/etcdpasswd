@@ -21,7 +21,7 @@ GENERATED_FILES = $(OUTPUT)/etcd  $(OUTPUT)/etcdctl \
 	$(OUTPUT)/network2.yml \
 	$(OUTPUT)/network3.yml
 
-all: $(GENERATED_FILES)
+all: test
 
 $(ETCD_ARCHIVE):
 	curl -sSLf https://github.com/coreos/etcd/releases/download/v$(ETCD_VERSION)/etcd-v$(ETCD_VERSION)-linux-amd64.tar.gz
@@ -69,4 +69,4 @@ setup:
 	go get -u github.com/onsi/gomega/...
 	go get -u github.com/cybozu-go/placemat
 
-.PHONY:	all clean setup
+.PHONY:	all clean setup test
