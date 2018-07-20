@@ -19,6 +19,10 @@ func TestItest(t *testing.T) {
 
 var _ = BeforeSuite(func() {
 	fmt.Println("Preparing...")
+
+	SetDefaultEventuallyPollingInterval(time.Second)
+	SetDefaultEventuallyTimeout(time.Minute)
+
 	err := prepareSshClients(host1, host2, host3)
 	Expect(err).NotTo(HaveOccurred())
 

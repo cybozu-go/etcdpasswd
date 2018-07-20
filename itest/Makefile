@@ -8,6 +8,7 @@ HOST3 = 10.0.0.103
 PLACEMAT = $(GOPATH)/bin/placemat
 GINKGO = $(GOPATH)/bin/ginkgo
 ETCD_VERSION = 3.3.8
+PLACEMAT_DATADIR = /var/scratch/placemat
 
 export BRIDGE_ADDRESS HOST1 HOST2 HOST3 PLACEMAT GINKGO
 
@@ -69,6 +70,9 @@ $(OUTPUT)/network3.yml: network.yml
             -e 's/@HOST@/$(HOST3)/' $< > $@
 
 test: $(GENERATED_FILES)
+	sudo rm -rf $(PLACEMAT_DATADIR)/volumes/host1
+	sudo rm -rf $(PLACEMAT_DATADIR)/volumes/host2
+	sudo rm -rf $(PLACEMAT_DATADIR)/volumes/host3
 	./test.sh
 
 clean:

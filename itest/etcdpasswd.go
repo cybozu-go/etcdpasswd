@@ -48,29 +48,53 @@ func setupTest() *testContext {
 var _ = Describe("etcdpasswd", func() {
 	hosts := []string{host1, host2, host3}
 
-	Context("etcdpasswd get start-uid", func() {
+	Context("etcdpasswd get/set start-uid", func() {
+		It("should return 0", func() {
+			stdout := execSafeAt(host1, CLI, "get", "start-uid")
+			Expect(stdout).To(Equal("0\n"))
+		})
+
 		It("should return 2000", func() {
+			execSafeAt(host1, CLI, "set", "start-uid", "2000")
 			stdout := execSafeAt(host1, CLI, "get", "start-uid")
 			Expect(stdout).To(Equal("2000\n"))
 		})
 	})
 
-	Context("etcdpasswd get start-gid", func() {
+	Context("etcdpasswd get/set start-gid", func() {
+		It("should return 0", func() {
+			stdout := execSafeAt(host1, CLI, "get", "start-gid")
+			Expect(stdout).To(Equal("0\n"))
+		})
+
 		It("should return 2000", func() {
+			execSafeAt(host1, CLI, "set", "start-gid", "2000")
 			stdout := execSafeAt(host1, CLI, "get", "start-gid")
 			Expect(stdout).To(Equal("2000\n"))
 		})
 	})
 
-	Context("etcdpasswd get default-group", func() {
+	Context("etcdpasswd get/set default-group", func() {
 		It("should return cybozu", func() {
+			stdout := execSafeAt(host1, CLI, "get", "default-group")
+			Expect(stdout).To(Equal("\n"))
+		})
+
+		It("should return cybozu", func() {
+			execSafeAt(host1, CLI, "set", "default-group", "cybozu")
 			stdout := execSafeAt(host1, CLI, "get", "default-group")
 			Expect(stdout).To(Equal("cybozu\n"))
 		})
 	})
 
-	Context("etcdpasswd get default-groups", func() {
+	Context("etcdpasswd get/set default-groups", func() {
 		It("should return sudo and adm", func() {
+			stdout := execSafeAt(host1, CLI, "get", "default-groups")
+			Expect(stdout).To(BeEmpty())
+		})
+
+		It("should return sudo and adm", func() {
+			execSafeAt(host1, CLI, "set", "default-groups", "sudo,adm")
 			stdout := execSafeAt(host1, CLI, "get", "default-groups")
 			Expect(stdout).To(MatchRegexp("\\bsudo\\b"))
 			Expect(stdout).To(MatchRegexp("\\badm\\b"))
