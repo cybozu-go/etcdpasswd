@@ -2,6 +2,8 @@ package itest
 
 import (
 	"fmt"
+	"strconv"
+	"strings"
 	"testing"
 	"time"
 
@@ -51,27 +53,29 @@ var _ = BeforeSuite(func() {
 	Expect(stdout).To(Equal("0\n"))
 
 	By("set start-uid should succeed")
-	execSafeAt(host1, CLI, "set", "start-uid", "2000")
+	defaultUID := strconv.FormatInt(gen.defaultUID, 10)
+	execSafeAt(host1, CLI, "set", "start-uid", defaultUID)
 	stdout = execSafeAt(host1, CLI, "get", "start-uid")
-	Expect(stdout).To(Equal("2000\n"))
+	Expect(strings.TrimSpace(stdout)).To(Equal(defaultUID))
 
 	By("get start-gid should return 0")
 	stdout = execSafeAt(host1, CLI, "get", "start-gid")
 	Expect(stdout).To(Equal("0\n"))
 
 	By("set start-gid should succeed")
-	execSafeAt(host1, CLI, "set", "start-gid", "2000")
+	defaultGID := strconv.FormatInt(gen.defaultGID, 10)
+	execSafeAt(host1, CLI, "set", "start-gid", defaultGID)
 	stdout = execSafeAt(host1, CLI, "get", "start-gid")
-	Expect(stdout).To(Equal("2000\n"))
+	Expect(strings.TrimSpace(stdout)).To(Equal(defaultGID))
 
 	By("get default-group should be empty")
 	stdout = execSafeAt(host1, CLI, "get", "default-group")
 	Expect(stdout).To(Equal("\n"))
 
 	By("set default-group should succeed")
-	execSafeAt(host1, CLI, "set", "default-group", "cybozu")
+	execSafeAt(host1, CLI, "set", "default-group", "users")
 	stdout = execSafeAt(host1, CLI, "get", "default-group")
-	Expect(stdout).To(Equal("cybozu\n"))
+	Expect(stdout).To(Equal("users\n"))
 
 	By("get default-groups should be empty")
 	stdout = execSafeAt(host1, CLI, "get", "default-groups")
@@ -82,5 +86,4 @@ var _ = BeforeSuite(func() {
 	stdout = execSafeAt(host1, CLI, "get", "default-groups")
 	Expect(stdout).To(MatchRegexp("\\bsudo\\b"))
 	Expect(stdout).To(MatchRegexp("\\badm\\b"))
-
 })

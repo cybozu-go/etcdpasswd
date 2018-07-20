@@ -4,7 +4,6 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
-	"sync"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -13,59 +12,27 @@ import (
 // CLI is the file path of etcdpasswd
 const CLI = "/data/etcdpasswd"
 
-type testCounter struct {
-	n   int
-	mux sync.Mutex
-}
-
-func (c *testCounter) next() int {
-	c.mux.Lock()
-	defer c.mux.Unlock()
-
-	c.n++
-	return c.n
-}
-
-var counter testCounter
-
-type testContext struct {
-	user  string
-	group string
-}
-
-const (
-	testUserBase  = "epu"
-	testGroupBase = "epg"
-)
-
-func setupTest() *testContext {
-	n := counter.next()
-	return &testContext{
-		user:  testUserBase + strconv.Itoa(n),
-		group: testGroupBase + strconv.Itoa(n),
-	}
-}
-
 var _ = Describe("etcdpasswd", func() {
 	hosts := []string{host1, host2, host3}
 
 	It("group add/remove, user add/remove", func() {
-		c := setupTest()
+		group := gen.newGroupname()
+		user := gen.newUsername()
 
 		By("create group and node users")
-		execSafeAt(host1, CLI, "group", "add", c.group)
-		execSafeAt(host1, CLI, "user", "add", "-group", c.group, c.user)
+		execSafeAt(host1, CLI, "group", "add", group)
+		execSafeAt(host1, CLI, "user", "add", "-group", group, user)
 
 		By("should create group and user")
 		stdout := execSafeAt(host1, CLI, "user", "list")
-		Expect(stdout).To(MatchRegexp("\\b%s\\b", c.user))
+		Expect(stdout).To(MatchRegexp("\\b%s\\b", user))
 
 		stdout = execSafeAt(host1, CLI, "group", "list")
-		Expect(stdout).To(MatchRegexp("\\b%s\\b", c.group))
+		Expect(stdout).To(MatchRegexp("\\b%s\\b", group))
 
 		for _, h := range hosts {
 			Eventually(func() int {
-				stdout, _, err := execAt(h, "id", "-u", c.user)
+				stdout, _, err := execAt(h, "id", "-u", user)
 				if err != nil {
 					return -1
 				}
@@ -74,10 +41,10 @@ var _ = Describe("etcdpasswd", func() {
 					return -1
 				}
 				return uid
-			}).Should(BeNumerically(">=", 2000))
+			}).Should(BeNumerically(">=", gen.defaultUID))
 
 			Eventually(func() int {
-				stdout, _, err := execAt(h, "id", "-g", c.user)
+				stdout, _, err := execAt(h, "id", "-g", user)
 				if err != nil {
 					return -1
 				}
@@ -86,151 +53,123 @@ var _ = Describe("etcdpasswd", func() {
 					return -1
 				}
 				return gid
-			}).Should(BeNumerically(">=", 2000))
+			}).Should(BeNumerically(">=", gen.defaultGID))
 
 			Eventually(func() []string {
-				stdout, _, err := execAt(h, "id", "-Gn", c.user)
+				stdout, _, err := execAt(h, "id", "-Gn", user)
 				if err != nil {
 					return []string{}
 				}
 				groups := strings.Split(strings.TrimSpace(string(stdout)), " ")
 				return groups
-			}).Should(ConsistOf(c.group, "sudo", "adm"))
+			}).Should(ConsistOf(group, "sudo", "adm"))
 		}
 
 		By("should remove user and group")
-		execAt(host1, CLI, "user", "remove", c.user)
-		execAt(host1, CLI, "group", "remove", c.group)
+		execAt(host1, CLI, "user", "remove", user)
+		execAt(host1, CLI, "group", "remove", group)
 
 		stdout = execSafeAt(host1, CLI, "user", "list")
-		Expect(stdout).NotTo(MatchRegexp("\\b%s\\b", c.user))
+		Expect(stdout).NotTo(MatchRegexp("\\b%s\\b", user))
 
 		stdout = execSafeAt(host1, CLI, "group", "list")
-		Expect(stdout).NotTo(MatchRegexp("\\b%s\\b", c.group))
+		Expect(stdout).NotTo(MatchRegexp("\\b%s\\b", group))
 
 		for _, h := range hosts {
 			Eventually(func() error {
-				_, _, err := execAt(h, "id", c.user)
+				_, _, err := execAt(h, "id", user)
 				return err
 			}).ShouldNot(Exit(0))
 
 			Eventually(func() error {
-				_, _, err := execAt(h, "getent", "group", c.group)
+				_, _, err := execAt(h, "getent", "group", group)
 				return err
 			}).ShouldNot(Exit(0))
 		}
 	})
 
-	Context("cert add", func() {
-		c := setupTest()
+	It("cert add/remove", func() {
+		user := gen.newUsername()
 
-		var dir string
+		By("Create user and ssh key")
+		stdout := execSafeAt(host1, "mktemp", "-d")
+		dir := strings.TrimSpace(stdout)
+		execSafeAt(host1, CLI, "user", "add", user)
+		execSafeAt(host1, "ssh-keygen", "-t", "rsa", "-N", "''", "-C", "'test cert add'", "-f", filepath.Join(dir, "id_rsa"))
+		execSafeAt(host1, CLI, "cert", "add", user, filepath.Join(dir, "id_rsa.pub"))
 
-		BeforeEach(func() {
-			stdout := execSafeAt(host1, "mktemp", "-d")
-			dir = strings.TrimSpace(stdout)
-			execSafeAt(host1, CLI, "user", "add", c.user)
-			execSafeAt(host1, "ssh-keygen", "-t", "rsa", "-N", "''", "-C", "'test cert add'", "-f", filepath.Join(dir, "id_rsa"))
-			execSafeAt(host1, CLI, "cert", "add", c.user, filepath.Join(dir, "id_rsa.pub"))
-		})
+		By("should add SSH key")
+		stdout = execSafeAt(host1, CLI, "cert", "list", user)
+		Expect(stdout).To(ContainSubstring("test cert add"))
 
-		AfterEach(func() {
-			execAt(host1, "rm", "-rf", dir)
-			execAt(host1, CLI, "cert", "remove", c.user, "0")
-			execAt(host1, CLI, "user", "remove", c.user)
-		})
+		for _, h := range hosts {
+			Eventually(func() string {
+				stdout, _, err := execAt(h, "sudo", "ssh-keygen", "-l", "-f", "/home/"+user+"/.ssh/authorized_keys")
+				if err != nil {
+					return ""
+				}
+				return string(stdout)
+			}).Should(ContainSubstring("test cert add"))
+		}
 
-		It("should add SSH key", func() {
-			stdout := execSafeAt(host1, CLI, "cert", "list", c.user)
-			Expect(stdout).To(ContainSubstring("test cert add"))
+		By("should remove SSH key")
+		execSafeAt(host1, CLI, "cert", "remove", user, "0")
 
-			for _, h := range hosts {
-				stdout = execSafeAt(h, "sudo", "ssh-keygen", "-l", "-f", "/home/"+c.user+"/.ssh/authorized_keys")
-				Expect(stdout).To(ContainSubstring("test cert add"))
-			}
-		})
+		stdout = execSafeAt(host1, CLI, "cert", "list", user)
+		Expect(stdout).To(BeZero())
+
+		for _, h := range hosts {
+			Eventually(func() string {
+				stdout, _, err := execAt(h, "sudo", "ssh-keygen", "-l", "-f", "/home/"+user+"/.ssh/authorized_keys")
+				if err == nil {
+					return "test cert add"
+				}
+				return string(stdout)
+			}).ShouldNot(ContainSubstring("test cert add"))
+		}
 	})
 
-	Context("cert remove", func() {
-		c := setupTest()
-		var dir string
+	It("locker add/remove", func() {
+		user := gen.newUsername()
 
-		BeforeEach(func() {
-			stdout := execSafeAt(host1, "mktemp", "-d")
-			dir = strings.TrimSpace(stdout)
-			execSafeAt(host1, CLI, "user", "add", c.user)
-			execSafeAt(host1, "ssh-keygen", "-t", "rsa", "-N", "''", "-C", "'test cert remove'", "-f", filepath.Join(dir, "id_rsa"))
-			execSafeAt(host1, CLI, "cert", "add", c.user, filepath.Join(dir, "id_rsa.pub"))
-		})
+		By("user add")
+		execSafeAt(host1, CLI, "user", "add", user)
+		// Created user is locked by default.
+		// "usermod -U" requires that non-empty password be set.
+		// "usermod -p" takes *encrypted* password as its argument,
+		// so string "invalid" does not result a weak password.
+		for _, h := range hosts {
+			Eventually(func() error {
+				_, _, err := execAt(h, "sudo", "usermod", "-p", "invalid", user)
+				return err
+			}).Should(Succeed())
 
-		AfterEach(func() {
-			execAt(host1, "rm", "-rf", dir)
-			execAt(host1, CLI, "user", "remove", c.user)
-		})
+			Eventually(func() error {
+				_, _, err := execAt(h, "sudo", "usermod", "-U", user)
+				return err
+			}).Should(Succeed())
+		}
 
-		It("should remove SSH key", func() {
-			execSafeAt(host1, CLI, "cert", "remove", c.user, "0")
+		By("should lock user")
+		execSafeAt(host1, CLI, "locker", "add", user)
 
-			stdout := execSafeAt(host1, CLI, "cert", "list", c.user)
-			Expect(stdout).To(BeZero())
+		stdout := execSafeAt(host1, CLI, "locker", "list")
+		Expect(stdout).To(MatchRegexp("\\b%s\\b", user))
 
-			for _, h := range hosts {
-				stdout = execSafeAt(h, "sudo", "cat", "/home/"+c.user+"/.ssh/authorized_keys")
-				keys := strings.TrimSpace(stdout)
-				Expect(keys).To(BeZero())
-			}
-		})
-	})
+		for _, h := range hosts {
+			Eventually(func() string {
+				stdout, _, err := execAt(h, "sudo", "grep", "^"+user+":!", "/etc/shadow")
+				if err != nil {
+					return ""
+				}
+				return string(stdout)
+			}).ShouldNot(BeZero())
+		}
 
-	Context("locker add", func() {
-		c := setupTest()
+		By("should remove user from list")
+		execSafeAt(host1, CLI, "locker", "remove", user)
 
-		BeforeEach(func() {
-			execSafeAt(host1, CLI, "user", "add", c.user)
-			// Created user is locked by default.
-			// "usermod -U" requires that non-empty password be set.
-			// "usermod -p" takes *encrypted* password as its argument,
-			// so string "invalid" does not result a weak password.
-			for _, h := range hosts {
-				execSafeAt(h, "sudo", "usermod", "-p", "invalid", c.user)
-				execSafeAt(h, "sudo", "usermod", "-U", c.user)
-			}
-		})
-
-		AfterEach(func() {
-			execAt(host1, CLI, "user", "remove", c.user)
-		})
-
-		It("should lock user", func() {
-			execSafeAt(host1, CLI, "locker", "add", c.user)
-
-			stdout := execSafeAt(host1, CLI, "locker", "list")
-			Expect(stdout).To(MatchRegexp("\\b%s\\b", c.user))
-
-			for _, h := range hosts {
-				stdout = execSafeAt(h, "sudo", "grep", "^"+c.user+":!", "/etc/shadow")
-				Expect(stdout).NotTo(BeZero())
-			}
-		})
-	})
-
-	Context("locker remove", func() {
-		c := setupTest()
-
-		BeforeEach(func() {
-			execSafeAt(host1, CLI, "user", "add", c.user)
-			execSafeAt(host1, CLI, "locker", "add", c.user)
-		})
-
-		AfterEach(func() {
-			execAt(host1, CLI, "user", "remove", c.user)
-		})
-
-		It("should remove user from list", func() {
-			execSafeAt(host1, CLI, "locker", "remove", c.user)
-
-			stdout := execSafeAt(host1, CLI, "locker", "list")
-			Expect(stdout).NotTo(MatchRegexp("\\b%s\\b", c.user))
-		})
+		stdout = execSafeAt(host1, CLI, "locker", "list")
+		Expect(stdout).NotTo(MatchRegexp("\\b%s\\b", user))
 	})
 })
