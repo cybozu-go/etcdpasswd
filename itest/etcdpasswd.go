@@ -10,6 +10,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
+// CLI is the file path of etcdpasswd
 const CLI = "/data/etcdpasswd"
 
 type testCounter struct {
@@ -48,127 +49,76 @@ func setupTest() *testContext {
 var _ = Describe("etcdpasswd", func() {
 	hosts := []string{host1, host2, host3}
 
-	Context("etcdpasswd get/set start-uid", func() {
-		It("should return 0", func() {
-			stdout := execSafeAt(host1, CLI, "get", "start-uid")
-			Expect(stdout).To(Equal("0\n"))
-		})
-
-		It("should return 2000", func() {
-			execSafeAt(host1, CLI, "set", "start-uid", "2000")
-			stdout := execSafeAt(host1, CLI, "get", "start-uid")
-			Expect(stdout).To(Equal("2000\n"))
-		})
-	})
-
-	Context("etcdpasswd get/set start-gid", func() {
-		It("should return 0", func() {
-			stdout := execSafeAt(host1, CLI, "get", "start-gid")
-			Expect(stdout).To(Equal("0\n"))
-		})
-
-		It("should return 2000", func() {
-			execSafeAt(host1, CLI, "set", "start-gid", "2000")
-			stdout := execSafeAt(host1, CLI, "get", "start-gid")
-			Expect(stdout).To(Equal("2000\n"))
-		})
-	})
-
-	Context("etcdpasswd get/set default-group", func() {
-		It("should return cybozu", func() {
-			stdout := execSafeAt(host1, CLI, "get", "default-group")
-			Expect(stdout).To(Equal("\n"))
-		})
-
-		It("should return cybozu", func() {
-			execSafeAt(host1, CLI, "set", "default-group", "cybozu")
-			stdout := execSafeAt(host1, CLI, "get", "default-group")
-			Expect(stdout).To(Equal("cybozu\n"))
-		})
-	})
-
-	Context("etcdpasswd get/set default-groups", func() {
-		It("should return sudo and adm", func() {
-			stdout := execSafeAt(host1, CLI, "get", "default-groups")
-			Expect(stdout).To(BeEmpty())
-		})
-
-		It("should return sudo and adm", func() {
-			execSafeAt(host1, CLI, "set", "default-groups", "sudo,adm")
-			stdout := execSafeAt(host1, CLI, "get", "default-groups")
-			Expect(stdout).To(MatchRegexp("\\bsudo\\b"))
-			Expect(stdout).To(MatchRegexp("\\badm\\b"))
-		})
-	})
-
-	Context("group add, user add", func() {
+	It("group add/remove, user add/remove", func() {
 		c := setupTest()
 
-		BeforeEach(func() {
-			execSafeAt(host1, CLI, "group", "add", c.group)
-			execSafeAt(host1, CLI, "user", "add", "-group", c.group, c.user)
-		})
+		By("create group and node users")
+		execSafeAt(host1, CLI, "group", "add", c.group)
+		execSafeAt(host1, CLI, "user", "add", "-group", c.group, c.user)
 
-		AfterEach(func() {
-			execAt(host1, CLI, "user", "remove", c.user)
-			execAt(host1, CLI, "group", "remove", c.group)
-		})
+		By("should create group and user")
+		stdout := execSafeAt(host1, CLI, "user", "list")
+		Expect(stdout).To(MatchRegexp("\\b%s\\b", c.user))
 
-		It("should create group and user", func() {
-			stdout := execSafeAt(host1, CLI, "user", "list")
-			Expect(stdout).To(MatchRegexp("\\b%s\\b", c.user))
+		stdout = execSafeAt(host1, CLI, "group", "list")
+		Expect(stdout).To(MatchRegexp("\\b%s\\b", c.group))
 
-			stdout = execSafeAt(host1, CLI, "group", "list")
-			Expect(stdout).To(MatchRegexp("\\b%s\\b", c.group))
-
-			for _, h := range hosts {
-				stdout = execSafeAt(h, "id", "-u", c.user)
-				uid, err := strconv.Atoi(strings.TrimSpace(stdout))
+		for _, h := range hosts {
+			Eventually(func() int {
+				stdout, _, err := execAt(h, "id", "-u", c.user)
 				if err != nil {
-					Fail(err.Error())
+					return -1
 				}
-				Expect(uid).To(BeNumerically(">=", 2000))
-
-				stdout = execSafeAt(h, "id", "-g", c.user)
-				gid, err := strconv.Atoi(strings.TrimSpace(stdout))
+				uid, err := strconv.Atoi(strings.TrimSpace(string(stdout)))
 				if err != nil {
-					Fail(err.Error())
+					return -1
 				}
-				Expect(gid).To(BeNumerically(">=", 2000))
+				return uid
+			}).Should(BeNumerically(">=", 2000))
 
-				stdout = execSafeAt(h, "id", "-Gn", c.user)
-				groups := strings.Split(strings.TrimSpace(stdout), " ")
-				Expect(groups).To(ConsistOf(c.group, "sudo", "adm"))
-			}
-		})
-	})
+			Eventually(func() int {
+				stdout, _, err := execAt(h, "id", "-g", c.user)
+				if err != nil {
+					return -1
+				}
+				gid, err := strconv.Atoi(strings.TrimSpace(string(stdout)))
+				if err != nil {
+					return -1
+				}
+				return gid
+			}).Should(BeNumerically(">=", 2000))
 
-	Context("remove user, remove group", func() {
-		c := setupTest()
+			Eventually(func() []string {
+				stdout, _, err := execAt(h, "id", "-Gn", c.user)
+				if err != nil {
+					return []string{}
+				}
+				groups := strings.Split(strings.TrimSpace(string(stdout)), " ")
+				return groups
+			}).Should(ConsistOf(c.group, "sudo", "adm"))
+		}
 
-		BeforeEach(func() {
-			execSafeAt(host1, CLI, "group", "add", c.group)
-			execSafeAt(host1, CLI, "user", "add", "-group", c.group, c.user)
-		})
+		By("should remove user and group")
+		execAt(host1, CLI, "user", "remove", c.user)
+		execAt(host1, CLI, "group", "remove", c.group)
 
-		It("should remove user and group", func() {
-			execAt(host1, CLI, "user", "remove", c.user)
-			execAt(host1, CLI, "group", "remove", c.group)
+		stdout = execSafeAt(host1, CLI, "user", "list")
+		Expect(stdout).NotTo(MatchRegexp("\\b%s\\b", c.user))
 
-			stdout := execSafeAt(host1, CLI, "user", "list")
-			Expect(stdout).NotTo(MatchRegexp("\\b%s\\b", c.user))
+		stdout = execSafeAt(host1, CLI, "group", "list")
+		Expect(stdout).NotTo(MatchRegexp("\\b%s\\b", c.group))
 
-			stdout = execSafeAt(host1, CLI, "group", "list")
-			Expect(stdout).NotTo(MatchRegexp("\\b%s\\b", c.group))
-
-			for _, h := range hosts {
+		for _, h := range hosts {
+			Eventually(func() error {
 				_, _, err := execAt(h, "id", c.user)
-				Expect(err).NotTo(Exit(0))
+				return err
+			}).ShouldNot(Exit(0))
 
-				_, _, err = execAt(h, "getent", "group", c.group)
-				Expect(err).NotTo(Exit(0))
-			}
-		})
+			Eventually(func() error {
+				_, _, err := execAt(h, "getent", "group", c.group)
+				return err
+			}).ShouldNot(Exit(0))
+		}
 	})
 
 	Context("cert add", func() {

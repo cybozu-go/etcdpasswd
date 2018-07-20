@@ -2,11 +2,13 @@ package itest
 
 import (
 	"errors"
+	"fmt"
 	"os/exec"
 	"syscall"
 
 	"github.com/onsi/gomega/format"
 	"github.com/onsi/gomega/types"
+	"golang.org/x/crypto/ssh"
 )
 
 // Exit is a mathcer for exit status
@@ -26,18 +28,21 @@ func (m *exitMatcher) Match(actual interface{}) (success bool, err error) {
 		return true, nil
 	}
 
-	ee, ok := actual.(*exec.ExitError)
-	if !ok {
-		return false, errors.New("Exit must be passed an *exec.ExitError")
-	}
-	ws, ok := ee.Sys().(syscall.WaitStatus)
-	if !ok {
-		return false, errors.New("failed to obtain syscall.WaitStatus")
+	switch ee := actual.(type) {
+	case *exec.ExitError:
+		ws, ok := ee.Sys().(syscall.WaitStatus)
+		if !ok {
+			return false, errors.New("failed to obtain syscall.WaitStatus")
+		}
+		m.actualExitCode = ws.ExitStatus()
+		return m.exitCode == m.actualExitCode, nil
+	case *ssh.ExitError:
+		m.actualExitCode = ee.ExitStatus()
+		return m.exitCode == m.actualExitCode, nil
+	default:
+		return false, fmt.Errorf("invalid type: %T", actual)
 	}
 
-	m.actualExitCode = ws.ExitStatus()
-
-	return m.exitCode == m.actualExitCode, nil
 }
 
 func (m *exitMatcher) FailureMessage(actual interface{}) (message string) {

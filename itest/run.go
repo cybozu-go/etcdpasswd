@@ -30,7 +30,7 @@ func sshTo(address string, sshKey ssh.Signer) (*ssh.Client, error) {
 	return ssh.Dial("tcp", address+":22", config)
 }
 
-func prepareSshClients(addresses ...string) error {
+func prepareSSHClients(addresses ...string) error {
 	f, err := os.Open(os.Getenv("SSH_PRIVKEY"))
 	if err != nil {
 		return err
