@@ -31,11 +31,15 @@ var _ = BeforeSuite(func() {
 		execSafeAt(h, "sync")
 	}
 
+	err = stopEtcd(sshClients[host1])
+	Expect(err).NotTo(HaveOccurred())
 	err = runEtcd(sshClients[host1])
 	Expect(err).NotTo(HaveOccurred())
 
 	time.Sleep(time.Second)
 
+	err = stopEPAgent()
+	Expect(err).NotTo(HaveOccurred())
 	err = runEPAgent()
 	Expect(err).NotTo(HaveOccurred())
 

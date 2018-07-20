@@ -66,8 +66,20 @@ func prepareSSHClients(addresses ...string) error {
 	return nil
 }
 
+func stopEtcd(client *ssh.Client) error {
+	command := "systemctl --user stop my-etcd.service; rm -rf default.etcd"
+	sess, err := client.NewSession()
+	if err != nil {
+		return err
+	}
+	defer sess.Close()
+
+	sess.Run(command)
+	return nil
+}
+
 func runEtcd(client *ssh.Client) error {
-	command := "systemd-run --user /data/etcd --listen-client-urls=http://0.0.0.0:2379 --advertise-client-urls=http://localhost:2379"
+	command := "systemd-run --unit=my-etcd.service --user /data/etcd --listen-client-urls=http://0.0.0.0:2379 --advertise-client-urls=http://localhost:2379"
 	sess, err := client.NewSession()
 	if err != nil {
 		return err
@@ -77,6 +89,19 @@ func runEtcd(client *ssh.Client) error {
 	return sess.Run(command)
 }
 
+func stopEPAgent() error {
+	for _, c := range sshClients {
+		sess, err := c.NewSession()
+		if err != nil {
+			return err
+		}
+
+		sess.Run("sudo systemctl reset-failed ep-agent.service; sudo systemctl stop ep-agent.service")
+		sess.Close()
+	}
+	return nil
+}
+
 func runEPAgent() error {
 	for _, c := range sshClients {
 		sess, err := c.NewSession()
@@ -84,7 +109,7 @@ func runEPAgent() error {
 			return err
 		}
 
-		err = sess.Run("sudo systemd-run /data/ep-agent")
+		err = sess.Run("sudo systemd-run --unit=ep-agent.service /data/ep-agent")
 		sess.Close()
 		if err != nil {
 			return err

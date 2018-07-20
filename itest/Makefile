@@ -75,6 +75,16 @@ test: $(GENERATED_FILES)
 	sudo rm -rf $(PLACEMAT_DATADIR)/volumes/host3
 	./test.sh
 
+placemat: $(GENERATED_FILES)
+	sudo rm -rf $(PLACEMAT_DATADIR)/volumes/host1
+	sudo rm -rf $(PLACEMAT_DATADIR)/volumes/host2
+	sudo rm -rf $(PLACEMAT_DATADIR)/volumes/host3
+	sudo -b $(PLACEMAT) output/cluster.yml
+	@echo 'Placemat is running.  To kill it, do "sudo pkill placemat".'
+
+test-light:
+	$(GINKGO)
+
 clean:
 	rm -rf $(OUTPUT)
 
