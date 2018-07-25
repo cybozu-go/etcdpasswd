@@ -25,7 +25,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ./artifacts
-      - run: ghr -u ${GITHUB_USER} -r ${CIRCLE_PROJECT_REPONAME} ${CIRCLE_TAG} ./artifacts/
+      - run: ghr -u ${CIRCLE_PROJECT_USERNAME} -r ${CIRCLE_PROJECT_REPONAME} ${CIRCLE_TAG} ./artifacts/
 
 workflows:
   version: 2
