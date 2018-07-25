@@ -1,5 +1,6 @@
 PACKAGES := fakeroot
 DOCDIR := debian/usr/share/doc/etcdpasswd
+CONTROL := debian/DEBIAN/control
 
 all:
 	go get -d ./...
@@ -11,7 +12,10 @@ test:
 	test -z "$$(goimports -d . | tee /dev/stderr)"
 	golint -set_exit_status ./...
 
-deb:
+$(CONTROL): control
+	sed 's/@VERSION@/$(patsubst v%,%,$(VERSION))/' $< > $@
+
+deb: $(CONTROL)
 	go get -d ./...
 	mkdir -p debian/usr/bin
 	GOBIN=$(CURDIR)/debian/usr/bin go install ./cmd/etcdpasswd
@@ -27,7 +31,7 @@ deb:
 
 clean:
 	rm -f *.deb
-	rm -rf debian/usr debian/lib
+	rm -rf $(CONTROL) debian/usr debian/lib
 
 setup:
 	sudo apt-get -y --no-install-recommends install $(PACKAGES)

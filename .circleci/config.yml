@@ -7,5 +7,39 @@ jobs:
     working_directory: /go/src/github.com/cybozu-go/etcdpasswd
     steps:
       - checkout
+      - run:
+          name: "Install dependencies"
+          command: |
+            apt-get update
+            apt-get install -y --no-install-recommends fakeroot
       - run: make
       - run: make test
+      - run: make deb VERSION=${CIRCLE_TAG:-v0.1}
+      - persist_to_workspace:
+          root: .
+          paths:
+            - "*.deb"
+  publish-github-release:
+    docker:
+      - image: quay.io/cybozu/golang:1.10-bionic
+    steps:
+      - attach_workspace:
+          at: ./artifacts
+      - run: ghr -u ${GITHUB_USER} -r ${CIRCLE_PROJECT_REPONAME} ${CIRCLE_TAG} ./artifacts/
+
+workflows:
+  version: 2
+  main:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only: /^v.*/
+      - publish-github-release:
+          requires:
+            - build
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
