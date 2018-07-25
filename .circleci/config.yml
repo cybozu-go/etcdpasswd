@@ -7,6 +7,11 @@ jobs:
     working_directory: /go/src/github.com/cybozu-go/etcdpasswd
     steps:
       - checkout
+      - run:
+          name: "Install dependencies"
+          command: |
+            apt-get update
+            apt-get install -y --no-install-recommends fakeroot
       - run: make
       - run: make test
       - run: make deb VERSION=${CIRCLE_TAG:-v0.1}
