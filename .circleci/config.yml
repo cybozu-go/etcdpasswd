@@ -13,7 +13,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - *.deb
+            - "*.deb"
   publish-github-release:
     docker:
       - image: quay.io/cybozu/golang:1.10-bionic
@@ -32,7 +32,7 @@ workflows:
               only: /^v.*/
       - publish-github-release:
           requires:
-            build
+            - build
           filters:
             branches:
               ignore: /.*/
