@@ -1,5 +1,5 @@
 Package: etcdpasswd
-Version: 0.1-1
+Version: @VERSION@-1
 Maintainer: Cybozu <oss@cybozu.com>
 Architecture: amd64
 Depends: passwd

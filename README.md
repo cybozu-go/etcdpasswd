@@ -1,3 +1,4 @@
+[![GitHub release](https://img.shields.io/github/release/cybozu-go/etcdpasswd.svg?maxAge=60)][releases]
 [![GoDoc](https://godoc.org/github.com/cybozu-go/etcdpasswd?status.svg)][godoc]
 [![CircleCI](https://circleci.com/gh/cybozu-go/etcdpasswd.svg?style=svg)](https://circleci.com/gh/cybozu-go/etcdpasswd)
 [![Go Report Card](https://goreportcard.com/badge/github.com/cybozu-go/etcdpasswd)](https://goreportcard.com/report/github.com/cybozu-go/etcdpasswd)
@@ -72,4 +73,5 @@ License
 
 MIT
 
+[releases]: https://github.com/cybozu-go/etcdpasswd/releases
 [godoc]: https://godoc.org/github.com/cybozu-go/etcdpasswd
