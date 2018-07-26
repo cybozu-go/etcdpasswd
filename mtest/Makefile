@@ -44,7 +44,7 @@ $(OUTPUT)/etcd $(OUTPUT)/etcdctl: $(ETCD_ARCHIVE)
 
 $(OUTPUT)/etcdpasswd $(OUTPUT)/ep-agent:
 	mkdir -p $(OUTPUT)
-	cd ..; GOBIN=$(realpath $(OUTPUT)) go install ./cmd/$(notdir $@)
+	cd ..; make all GOBIN=$(realpath $(OUTPUT))
 
 $(OUTPUT)/cluster.yml: cluster.yml
 	mkdir -p $(OUTPUT)
@@ -91,6 +91,6 @@ clean:
 setup:
 	go get -u github.com/onsi/ginkgo/ginkgo
 	go get -u github.com/onsi/gomega/...
-	go get -u github.com/cybozu-go/placemat
+	go get -u github.com/cybozu-go/placemat/...
 
 .PHONY:	all clean setup test
