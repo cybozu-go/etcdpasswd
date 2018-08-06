@@ -62,8 +62,7 @@ func newTestClient(t *testing.T) Client {
 		clientURL = etcdClientURL
 	}
 
-	cfg := etcdutil.NewConfig()
-	cfg.Prefix = t.Name() + "/"
+	cfg := etcdutil.NewConfig(t.Name() + "/")
 	cfg.Endpoints = []string{clientURL}
 
 	etcd, err := etcdutil.NewClient(cfg)

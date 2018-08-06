@@ -1,5 +1,6 @@
 package etcdpasswd
 
 const (
-	defaultEtcdPrefix = "/passwd/"
+	// DefaultEtcdPrefix is default etcd prefix
+	DefaultEtcdPrefix = "/passwd/"
 )
