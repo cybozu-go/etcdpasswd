@@ -27,7 +27,7 @@ func loadConfig(p string) (*etcdutil.Config, error) {
 	}
 	defer f.Close()
 
-	cfg := etcdutil.NewConfig(etcdpasswd.DefaultEtcdPrefix)
+	cfg := etcdpasswd.NewEtcdConfig()
 	err = yaml.NewDecoder(f).Decode(cfg)
 	if err != nil {
 		return nil, err

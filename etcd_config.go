@@ -1,6 +1,14 @@
 package etcdpasswd
 
-const (
-	// DefaultEtcdPrefix is default etcd prefix
-	DefaultEtcdPrefix = "/passwd/"
+import (
+	"github.com/cybozu-go/etcdutil"
 )
+
+const (
+	defaultEtcdPrefix = "/passwd/"
+)
+
+// NewEtcdConfig creates Config with default prefix.
+func NewEtcdConfig() *etcdutil.Config {
+	return etcdutil.NewConfig(defaultEtcdPrefix)
+}
