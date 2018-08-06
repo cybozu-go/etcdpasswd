@@ -30,7 +30,7 @@ Installation
     A sample configuration looks like this:
 
     ```yaml
-    servers:
+    endpoints:
       - http://12.34.56.78:2379
     username: cybozu
     password: xxxxxxxx

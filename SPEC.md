@@ -4,14 +4,12 @@ Specifications
 `/etc/etcdpasswd.yml`
 ---------------------
 
-This file provides following parameters to connect to etd cluster.
+This file provides connecting to the etcd cluster.
+Parameters are defined by [cybozu-go/etcdutil](https://github.com/cybozu-go/etcdutil), and not shown below will use default values of the etcdutil.
 
-Name       | Type           | Required | Description
----------- | -------------- | -------- | -----------
-`servers`  | list of string | Yes      | List of etcd end point URLs.
-`prefix`   | string         | No       | Key prefix of etcd objects.  Default is `/passwd/`.
-`username` | string         | No       | Username for etcd authentication.
-`password` | string         | No       | Password for etcd authentication.
+Name     | Type   | Required | Description
+-------- | ------ | -------- | -----------
+`prefix` | string | No       | Key prefix of etcd objects.  Default is `/passwd/`.
 
 etcd schema
 -----------
