@@ -1,5 +1,5 @@
 # list of etcd endponit URLs
-servers:
+endpoints:
   - http://localhost:2379
 
 # username for etcd authentication

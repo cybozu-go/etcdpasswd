@@ -6,6 +6,8 @@ import (
 	"os"
 	"os/exec"
 	"testing"
+
+	"github.com/cybozu-go/etcdutil"
 )
 
 const (
@@ -60,14 +62,12 @@ func newTestClient(t *testing.T) Client {
 		clientURL = etcdClientURL
 	}
 
-	cfg := NewEtcdConfig()
-	cfg.Prefix = t.Name() + "/"
-	cfg.Servers = []string{clientURL}
+	cfg := etcdutil.NewConfig(t.Name() + "/")
+	cfg.Endpoints = []string{clientURL}
 
-	etcd, err := cfg.Client()
+	etcd, err := etcdutil.NewClient(cfg)
 	if err != nil {
 		t.Fatal(err)
 	}
-
 	return Client{etcd}
 }

@@ -10,6 +10,7 @@ import (
 	"github.com/cybozu-go/etcdpasswd"
 	"github.com/cybozu-go/etcdpasswd/agent"
 	"github.com/cybozu-go/etcdpasswd/syncer"
+	"github.com/cybozu-go/etcdutil"
 	"github.com/cybozu-go/log"
 	yaml "gopkg.in/yaml.v2"
 )
@@ -19,7 +20,7 @@ var (
 	flgSyncer     = flag.String("syncer", "os", "user sync driver [os,dummy]")
 )
 
-func loadConfig(p string) (*etcdpasswd.EtcdConfig, error) {
+func loadConfig(p string) (*etcdutil.Config, error) {
 	f, err := os.Open(p)
 	if err != nil {
 		return nil, err
@@ -44,7 +45,7 @@ func main() {
 		log.ErrorExit(err)
 	}
 
-	etcd, err := cfg.Client()
+	etcd, err := etcdutil.NewClient(cfg)
 	if err != nil {
 		log.ErrorExit(err)
 	}

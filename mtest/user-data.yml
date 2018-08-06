@@ -14,7 +14,7 @@ mounts:
   - [ /dev/vdc1, /data, "vfat", "ro" ]
 write_files:
   - content: |
-      servers:
+      endpoints:
         - http://@HOST1@:2379
     path: /etc/etcdpasswd.yml
     permissions: '0644'
