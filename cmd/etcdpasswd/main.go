@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"os"
 
 	"github.com/cybozu-go/cmd"
@@ -16,6 +17,7 @@ import (
 
 var (
 	flgConfigPath = flag.String("config", "/etc/etcdpasswd.yml", "configuration file path")
+	flgVersion    = flag.Bool("version", false, "version")
 )
 
 func loadConfig(p string) (*etcdutil.Config, error) {
@@ -46,6 +48,11 @@ func main() {
 	subcommands.Register(cli.LockerCommand(), "")
 	flag.Parse()
 	cmd.LogConfig{}.Apply()
+
+	if *flgVersion {
+		fmt.Println(etcdpasswd.Version)
+		os.Exit(0)
+	}
 
 	cfg, err := loadConfig(*flgConfigPath)
 	if err != nil {
