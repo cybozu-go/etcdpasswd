@@ -18,6 +18,7 @@ import (
 var (
 	flgConfigPath = flag.String("config", "/etc/etcdpasswd.yml", "configuration file path")
 	flgSyncer     = flag.String("syncer", "os", "user sync driver [os,dummy]")
+	flgVersion    = flag.Bool("version", false, "version")
 )
 
 func loadConfig(p string) (*etcdutil.Config, error) {
@@ -39,6 +40,11 @@ func loadConfig(p string) (*etcdutil.Config, error) {
 func main() {
 	flag.Parse()
 	cmd.LogConfig{}.Apply()
+
+	if *flgVersion {
+		fmt.Println(etcdpasswd.Version)
+		os.Exit(0)
+	}
 
 	cfg, err := loadConfig(*flgConfigPath)
 	if err != nil {
