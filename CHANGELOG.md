@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.5] - 2018-09-03
+
+### Added
+- Show etcdpasswd version by option `-version`.
+- Rebuild with latest etcdutil v1.0.0.
+
 ## [0.4] - 2018-08-06
 
 ### Added
@@ -24,7 +30,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 [placemat]: https://github.com/cybozu-go/placemat
 [etcdutil]: https://github.com/cybozu-go/etcdutil
-[Unreleased]: https://github.com/cybozu-go/etcdpasswd/compare/v0.4...HEAD
+[Unreleased]: https://github.com/cybozu-go/etcdpasswd/compare/v0.5...HEAD
+[0.5]: https://github.com/cybozu-go/etcdpasswd/compare/v0.4...v0.5
 [0.4]: https://github.com/cybozu-go/etcdpasswd/compare/v0.3...v0.4
 [0.3]: https://github.com/cybozu-go/etcdpasswd/compare/v0.2...v0.3
 [0.2]: https://github.com/cybozu-go/etcdpasswd/compare/v0.1...v0.2

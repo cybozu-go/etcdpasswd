@@ -1,6 +1,6 @@
 package etcdpasswd
 
 const (
-	// Version of etcpasswd
-	Version = "0.4"
+	// Version of etcdpasswd
+	Version = "0.5"
 )
