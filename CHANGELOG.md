@@ -5,6 +5,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+- Opt in to [Go modules](https://github.com/golang/go/wiki/Modules).
+
 ## [0.5] - 2018-09-03
 
 ### Added

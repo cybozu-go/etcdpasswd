@@ -52,8 +52,8 @@ func TestSynchronize(t *testing.T) {
 			},
 		},
 		Groups: []Group{
-			{"group1", 3000},
-			{"group3", 3002},
+			{Name: "group1", GID: 3000},
+			{Name: "group3", GID: 3002},
 		},
 		DeletedUsers:  []string{"user3"},
 		DeletedGroups: []string{"group2"},
@@ -63,11 +63,11 @@ func TestSynchronize(t *testing.T) {
 	sc := syncer.NewMockSyncer()
 	ctx := context.Background()
 
-	err := sc.AddGroup(ctx, etcdpasswd.Group{"system-group1", 100})
+	err := sc.AddGroup(ctx, Group{Name: "system-group1", GID: 100})
 	if err != nil {
 		t.Fatal(err)
 	}
-	err = sc.AddGroup(ctx, etcdpasswd.Group{"system-group2", 101})
+	err = sc.AddGroup(ctx, Group{Name: "system-group2", GID: 101})
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -46,6 +46,8 @@ chmod 1777 /var/scratch
 # Run mtest
 GOPATH=\$HOME/go
 export GOPATH
+GO111MODULE=on
+export GO111MODULE
 PATH=/usr/local/go/bin:\$GOPATH/bin:\$PATH
 export PATH
 
