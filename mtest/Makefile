@@ -91,6 +91,6 @@ clean:
 setup:
 	GO111MODULE=off go get -u \
 		github.com/onsi/ginkgo/ginkgo \
-		github.com/cybozu-go/placemat/cmd/...
+		github.com/cybozu-go/placemat/pkg/placemat
 
 .PHONY:	all clean setup test
