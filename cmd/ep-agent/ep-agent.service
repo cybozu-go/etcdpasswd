@@ -3,8 +3,6 @@ Description=etcdpasswd sync agent
 After=network-online.target
 Wants=network-online.target
 ConditionPathExists=/etc/etcdpasswd.yml
-ConditionPathExists=/etc/etcdpasswd/etcd.crt
-ConditionPathExists=/etc/etcdpasswd/etcd.key
 
 [Service]
 Type=simple
