@@ -6,7 +6,7 @@ etcdpasswd usage
 `etcdpasswd [OPTIONS] SUBCOMMAND`
 
 Options:
-- `-config`: configuration file path (default: `/etc/etcdpasswd.yml`)
+- `-config`: configuration file path (default: `/etc/etcdpasswd/config.yml`)
 - `-version`: output current version
 
 Subcommands:
