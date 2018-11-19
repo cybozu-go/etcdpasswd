@@ -21,7 +21,6 @@ $(CONTROL): control
 	sed 's/@VERSION@/$(patsubst v%,%,$(VERSION))/' $< > $@
 
 deb: $(CONTROL)
-	go get -d ./...
 	mkdir -p debian/usr/bin
 	GOBIN=$(CURDIR)/debian/usr/bin go install ./cmd/etcdpasswd
 	mkdir -p debian/usr/sbin
