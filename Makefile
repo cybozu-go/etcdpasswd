@@ -1,17 +1,22 @@
+# Makefile for etcdpasswd
+
 PACKAGES := fakeroot
 DOCDIR := debian/usr/share/doc/etcdpasswd
 CONTROL := debian/DEBIAN/control
+
+# for Go
+GOFLAGS = -mod=vendor
+export GOFLAGS
 
 all:
 	go get -d ./...
 	go install ./...
 
 test:
-	go get -d -t ./...
-	go test -race -count 1 -v ./...
+	test -z "$$(gofmt -s -l . | grep -v '^vendor' | tee /dev/stderr)"
+	golint -set_exit_status $(go list -mod=vendor ./... | grep -v /vendor/)
+	go test -race -count=1 -v ./...
 	go vet ./...
-	test -z "$$(gofmt -s -l . | tee /dev/stderr)"
-	golint -set_exit_status ./...
 
 $(CONTROL): control
 	sed 's/@VERSION@/$(patsubst v%,%,$(VERSION))/' $< > $@
