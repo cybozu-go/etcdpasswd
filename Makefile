@@ -13,7 +13,7 @@ all:
 
 test:
 	test -z "$$(gofmt -s -l . | grep -v '^vendor' | tee /dev/stderr)"
-	golint -set_exit_status $(go list -mod=vendor ./... | grep -v /vendor/)
+	golint -set_exit_status $$(go list -mod=vendor ./... | grep -v /vendor/)
 	go test -race -count=1 -v ./...
 	go vet ./...
 
