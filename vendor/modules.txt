@@ -7,14 +7,16 @@ github.com/coreos/etcd/etcdserver/etcdserverpb
 github.com/coreos/etcd/mvcc/mvccpb
 github.com/coreos/etcd/pkg/types
 github.com/coreos/etcd/clientv3/namespace
-# github.com/cybozu-go/cmd v1.6.0
-github.com/cybozu-go/cmd
 # github.com/cybozu-go/etcdutil v1.3.1
 github.com/cybozu-go/etcdutil
 # github.com/cybozu-go/log v1.5.0
 github.com/cybozu-go/log
 # github.com/cybozu-go/netutil v1.2.0
 github.com/cybozu-go/netutil
+# github.com/cybozu-go/well v1.8.1
+github.com/cybozu-go/well
+# github.com/fsnotify/fsnotify v1.4.7
+github.com/fsnotify/fsnotify
 # github.com/gogo/protobuf v1.1.1
 github.com/gogo/protobuf/gogoproto
 github.com/gogo/protobuf/proto
@@ -27,12 +29,27 @@ github.com/golang/protobuf/ptypes/duration
 github.com/golang/protobuf/ptypes/timestamp
 # github.com/google/subcommands v0.0.0-20180618214453-5bae204cdfb2
 github.com/google/subcommands
+# github.com/hashicorp/hcl v1.0.0
+github.com/hashicorp/hcl
+github.com/hashicorp/hcl/hcl/printer
+github.com/hashicorp/hcl/hcl/ast
+github.com/hashicorp/hcl/hcl/parser
+github.com/hashicorp/hcl/hcl/token
+github.com/hashicorp/hcl/json/parser
+github.com/hashicorp/hcl/hcl/scanner
+github.com/hashicorp/hcl/hcl/strconv
+github.com/hashicorp/hcl/json/scanner
+github.com/hashicorp/hcl/json/token
 # github.com/hpcloud/tail v1.0.0
 github.com/hpcloud/tail
 github.com/hpcloud/tail/ratelimiter
 github.com/hpcloud/tail/util
 github.com/hpcloud/tail/watch
 github.com/hpcloud/tail/winfile
+# github.com/magiconair/properties v1.8.0
+github.com/magiconair/properties
+# github.com/mitchellh/mapstructure v1.1.2
+github.com/mitchellh/mapstructure
 # github.com/onsi/ginkgo v1.6.0
 github.com/onsi/ginkgo
 github.com/onsi/ginkgo/config
@@ -65,10 +82,21 @@ github.com/onsi/gomega/matchers/support/goraph/bipartitegraph
 github.com/onsi/gomega/matchers/support/goraph/edge
 github.com/onsi/gomega/matchers/support/goraph/node
 github.com/onsi/gomega/matchers/support/goraph/util
+# github.com/pelletier/go-toml v1.2.0
+github.com/pelletier/go-toml
 # github.com/pkg/errors v0.8.0
 github.com/pkg/errors
+# github.com/spf13/afero v1.1.2
+github.com/spf13/afero
+github.com/spf13/afero/mem
+# github.com/spf13/cast v1.3.0
+github.com/spf13/cast
+# github.com/spf13/jwalterweatherman v1.0.0
+github.com/spf13/jwalterweatherman
 # github.com/spf13/pflag v1.0.3
 github.com/spf13/pflag
+# github.com/spf13/viper v1.2.1
+github.com/spf13/viper
 # golang.org/x/crypto v0.0.0-20181009213950-7c1a557ab941
 golang.org/x/crypto/ssh
 golang.org/x/crypto/curve25519
@@ -77,7 +105,7 @@ golang.org/x/crypto/internal/chacha20
 golang.org/x/crypto/poly1305
 golang.org/x/crypto/ed25519/internal/edwards25519
 golang.org/x/crypto/internal/subtle
-# golang.org/x/net v0.0.0-20181005035420-146acd28ed58
+# golang.org/x/net v0.0.0-20181114220301-adae6a3d119a
 golang.org/x/net/context
 golang.org/x/net/trace
 golang.org/x/net/netutil
@@ -89,16 +117,16 @@ golang.org/x/net/http/httpguts
 golang.org/x/net/idna
 golang.org/x/net/html
 golang.org/x/net/html/atom
-# golang.org/x/sys v0.0.0-20181005133103-4497e2df6f9e
+# golang.org/x/sys v0.0.0-20181119195503-ec83556a53fe
 golang.org/x/sys/unix
 # golang.org/x/text v0.3.0
+golang.org/x/text/transform
+golang.org/x/text/unicode/norm
 golang.org/x/text/encoding
 golang.org/x/text/encoding/charmap
 golang.org/x/text/encoding/htmlindex
-golang.org/x/text/transform
 golang.org/x/text/secure/bidirule
 golang.org/x/text/unicode/bidi
-golang.org/x/text/unicode/norm
 golang.org/x/text/encoding/internal/identifier
 golang.org/x/text/encoding/internal
 golang.org/x/text/encoding/japanese

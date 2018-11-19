@@ -7,8 +7,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cybozu-go/cmd"
 	"github.com/cybozu-go/etcdpasswd"
+	"github.com/cybozu-go/well"
 )
 
 // UbuntuSyncer synchronizes with local users/groups of Debian/Ubuntu OS.
@@ -62,7 +62,7 @@ func (s UbuntuSyncer) AddUser(ctx context.Context, u *etcdpasswd.User) error {
 	args = append(args, u.Name)
 
 	// use background context to ignore cancellation.
-	return cmd.CommandContext(context.Background(), "useradd", args...).Run()
+	return well.CommandContext(context.Background(), "useradd", args...).Run()
 }
 
 // RemoveUser implements etcdpasswd.Syncer interface.
@@ -73,11 +73,11 @@ func (s UbuntuSyncer) RemoveUser(ctx context.Context, name string) error {
 	}
 
 	// use background context to ignore cancellation.
-	return cmd.CommandContext(context.Background(), "userdel", "-f", "-r", name).Run()
+	return well.CommandContext(context.Background(), "userdel", "-f", "-r", name).Run()
 }
 
 func userMod(args ...string) error {
-	return cmd.CommandContext(context.Background(), "usermod", args...).Run()
+	return well.CommandContext(context.Background(), "usermod", args...).Run()
 }
 
 // SetDisplayName implements etcdpasswd.Syncer interface.
@@ -132,7 +132,7 @@ func (s UbuntuSyncer) AddGroup(ctx context.Context, g etcdpasswd.Group) error {
 	}
 
 	// use background context to ignore cancellation.
-	return cmd.CommandContext(context.Background(),
+	return well.CommandContext(context.Background(),
 		"groupadd", "-g", strconv.Itoa(g.GID), g.Name).Run()
 }
 
@@ -144,5 +144,5 @@ func (s UbuntuSyncer) RemoveGroup(ctx context.Context, name string) error {
 	}
 
 	// use background context to ignore cancellation.
-	return cmd.CommandContext(context.Background(), "groupdel", name).Run()
+	return well.CommandContext(context.Background(), "groupdel", name).Run()
 }

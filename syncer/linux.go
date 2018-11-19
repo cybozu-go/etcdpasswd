@@ -6,9 +6,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cybozu-go/cmd"
 	"github.com/cybozu-go/etcdpasswd"
 	"github.com/cybozu-go/log"
+	"github.com/cybozu-go/well"
 )
 
 func gid2Name(gid string) string {
@@ -45,7 +45,7 @@ func makeUser(uu *user.User) (*etcdpasswd.User, error) {
 	}
 	u.Groups = gnames
 
-	c := cmd.CommandContext(context.Background(), "getent", "passwd", uu.Username)
+	c := well.CommandContext(context.Background(), "getent", "passwd", uu.Username)
 	c.Severity = log.LvDebug
 	out, err := c.Output()
 	if err != nil {

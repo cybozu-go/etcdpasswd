@@ -6,11 +6,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/cybozu-go/cmd"
 	"github.com/cybozu-go/etcdpasswd"
 	"github.com/cybozu-go/etcdpasswd/cli"
 	"github.com/cybozu-go/etcdutil"
 	"github.com/cybozu-go/log"
+	"github.com/cybozu-go/well"
 	"github.com/google/subcommands"
 	yaml "gopkg.in/yaml.v2"
 )
@@ -47,7 +47,7 @@ func main() {
 	subcommands.Register(cli.GroupCommand(), "")
 	subcommands.Register(cli.LockerCommand(), "")
 	flag.Parse()
-	cmd.LogConfig{}.Apply()
+	well.LogConfig{}.Apply()
 
 	if *flgVersion {
 		fmt.Println(etcdpasswd.Version)
@@ -72,11 +72,11 @@ func main() {
 	cli.Setup(client)
 
 	exitStatus := subcommands.ExitSuccess
-	cmd.Go(func(ctx context.Context) error {
+	well.Go(func(ctx context.Context) error {
 		exitStatus = subcommands.Execute(ctx)
 		return nil
 	})
-	cmd.Stop()
-	cmd.Wait()
+	well.Stop()
+	well.Wait()
 	os.Exit(int(exitStatus))
 }

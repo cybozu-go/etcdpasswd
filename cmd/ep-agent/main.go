@@ -6,12 +6,12 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/cybozu-go/cmd"
 	"github.com/cybozu-go/etcdpasswd"
 	"github.com/cybozu-go/etcdpasswd/agent"
 	"github.com/cybozu-go/etcdpasswd/syncer"
 	"github.com/cybozu-go/etcdutil"
 	"github.com/cybozu-go/log"
+	"github.com/cybozu-go/well"
 	yaml "gopkg.in/yaml.v2"
 )
 
@@ -39,7 +39,7 @@ func loadConfig(p string) (*etcdutil.Config, error) {
 
 func main() {
 	flag.Parse()
-	cmd.LogConfig{}.Apply()
+	well.LogConfig{}.Apply()
 
 	if *flgVersion {
 		fmt.Println(etcdpasswd.Version)
@@ -71,16 +71,16 @@ func main() {
 	agent := agent.Agent{Client: etcd, Syncer: sc}
 
 	updateCh := make(chan struct{}, 1)
-	cmd.Go(func(ctx context.Context) error {
+	well.Go(func(ctx context.Context) error {
 		return agent.StartWatching(ctx, updateCh)
 	})
-	cmd.Go(func(ctx context.Context) error {
+	well.Go(func(ctx context.Context) error {
 		return agent.StartUpdater(ctx, updateCh)
 	})
-	cmd.Stop()
+	well.Stop()
 
-	err = cmd.Wait()
-	if err != nil && !cmd.IsSignaled(err) {
+	err = well.Wait()
+	if err != nil && !well.IsSignaled(err) {
 		log.ErrorExit(err)
 	}
 }
