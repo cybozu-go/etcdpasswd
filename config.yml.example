@@ -2,8 +2,10 @@
 endpoints:
   - http://localhost:2379
 
-# username for etcd authentication
+# username/password for etcd authentication
 username: xxxx
-
-# password for etcd authentication
 password: zzzz
+
+# use client certificate if needed
+tls-cert-file: /etc/etcdpasswd/etcd.crt
+tls-key-file: /etc/etcdpasswd/etcd.key
