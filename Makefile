@@ -9,7 +9,6 @@ GOFLAGS = -mod=vendor
 export GOFLAGS
 
 all:
-	go get -d ./...
 	go install ./...
 
 test:
