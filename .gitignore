@@ -6,3 +6,6 @@
 /*.deb
 /debian
 !/debian/DEBIAN
+
+# ignore go.sum
+/go.sum
