@@ -5,7 +5,7 @@ BRIDGE_ADDRESS = 10.0.0.1
 HOST1 = 10.0.0.101
 HOST2 = 10.0.0.102
 HOST3 = 10.0.0.103
-PLACEMAT = $(GOPATH)/bin/placemat
+PLACEMAT = /usr/bin/placemat
 GINKGO = $(GOPATH)/bin/ginkgo
 ETCD_VERSION = 3.3.9
 PLACEMAT_DATADIR = /var/scratch/placemat
@@ -89,8 +89,6 @@ clean:
 	rm -rf $(OUTPUT)
 
 setup:
-	GO111MODULE=off go get -u \
-		github.com/onsi/ginkgo/ginkgo \
-		github.com/cybozu-go/placemat/pkg/placemat
+	GO111MODULE=off go get -u github.com/onsi/ginkgo/ginkgo
 
 .PHONY:	all clean setup test
