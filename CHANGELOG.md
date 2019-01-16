@@ -5,8 +5,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [0.6] - 2019-01-16
+
+### Incompatibly Changed
+- Change location of config files (#16).
+
 ### Added
-- Opt in to [Go modules](https://github.com/golang/go/wiki/Modules).
+- Opt in to [Go modules](https://github.com/golang/go/wiki/Modules) (#12).
+
+### Changed
+- Update etcdutil to v1.3.1 (#14).
+- Use cybozu-go/well (#15).
 
 ## [0.5] - 2018-09-03
 
@@ -33,7 +42,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 [placemat]: https://github.com/cybozu-go/placemat
 [etcdutil]: https://github.com/cybozu-go/etcdutil
-[Unreleased]: https://github.com/cybozu-go/etcdpasswd/compare/v0.5...HEAD
+[Unreleased]: https://github.com/cybozu-go/etcdpasswd/compare/v0.6...HEAD
+[0.6]: https://github.com/cybozu-go/etcdpasswd/compare/v0.5...v0.6
 [0.5]: https://github.com/cybozu-go/etcdpasswd/compare/v0.4...v0.5
 [0.4]: https://github.com/cybozu-go/etcdpasswd/compare/v0.3...v0.4
 [0.3]: https://github.com/cybozu-go/etcdpasswd/compare/v0.2...v0.3
