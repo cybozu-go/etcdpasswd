@@ -26,7 +26,7 @@ deb: $(CONTROL)
 	mkdir -p debian/usr/sbin
 	GOBIN=$(CURDIR)/debian/usr/sbin go install ./cmd/ep-agent
 	mkdir -p debian/usr/share/doc/etcdpasswd
-	cp etcdpasswd.yml.example README.md LICENSE $(DOCDIR)
+	cp config.yml.example README.md LICENSE $(DOCDIR)
 	cp cmd/etcdpasswd/USAGE.md $(DOCDIR)/etcdpasswd.md
 	mkdir -p debian/lib/systemd/system
 	cp cmd/ep-agent/ep-agent.service debian/lib/systemd/system

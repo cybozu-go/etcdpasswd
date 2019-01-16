@@ -24,7 +24,7 @@ Installation
 
 1. Prepare an etcd cluster.
 
-1. Create `/etc/etcdpasswd.yml`.
+1. Create `/etc/etcdpasswd/config.yml`.
 
     This file provides parameters to connect to the etcd cluster.  
     A sample configuration looks like this:
@@ -34,6 +34,9 @@ Installation
       - http://12.34.56.78:2379
     username: cybozu
     password: xxxxxxxx
+
+    tls-cert-file: /etc/etcdpasswd/etcd.crt
+    tls-key-file: /etc/etcdpasswd/etcd.key
     ```
 
 1. Run `ep-agent`.

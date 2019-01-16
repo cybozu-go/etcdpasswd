@@ -16,7 +16,7 @@ import (
 )
 
 var (
-	flgConfigPath = flag.String("config", "/etc/etcdpasswd.yml", "configuration file path")
+	flgConfigPath = flag.String("config", "/etc/etcdpasswd/config.yml", "configuration file path")
 	flgSyncer     = flag.String("syncer", "os", "user sync driver [os,dummy]")
 	flgVersion    = flag.Bool("version", false, "version")
 )

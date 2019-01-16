@@ -16,7 +16,7 @@ import (
 )
 
 var (
-	flgConfigPath = flag.String("config", "/etc/etcdpasswd.yml", "configuration file path")
+	flgConfigPath = flag.String("config", "/etc/etcdpasswd/config.yml", "configuration file path")
 	flgVersion    = flag.Bool("version", false, "version")
 )
 

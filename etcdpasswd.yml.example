@@ -1,9 +1,0 @@
-# list of etcd endponit URLs
-endpoints:
-  - http://localhost:2379
-
-# username for etcd authentication
-username: xxxx
-
-# password for etcd authentication
-password: zzzz

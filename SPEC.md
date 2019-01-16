@@ -1,8 +1,8 @@
 Specifications
 ==============
 
-`/etc/etcdpasswd.yml`
----------------------
+`/etc/etcdpasswd/config.yml`
+----------------------------
 
 This file provides connecting to the etcd cluster.
 Parameters are defined by [cybozu-go/etcdutil](https://github.com/cybozu-go/etcdutil), and not shown below will use default values of the etcdutil.
