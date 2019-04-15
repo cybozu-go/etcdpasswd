@@ -1,4 +1,4 @@
-package itest
+package mtest
 
 import (
 	"path/filepath"
@@ -9,10 +9,8 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-// CLI is the file path of etcdpasswd
-const CLI = "/data/etcdpasswd"
-
-var _ = Describe("etcdpasswd", func() {
+// TestEtcdpasswd tests etcdpasswd
+func TestEtcdpasswd() {
 	hosts := []string{host1, host2, host3}
 
 	It("group add/remove, user add/remove", func() {
@@ -20,14 +18,16 @@ var _ = Describe("etcdpasswd", func() {
 		user := gen.newUsername()
 
 		By("create group and node users")
-		execSafeAt(host1, CLI, "group", "add", group)
-		execSafeAt(host1, CLI, "user", "add", "-group", group, user)
+		etcdpasswdSafe("group", "add", group)
+		etcdpasswdSafe("user", "add", "-group", group, user)
 
 		By("should create group and user")
-		stdout := execSafeAt(host1, CLI, "user", "list")
+		stdout, stderr, err := etcdpasswd("user", "list")
+		Expect(err).NotTo(HaveOccurred(), "stderr=%s", stderr)
 		Expect(stdout).To(MatchRegexp("\\b%s\\b", user))
 
-		stdout = execSafeAt(host1, CLI, "group", "list")
+		stdout, stderr, err = etcdpasswd("group", "list")
+		Expect(err).NotTo(HaveOccurred(), "stderr=%s", stderr)
 		Expect(stdout).To(MatchRegexp("\\b%s\\b", group))
 
 		for _, h := range hosts {
@@ -66,13 +66,15 @@ var _ = Describe("etcdpasswd", func() {
 		}
 
 		By("should remove user and group")
-		execAt(host1, CLI, "user", "remove", user)
-		execAt(host1, CLI, "group", "remove", group)
+		etcdpasswdSafe("user", "remove", user)
+		etcdpasswdSafe("group", "remove", group)
 
-		stdout = execSafeAt(host1, CLI, "user", "list")
+		stdout, stderr, err = etcdpasswd("user", "list")
+		Expect(err).NotTo(HaveOccurred(), "stderr=%s", stderr)
 		Expect(stdout).NotTo(MatchRegexp("\\b%s\\b", user))
 
-		stdout = execSafeAt(host1, CLI, "group", "list")
+		stdout, stderr, err = etcdpasswd("group", "list")
+		Expect(err).NotTo(HaveOccurred(), "stderr=%s", stderr)
 		Expect(stdout).NotTo(MatchRegexp("\\b%s\\b", group))
 
 		for _, h := range hosts {
@@ -93,13 +95,14 @@ var _ = Describe("etcdpasswd", func() {
 
 		By("Create user and ssh key")
 		stdout := execSafeAt(host1, "mktemp", "-d")
-		dir := strings.TrimSpace(stdout)
-		execSafeAt(host1, CLI, "user", "add", user)
+		dir := strings.TrimSpace(string(stdout))
+		etcdpasswdSafe("user", "add", user)
 		execSafeAt(host1, "ssh-keygen", "-t", "rsa", "-N", "''", "-C", "'test cert add'", "-f", filepath.Join(dir, "id_rsa"))
-		execSafeAt(host1, CLI, "cert", "add", user, filepath.Join(dir, "id_rsa.pub"))
+		etcdpasswdSafe("cert", "add", user, filepath.Join(dir, "id_rsa.pub"))
 
 		By("should add SSH key")
-		stdout = execSafeAt(host1, CLI, "cert", "list", user)
+		stdout, stderr, err := etcdpasswd("cert", "list", user)
+		Expect(err).NotTo(HaveOccurred(), "stderr=%s", stderr)
 		Expect(stdout).To(ContainSubstring("test cert add"))
 
 		for _, h := range hosts {
@@ -113,10 +116,11 @@ var _ = Describe("etcdpasswd", func() {
 		}
 
 		By("should remove SSH key")
-		execSafeAt(host1, CLI, "cert", "remove", user, "0")
+		etcdpasswdSafe("cert", "remove", user, "0")
 
-		stdout = execSafeAt(host1, CLI, "cert", "list", user)
-		Expect(stdout).To(BeZero())
+		stdout, stderr, err = etcdpasswd("cert", "list", user)
+		Expect(err).NotTo(HaveOccurred(), "stderr=%s", stderr)
+		Expect(string(stdout)).To(BeZero())
 
 		for _, h := range hosts {
 			Eventually(func() string {
@@ -133,7 +137,7 @@ var _ = Describe("etcdpasswd", func() {
 		user := gen.newUsername()
 
 		By("user add")
-		execSafeAt(host1, CLI, "user", "add", user)
+		etcdpasswdSafe("user", "add", user)
 		// Created user is locked by default.
 		// "usermod -U" requires that non-empty password be set.
 		// "usermod -p" takes *encrypted* password as its argument,
@@ -151,10 +155,11 @@ var _ = Describe("etcdpasswd", func() {
 		}
 
 		By("should lock user")
-		execSafeAt(host1, CLI, "locker", "add", user)
+		etcdpasswdSafe("locker", "add", user)
 
-		stdout := execSafeAt(host1, CLI, "locker", "list")
-		Expect(stdout).To(MatchRegexp("\\b%s\\b", user))
+		stdout, stderr, err := etcdpasswd("locker", "list")
+		Expect(err).NotTo(HaveOccurred(), "stderr=%s", stderr)
+		Expect(string(stdout)).To(MatchRegexp("\\b%s\\b", user))
 
 		for _, h := range hosts {
 			Eventually(func() string {
@@ -167,9 +172,10 @@ var _ = Describe("etcdpasswd", func() {
 		}
 
 		By("should remove user from list")
-		execSafeAt(host1, CLI, "locker", "remove", user)
+		etcdpasswdSafe("locker", "remove", user)
 
-		stdout = execSafeAt(host1, CLI, "locker", "list")
-		Expect(stdout).NotTo(MatchRegexp("\\b%s\\b", user))
+		stdout, stderr, err = etcdpasswd("locker", "list")
+		Expect(err).NotTo(HaveOccurred(), "stderr=%s", stderr)
+		Expect(string(stdout)).NotTo(MatchRegexp("\\b%s\\b", user))
 	})
-})
+}

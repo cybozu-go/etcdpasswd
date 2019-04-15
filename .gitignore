@@ -6,6 +6,7 @@
 /*.deb
 /debian
 !/debian/DEBIAN
+.vscode/
 
 # ignore go.sum
 /go.sum

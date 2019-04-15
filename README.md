@@ -26,7 +26,7 @@ Installation
 
 1. Create `/etc/etcdpasswd/config.yml`.
 
-    This file provides parameters to connect to the etcd cluster.  
+    This file provides parameters to connect to the etcd cluster.
     A sample configuration looks like this:
 
     ```yaml
@@ -64,12 +64,12 @@ Installation
 Usage
 -----
 
-See [cmd/etcdpasswd/USAGE.md](cmd/etcdpasswd/USAGE.md).
+See [pkg/etcdpasswd/USAGE.md](cmd/etcdpasswd/USAGE.md).
 
 Specifications
 --------------
 
-Read [SPEC.md](SPEC.md).
+Read [docs/spec.md](docs/spec.md).
 
 License
 -------
