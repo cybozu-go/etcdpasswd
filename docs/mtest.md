@@ -10,7 +10,7 @@ There are following types of test suites.
 
 1. functions
 
-    This suite tests sabactl, sabakan assets, images and ignitions.
+    This suite tests etcdpasswd command and ep-agetn service.
 
 Each test suite has an entry point of test as `<suite>/suite_test.go`.
 
