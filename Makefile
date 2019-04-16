@@ -47,4 +47,4 @@ setup:
 	$(SUDO) apt-get update
 	$(SUDO) apt-get -y --no-install-recommends install $(PACKAGES)
 
-.PHONY: all test deb clean setup
+.PHONY: all test deb mod clean setup
