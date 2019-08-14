@@ -12,7 +12,7 @@ import (
 	"github.com/cybozu-go/log"
 	"github.com/cybozu-go/well"
 	"github.com/google/subcommands"
-	yaml "gopkg.in/yaml.v2"
+	yaml "sigs.k8s.io/yaml"
 )
 
 var (
