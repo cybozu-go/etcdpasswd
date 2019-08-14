@@ -22,13 +22,7 @@ var (
 )
 
 func loadConfig(p string) (*etcdutil.Config, error) {
-	f, err := os.Open(p)
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-
-	b, err := ioutil.ReadAll(f)
+	b, err := ioutil.ReadFile(p)
 	if err != nil {
 		return nil, err
 	}
