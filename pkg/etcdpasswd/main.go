@@ -4,6 +4,7 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"os"
 
 	"github.com/cybozu-go/etcdpasswd"
@@ -12,7 +13,7 @@ import (
 	"github.com/cybozu-go/log"
 	"github.com/cybozu-go/well"
 	"github.com/google/subcommands"
-	yaml "sigs.k8s.io/yaml"
+	"sigs.k8s.io/yaml"
 )
 
 var (
@@ -27,8 +28,13 @@ func loadConfig(p string) (*etcdutil.Config, error) {
 	}
 	defer f.Close()
 
+	b, err := ioutil.ReadAll(f)
+	if err != nil {
+		return nil, err
+	}
+
 	cfg := etcdpasswd.NewEtcdConfig()
-	err = yaml.NewDecoder(f).Decode(cfg)
+	err = yaml.Unmarshal(b, cfg)
 	if err != nil {
 		return nil, err
 	}
