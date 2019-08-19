@@ -1,18 +1,15 @@
 module github.com/cybozu-go/etcdpasswd
 
 require (
-	github.com/coreos/bbolt v1.3.1-coreos.6 // indirect
-	github.com/coreos/etcd v3.3.9+incompatible
-	github.com/cybozu-go/etcdutil v1.3.1
+	github.com/coreos/etcd v0.0.0-20190816232144-5cf5d88a18ae
+	github.com/cybozu-go/etcdutil v1.3.2
 	github.com/cybozu-go/log v1.5.0
 	github.com/cybozu-go/well v1.8.1
 	github.com/google/subcommands v0.0.0-20180618214453-5bae204cdfb2
 	github.com/mitchellh/mapstructure v1.1.2 // indirect
 	github.com/onsi/ginkgo v1.8.0
-	github.com/onsi/gomega v1.4.2
+	github.com/onsi/gomega v1.5.0
 	github.com/spf13/cast v1.3.0 // indirect
-	golang.org/x/crypto v0.0.0-20181015023909-0c41d7ab0a0e
-	golang.org/x/net v0.0.0-20181114220301-adae6a3d119a // indirect
-	golang.org/x/sys v0.0.0-20181119195503-ec83556a53fe // indirect
+	golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2
 	sigs.k8s.io/yaml v1.1.0
 )

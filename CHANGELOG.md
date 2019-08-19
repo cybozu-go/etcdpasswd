@@ -5,9 +5,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.0.0] - 2019-08-19
+
+### Changed
+- Update etcdutil to 1.3.2 (#27).
+
 ## [0.7] - 2019-01-16
 
-### Incompatibly Changed
+### Changed
 - Change location of config files (#16).
 
 ### Added
@@ -46,7 +51,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 [placemat]: https://github.com/cybozu-go/placemat
 [etcdutil]: https://github.com/cybozu-go/etcdutil
-[Unreleased]: https://github.com/cybozu-go/etcdpasswd/compare/v0.7...HEAD
+[Unreleased]: https://github.com/cybozu-go/etcdpasswd/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/cybozu-go/etcdpasswd/compare/v0.7...v1.0.0
 [0.7]: https://github.com/cybozu-go/etcdpasswd/compare/v0.6...v0.7
 [0.6]: https://github.com/cybozu-go/etcdpasswd/compare/v0.5...v0.6
 [0.5]: https://github.com/cybozu-go/etcdpasswd/compare/v0.4...v0.5
