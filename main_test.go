@@ -2,12 +2,12 @@ package etcdpasswd
 
 import (
 	"io/ioutil"
-	"log"
 	"os"
 	"os/exec"
 	"testing"
 
 	"github.com/cybozu-go/etcdutil"
+	"github.com/cybozu-go/log"
 )
 
 const (
@@ -24,7 +24,7 @@ func testMain(m *testing.M) int {
 
 	etcdPath, err := ioutil.TempDir("", "etcdpasswd-test")
 	if err != nil {
-		log.Fatal(err)
+		log.ErrorExit(err)
 	}
 
 	cmd := exec.Command("etcd",
@@ -38,7 +38,7 @@ func testMain(m *testing.M) int {
 	cmd.Stderr = os.Stderr
 	err = cmd.Start()
 	if err != nil {
-		log.Fatal(err)
+		log.ErrorExit(err)
 	}
 	defer func() {
 		cmd.Process.Kill()
