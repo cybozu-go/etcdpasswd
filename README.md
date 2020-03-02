@@ -64,7 +64,7 @@ Installation
 Usage
 -----
 
-See [pkg/etcdpasswd/USAGE.md](cmd/etcdpasswd/USAGE.md).
+See [pkg/etcdpasswd/USAGE.md](pkg/etcdpasswd/USAGE.md).
 
 Specifications
 --------------
