@@ -11,6 +11,7 @@ require (
 	github.com/onsi/gomega v1.5.0
 	github.com/spf13/cast v1.3.0 // indirect
 	golang.org/x/crypto v0.0.0-20200221231518-2aa609cf4a9d
+	golang.org/x/text v0.3.3 // indirect
 	sigs.k8s.io/yaml v1.1.0
 )
 
