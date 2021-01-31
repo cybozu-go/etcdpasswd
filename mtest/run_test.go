@@ -8,7 +8,6 @@ import (
 	"io"
 	"io/ioutil"
 	"net"
-	"net/http"
 	"os"
 	"strings"
 	"time"
@@ -29,7 +28,6 @@ const (
 
 var (
 	sshClients = make(map[string]*sshAgent)
-	httpClient = &well.HTTPClient{Client: &http.Client{}}
 
 	agentDialer = &net.Dialer{
 		Timeout:   defaultDialTimeout,
@@ -189,15 +187,6 @@ func runEPAgent() error {
 
 func execAt(host string, args ...string) (stdout, stderr []byte, e error) {
 	return execAtWithStream(host, nil, args...)
-}
-
-// WARNING: `input` can contain secret data.  Never output `input` to console.
-func execAtWithInput(host string, input []byte, args ...string) (stdout, stderr []byte, e error) {
-	var r io.Reader
-	if input != nil {
-		r = bytes.NewReader(input)
-	}
-	return execAtWithStream(host, r, args...)
 }
 
 // WARNING: `input` can contain secret data.  Never output `input` to console.

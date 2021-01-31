@@ -10,14 +10,8 @@ GINKGO = $(GOPATH)/bin/ginkgo
 ETCD_VERSION = 3.3.12
 PLACEMAT_DATADIR = /var/scratch/placemat
 SUDO = sudo
-SUITE = ./functions
-ifeq ($(findstring /,$(SUITE)),)
-  SUITE_PACKAGE = ./$(SUITE)
-else
-  SUITE_PACKAGE = $(SUITE)
-endif
 
-export BRIDGE_ADDRESS HOST1 HOST2 HOST3 PLACEMAT GINKGO SUITE_PACKAGE
+export HOST1 HOST2 HOST3 PLACEMAT GINKGO
 
 # non-configuration variables
 ETCD_ARCHIVE := etcd-v$(ETCD_VERSION)-linux-amd64.tar.gz

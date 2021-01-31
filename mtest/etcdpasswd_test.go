@@ -9,8 +9,7 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-// TestEtcdpasswd tests etcdpasswd
-func TestEtcdpasswd() {
+func testEtcdpasswd() {
 	hosts := []string{host1, host2, host3}
 
 	It("group add/remove, user add/remove", func() {

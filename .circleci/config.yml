@@ -3,8 +3,6 @@ commands:
   run-mtest:
     description: "multi-host test"
     parameters:
-      suite:
-        type: string
       target:
         type: string
         default: ""
@@ -16,7 +14,7 @@ commands:
             gcloud auth activate-service-account --key-file=account.json
       - run:
           command: |
-            ./bin/run-mtest.sh <<parameters.suite>> <<parameters.target>>
+            ./bin/run-mtest.sh <<parameters.target>>
       - run:
           name: Set the instance lifetime
           command: |
@@ -69,8 +67,7 @@ jobs:
       - image: google/cloud-sdk
     steps:
       - checkout
-      - run-mtest:
-          suite: ./functions
+      - run-mtest
   publish-github-release:
     docker:
       - image: quay.io/cybozu/golang:1.15-focal

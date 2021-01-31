@@ -2,6 +2,7 @@ package mtest
 
 import (
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -37,7 +38,7 @@ func RunBeforeSuite() {
 		defer f.Close()
 		remoteFilename := filepath.Join("/tmp", filepath.Base(testFile))
 		for _, host := range []string{host1, host2, host3} {
-			_, err := f.Seek(0, os.SEEK_SET)
+			_, err := f.Seek(0, io.SeekStart)
 			Expect(err).NotTo(HaveOccurred())
 			stdout, stderr, err := execAt(host, "sudo", "mkdir", "-p", "/opt/bin")
 			Expect(err).NotTo(HaveOccurred(), "stdout=%s, stderr=%s", stdout, stderr)

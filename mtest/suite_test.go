@@ -4,7 +4,6 @@ import (
 	"os"
 	"testing"
 
-	"github.com/cybozu-go/etcdpasswd/mtest"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -18,11 +17,11 @@ func TestMtest(t *testing.T) {
 }
 
 var _ = BeforeSuite(func() {
-	mtest.RunBeforeSuite()
+	RunBeforeSuite()
 })
 
 // This must be the only top-level test container.
 // Other tests and test containers must be listed in this.
 var _ = Describe("Test etcdpasswd functions", func() {
-	mtest.FunctionsSuite()
+	Context("etcdpasswd", testEtcdpasswd)
 })
