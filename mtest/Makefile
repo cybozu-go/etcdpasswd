@@ -23,7 +23,7 @@ export BRIDGE_ADDRESS HOST1 HOST2 HOST3 PLACEMAT GINKGO SUITE_PACKAGE
 ETCD_ARCHIVE := etcd-v$(ETCD_VERSION)-linux-amd64.tar.gz
 SSH_PRIVKEY = $(realpath ./mtest_key)
 OUTPUT := ./output
-UBUNTU_IMAGE := ubuntu-18.04-server-cloudimg-amd64.img
+UBUNTU_IMAGE := ubuntu-20.04-server-cloudimg-amd64.img
 ETCD := $(abspath $(OUTPUT))/etcd
 ETCDCTL := $(abspath $(OUTPUT))/etcdctl
 ETCDPASSWD := $(abspath $(OUTPUT))/etcdpasswd
@@ -59,7 +59,7 @@ $(ETCD_ARCHIVE):
 	curl -sSLf -o $@ https://github.com/coreos/etcd/releases/download/v$(ETCD_VERSION)/etcd-v$(ETCD_VERSION)-linux-amd64.tar.gz
 
 $(UBUNTU_IMAGE):
-	curl -sSLf -o $@ https://cloud-images.ubuntu.com/releases/18.04/release/$@
+	curl -sSLf -o $@ https://cloud-images.ubuntu.com/releases/20.04/release/$@
 
 $(OUTPUT)/etcd $(OUTPUT)/etcdctl: $(ETCD_ARCHIVE)
 	mkdir -p $(OUTPUT)
