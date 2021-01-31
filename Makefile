@@ -5,18 +5,13 @@ DOCDIR := debian/usr/share/doc/etcdpasswd
 CONTROL := debian/DEBIAN/control
 SUDO = sudo
 
-# for Go
-GOFLAGS = -mod=vendor
-export GOFLAGS
-
 all: test
 
 test:
-	test -z "$$(gofmt -s -l . | grep -v '^vendor' | tee /dev/stderr)"
-	test -z "$$(golint $$(go list -mod=vendor ./... | grep -v /vendor/) | grep -v '/mtest/.*: should not use dot imports' | tee /dev/stderr)"
+	test -z "$$(gofmt -s -l . | tee /dev/stderr)"
+	staticcheck ./...
 	test -z "$$(nilerr ./... 2>&1 | tee /dev/stderr)"
-	test -z "$$(custom-checker -restrictpkg.packages=html/template,log $$(go list -tags='$(GOTAGS)' ./... | grep -v /vendor/ ) 2>&1 | tee /dev/stderr)"
-	ineffassign .
+	test -z "$$(custom-checker -restrictpkg.packages=html/template,log $$(go list ./...) 2>&1 | tee /dev/stderr)"
 	go test -race -count=1 -v ./...
 	go vet ./...
 
@@ -36,12 +31,6 @@ deb: $(CONTROL)
 	chmod -R g-w debian
 	fakeroot dpkg-deb --build debian .
 
-mod:
-	go mod tidy
-	go mod vendor
-	git add -f vendor
-	git add go.mod
-
 clean:
 	rm -f *.deb
 	rm -rf $(CONTROL) debian/usr debian/lib
@@ -50,4 +39,4 @@ setup:
 	$(SUDO) apt-get update
 	$(SUDO) apt-get -y --no-install-recommends install $(PACKAGES)
 
-.PHONY: all test deb mod clean setup
+.PHONY: all test deb clean setup

@@ -6,7 +6,7 @@ HOST1 = 10.0.0.101
 HOST2 = 10.0.0.102
 HOST3 = 10.0.0.103
 PLACEMAT = /usr/bin/placemat
-GINKGO = env GOFLAGS=-mod=vendor $(GOPATH)/bin/ginkgo
+GINKGO = $(GOPATH)/bin/ginkgo
 ETCD_VERSION = 3.3.12
 PLACEMAT_DATADIR = /var/scratch/placemat
 SUDO = sudo
