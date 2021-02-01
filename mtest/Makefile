@@ -6,24 +6,18 @@ HOST1 = 10.0.0.101
 HOST2 = 10.0.0.102
 HOST3 = 10.0.0.103
 PLACEMAT = /usr/bin/placemat
-GINKGO = env GOFLAGS=-mod=vendor $(GOPATH)/bin/ginkgo
+GINKGO = $(GOPATH)/bin/ginkgo
 ETCD_VERSION = 3.3.12
 PLACEMAT_DATADIR = /var/scratch/placemat
 SUDO = sudo
-SUITE = ./functions
-ifeq ($(findstring /,$(SUITE)),)
-  SUITE_PACKAGE = ./$(SUITE)
-else
-  SUITE_PACKAGE = $(SUITE)
-endif
 
-export BRIDGE_ADDRESS HOST1 HOST2 HOST3 PLACEMAT GINKGO SUITE_PACKAGE
+export HOST1 HOST2 HOST3 PLACEMAT GINKGO
 
 # non-configuration variables
 ETCD_ARCHIVE := etcd-v$(ETCD_VERSION)-linux-amd64.tar.gz
 SSH_PRIVKEY = $(realpath ./mtest_key)
 OUTPUT := ./output
-UBUNTU_IMAGE := ubuntu-18.04-server-cloudimg-amd64.img
+UBUNTU_IMAGE := ubuntu-20.04-server-cloudimg-amd64.img
 ETCD := $(abspath $(OUTPUT))/etcd
 ETCDCTL := $(abspath $(OUTPUT))/etcdctl
 ETCDPASSWD := $(abspath $(OUTPUT))/etcdpasswd
@@ -59,7 +53,7 @@ $(ETCD_ARCHIVE):
 	curl -sSLf -o $@ https://github.com/coreos/etcd/releases/download/v$(ETCD_VERSION)/etcd-v$(ETCD_VERSION)-linux-amd64.tar.gz
 
 $(UBUNTU_IMAGE):
-	curl -sSLf -o $@ https://cloud-images.ubuntu.com/releases/18.04/release/$@
+	curl -sSLf -o $@ https://cloud-images.ubuntu.com/releases/20.04/release/$@
 
 $(OUTPUT)/etcd $(OUTPUT)/etcdctl: $(ETCD_ARCHIVE)
 	mkdir -p $(OUTPUT)
