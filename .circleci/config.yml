@@ -50,7 +50,7 @@ commands:
 jobs:
   build:
     docker:
-      - image: quay.io/cybozu/golang:1.15-focal
+      - image: quay.io/cybozu/golang:1.16-focal
       - image: quay.io/coreos/etcd:v3.3
     working_directory: /work
     steps:
@@ -70,7 +70,7 @@ jobs:
       - run-mtest
   publish-github-release:
     docker:
-      - image: quay.io/cybozu/golang:1.15-focal
+      - image: quay.io/cybozu/golang:1.16-focal
     steps:
       - attach_workspace:
           at: ./artifacts

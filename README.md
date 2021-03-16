@@ -16,7 +16,7 @@ Build
 -----
 
 ```console
-$ go get -u github.com/cybozu-go/etcdpasswd/...
+$ go install github.com/cybozu-go/etcdpasswd/...
 ```
 
 Installation

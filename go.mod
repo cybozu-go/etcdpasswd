@@ -1,5 +1,7 @@
 module github.com/cybozu-go/etcdpasswd
 
+go 1.16
+
 replace google.golang.org/grpc => google.golang.org/grpc v1.26.0
 
 require (
@@ -13,5 +15,3 @@ require (
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9
 	sigs.k8s.io/yaml v1.2.0
 )
-
-go 1.13
