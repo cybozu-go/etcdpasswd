@@ -1,7 +1,6 @@
 package syncer
 
 import (
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"reflect"
@@ -27,7 +26,7 @@ ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQCqql6MzstZYh1TmWWv11q5O3pISj2ZFl9HgH1JLknL
 func TestGetPubKeys(t *testing.T) {
 	t.Parallel()
 
-	d, err := ioutil.TempDir("", "gotest")
+	d, err := os.MkdirTemp("", "gotest")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -6,7 +6,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"os"
 	"strconv"
 
@@ -102,7 +102,7 @@ func (c certAdd) Execute(ctx context.Context, f *flag.FlagSet) subcommands.ExitS
 		defer g.Close()
 		input = g
 	}
-	pubkey, err := ioutil.ReadAll(input)
+	pubkey, err := io.ReadAll(input)
 	if err != nil {
 		return handleError(err)
 	}

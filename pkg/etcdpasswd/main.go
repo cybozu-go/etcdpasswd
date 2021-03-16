@@ -4,7 +4,6 @@ import (
 	"context"
 	"flag"
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	"github.com/cybozu-go/etcdpasswd"
@@ -22,7 +21,7 @@ var (
 )
 
 func loadConfig(p string) (*etcdutil.Config, error) {
-	b, err := ioutil.ReadFile(p)
+	b, err := os.ReadFile(p)
 	if err != nil {
 		return nil, err
 	}
