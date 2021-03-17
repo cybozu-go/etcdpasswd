@@ -2,7 +2,6 @@ package syncer
 
 import (
 	"bufio"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -77,7 +76,7 @@ func savePubKeys(homedir string, uid, gid int, pubkeys []string) error {
 		})
 	}
 
-	f, err := ioutil.TempFile(sshDir, ".gp")
+	f, err := os.CreateTemp(sshDir, ".gp")
 	if err != nil {
 		return err
 	}

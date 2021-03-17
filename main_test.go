@@ -1,7 +1,6 @@
 package etcdpasswd
 
 import (
-	"io/ioutil"
 	"os"
 	"os/exec"
 	"testing"
@@ -22,7 +21,7 @@ func testMain(m *testing.M) int {
 		os.Exit(code)
 	}
 
-	etcdPath, err := ioutil.TempDir("", "etcdpasswd-test")
+	etcdPath, err := os.MkdirTemp("", "etcdpasswd-test")
 	if err != nil {
 		log.ErrorExit(err)
 	}

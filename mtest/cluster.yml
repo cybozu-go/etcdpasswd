@@ -5,18 +5,6 @@ type: external
 use-nat: true
 address: @BRIDGE_ADDRESS@/24
 ---
-kind: DataFolder
-name: data
-files:
-  - name: etcdpasswd
-    file: etcdpasswd
-  - name: ep-agent
-    file: ep-agent
-  - name: etcd
-    file: etcd
-  - name: etcdctl
-    file: etcdctl
----
 kind: Image
 name: ubuntu
 file: ../ubuntu-20.04-server-cloudimg-amd64.img
@@ -36,9 +24,9 @@ volumes:
     name: seed
     user-data: user-data.yml
     network-config: network1.yml
-  - kind: vvfat
+  - kind: hostPath
     name: data
-    folder: data
+    path: @DATA_DIR@
 ---
 kind: Node
 name: host2
@@ -55,9 +43,9 @@ volumes:
     name: seed
     user-data: user-data.yml
     network-config: network2.yml
-  - kind: vvfat
+  - kind: hostPath
     name: data
-    folder: data
+    path: @DATA_DIR@
 ---
 kind: Node
 name: host3
@@ -74,6 +62,6 @@ volumes:
     name: seed
     user-data: user-data.yml
     network-config: network3.yml
-  - kind: vvfat
+  - kind: hostPath
     name: data
-    folder: data
+    path: @DATA_DIR@
