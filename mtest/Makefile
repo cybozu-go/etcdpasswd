@@ -5,7 +5,7 @@ BRIDGE_ADDRESS = 10.0.0.1
 HOST1 = 10.0.0.101
 HOST2 = 10.0.0.102
 HOST3 = 10.0.0.103
-PLACEMAT = /usr/bin/placemat
+PLACEMAT = /usr/bin/placemat2
 GINKGO = $(GOPATH)/bin/ginkgo
 ETCD_VERSION = 3.3.12
 PLACEMAT_DATADIR = /var/scratch/placemat
@@ -17,19 +17,20 @@ export HOST1 HOST2 HOST3 PLACEMAT GINKGO
 ETCD_ARCHIVE := etcd-v$(ETCD_VERSION)-linux-amd64.tar.gz
 SSH_PRIVKEY = $(realpath ./mtest_key)
 OUTPUT := ./output
+DATA_DIR := $(abspath $(OUTPUT))/data
 UBUNTU_IMAGE := ubuntu-20.04-server-cloudimg-amd64.img
-ETCD := $(abspath $(OUTPUT))/etcd
-ETCDCTL := $(abspath $(OUTPUT))/etcdctl
-ETCDPASSWD := $(abspath $(OUTPUT))/etcdpasswd
-EPAGENT := $(abspath $(OUTPUT))/ep-agent
+ETCD := $(DATA_DIR)/etcd
+ETCDCTL := $(DATA_DIR)/etcdctl
+ETCDPASSWD := $(DATA_DIR)/etcdpasswd
+EPAGENT := $(DATA_DIR)/ep-agent
 
 export SSH_PRIVKEY ETCD ETCDCTL ETCDPASSWD EPAGENT
 
 TEST_DEPS = \
-	$(OUTPUT)/etcd \
-	$(OUTPUT)/etcdctl \
-	$(OUTPUT)/etcdpasswd \
-	$(OUTPUT)/ep-agent
+	$(DATA_DIR)/etcd \
+	$(DATA_DIR)/etcdctl \
+	$(DATA_DIR)/etcdpasswd \
+	$(DATA_DIR)/ep-agent
 
 PLACEMAT_DEPS = \
 	$(OUTPUT)/cluster.yml \
@@ -55,18 +56,19 @@ $(ETCD_ARCHIVE):
 $(UBUNTU_IMAGE):
 	curl -sSLf -o $@ https://cloud-images.ubuntu.com/releases/20.04/release/$@
 
-$(OUTPUT)/etcd $(OUTPUT)/etcdctl: $(ETCD_ARCHIVE)
-	mkdir -p $(OUTPUT)
-	tar -C $(OUTPUT) -x -z --wildcards --strip-components 1 -f $< '*/$(notdir $@)'
+$(DATA_DIR)/etcd $(DATA_DIR)/etcdctl: $(ETCD_ARCHIVE)
+	mkdir -p $(DATA_DIR)
+	tar -C $(DATA_DIR) -x -z --wildcards --strip-components 1 -f $< '*/$(notdir $@)'
 	touch $@
 
-$(OUTPUT)/etcdpasswd $(OUTPUT)/ep-agent:
-	mkdir -p $(OUTPUT)
-	cd ..; GOBIN=$(realpath $(OUTPUT)) go install ./pkg/$(notdir $@)
+$(DATA_DIR)/etcdpasswd $(DATA_DIR)/ep-agent:
+	mkdir -p $(DATA_DIR)
+	cd ..; GOBIN=$(realpath $(DATA_DIR)) go install ./pkg/$(notdir $@)
 
 $(OUTPUT)/cluster.yml: cluster.yml
 	mkdir -p $(OUTPUT)
-	sed 's/@BRIDGE_ADDRESS@/$(BRIDGE_ADDRESS)/' $< > $@
+	sed -e 's/@BRIDGE_ADDRESS@/$(BRIDGE_ADDRESS)/' \
+	    -e 's#@DATA_DIR@#$(DATA_DIR)#' $< > $@
 
 $(OUTPUT)/user-data.yml: user-data.yml
 	mkdir -p $(OUTPUT)
@@ -94,7 +96,7 @@ test: $(TEST_DEPS)
 placemat: $(PLACEMAT_DEPS) $(TEST_DEPS)
 	sudo rm -rf $(PLACEMAT_DATADIR)
 	sudo rm -rf $(VM_SHARED_DIR)
-	sudo systemd-run --unit=placemat.service $(PLACEMAT) -enable-virtfs $(abspath output/cluster.yml)
+	sudo systemd-run --unit=placemat.service $(PLACEMAT) $(abspath output/cluster.yml)
 	@echo 'Placemat is running.  To kill it, do "make stop".'
 
 stop:
