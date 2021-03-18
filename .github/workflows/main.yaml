@@ -1,0 +1,106 @@
+name: main
+on:
+  pull_request:
+  push:
+    branches:
+      - 'main'
+env:
+  go-version: 1.16
+  filename: "main.yaml"
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: ${{ env.go-version }}
+      - run: docker run -d --network host quay.io/coreos/etcd:v3.3
+      - run: make SUDO="sudo" setup
+      - run: make test
+      - run: |
+          TAG=${GITHUB_REF#refs/tags/v}
+          echo "tag: ${TAG}"
+          make deb VERSION=${TAG:-v0.1}
+      - name: Upload etcdpasswd deb package
+        uses: actions/upload-artifact@v2
+        with:
+          name: etcdpasswd
+          path: etcdpasswd_${TAG}-1_amd64.deb
+          retention-days: 1
+  mtest:
+    name: Mtest
+    needs: build
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Set up Cloud SDK for etcdpasswd
+        uses: google-github-actions/setup-gcloud@v0.2.1
+        with:
+          project_id: ${{ secrets.NECO_TEST_PROJECT_ID }}
+          service_account_key: ${{ secrets.NECO_TEST_SERVICE_ACCOUNT }}
+          export_default_credentials: true
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v2
+        with:
+          go-version: ${{ env.go-version }}
+      - name: Set GCP instance name
+        run: echo "INSTANCE_NAME=etcdpasswd-${{ github.run_number }}-$(TZ=Asia/Tokyo date +%H%M%S)" >> $GITHUB_ENV
+      - run: ./bin/run-mtest.sh ./functions
+      - name: Set the instance lifetime
+        if: ${{ failure() ||  cancelled() }}
+        run: |
+          . ./bin/env
+          $GCLOUD compute instances add-metadata ${INSTANCE_NAME} --zone ${ZONE} \
+            --metadata shutdown-at=$(date -Iseconds -d+30minutes)
+      - name: Notify to Slack
+        if: ${{ failure() ||  cancelled() }}
+        run: |
+          . ./bin/env
+          if [[ ${{ github.event_name }} == 'pull_request' ]]; then
+              BRANCH_NAME=${GITHUB_HEAD_REF}
+          else
+              BRANCH_NAME=${GITHUB_REF#refs/heads/}
+          fi
+          curl -X POST -H 'Content-type: application/json' --data "{
+            \"blocks\": [
+              {
+                \"type\": \"section\",
+                \"text\": {
+                  \"type\": \"mrkdwn\",
+                  \"text\": \"Failed: ${{ github.actor }}'s workflow (${{ github.workflow }}) in <https://github.com/${{ github.repository }}/actions/workflows/${{ env.filename }}|${{ github.repository }}> (<https://github.com/${{ github.repository }}/actions/workflows/${{ env.filename }}?query=branch%3A${BRANCH_NAME}|${BRANCH_NAME}>)\n Do you extend the lifetime of ${INSTANCE_NAME}?\"
+                },
+                \"accessory\": {
+                  \"type\": \"button\",
+                  \"text\": {
+                    \"type\": \"plain_text\",
+                    \"text\": \"Extend\",
+                    \"emoji\": true
+                  },
+                  \"value\": \"${INSTANCE_NAME}\"
+                }
+              }
+            ]
+          }" $SLACK_WEBHOOK_URL
+  release:
+    name: Release
+    needs: mtest
+    runs-on: ubuntu-20.04
+    if: startsWith(github.ref, 'refs/tags/v')
+    container:
+      image: 1.16.2.1_focal
+    steps:
+      - run: mkdir -p /tmp/upload
+      - name: Download etcdpasswd deb package
+        uses: actions/download-artifact@v2
+        with:
+          name: etcdpasswd
+          path: /tmp/upload
+      - run: |
+          TAG=${GITHUB_REF#refs/tags/v}
+          OWNER=$(echo ${{ github.repository }} | cut -d '/' -f 1)
+          REPOSITORY=$(echo ${{ github.repository }} | cut -d '/' -f 2)
+          if ${{ contains(github.ref, '-') }}; then
+            PRERELEASE="-prerelease"
+          fi
+          ghr -t ${{ secrets.GITHUB_TOKEN }} -u ${OWNER} -r ${REPOSITORY} -n ${TAG} ${PRERELEASE} -b "See [CHANGELOG.md](./CHANGELOG.md) for details." ${TAG} /tmp/upload
