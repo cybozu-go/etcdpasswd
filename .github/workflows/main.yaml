@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - 'main'
+    tags:
+      - 'v*'
 env:
   go-version: 1.16
   filename: "main.yaml"
@@ -46,7 +48,11 @@ jobs:
           go-version: ${{ env.go-version }}
       - name: Set GCP instance name
         run: echo "INSTANCE_NAME=etcdpasswd-${{ github.run_number }}-$(TZ=Asia/Tokyo date +%H%M%S)" >> $GITHUB_ENV
-      - run: ./bin/run-mtest.sh ./functions
+      - run: |
+          if [ ${{ github.event_name }} = "pull_request" ]; then
+            GITHUB_SHA=$(cat ${GITHUB_EVENT_PATH} | jq -r '.pull_request.head.sha')
+          fi
+          ./bin/run-mtest.sh ./functions
       - name: Set the instance lifetime
         if: ${{ failure() ||  cancelled() }}
         run: |
