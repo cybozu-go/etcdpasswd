@@ -21,15 +21,20 @@ jobs:
       - run: docker run -d --network host quay.io/coreos/etcd:v3.3
       - run: make SUDO="sudo" setup
       - run: make test
-      - run: |
-          TAG=${GITHUB_REF#refs/tags/v}
-          echo "tag: ${TAG}"
-          make deb VERSION=${TAG:-v0.1}
+      - name: Set tag name
+        id: tag-name
+        run: |
+          TAG=0.1
+          if ${{ startsWith(github.ref, 'refs/tags/v') }}; then
+            TAG=${GITHUB_REF#refs/tags/v}
+          fi
+          echo "::set-output name=tag::${TAG}"
+      - run: make deb VERSION=${{ steps.tag-name.outputs.tag }}
       - name: Upload etcdpasswd deb package
         uses: actions/upload-artifact@v2
         with:
           name: etcdpasswd
-          path: etcdpasswd_${TAG}-1_amd64.deb
+          path: etcdpasswd_${{ steps.tag-name.outputs.tag }}-1_amd64.deb
           retention-days: 1
   mtest:
     name: Mtest
@@ -49,7 +54,7 @@ jobs:
       - name: Set GCP instance name
         run: echo "INSTANCE_NAME=etcdpasswd-${{ github.run_number }}-$(TZ=Asia/Tokyo date +%H%M%S)" >> $GITHUB_ENV
       - run: |
-          if [ ${{ github.event_name }} = "pull_request" ]; then
+          if [[ ${{ github.event_name }} = "pull_request" ]]; then
             GITHUB_SHA=$(cat ${GITHUB_EVENT_PATH} | jq -r '.pull_request.head.sha')
           fi
           ./bin/run-mtest.sh ./functions
@@ -87,7 +92,7 @@ jobs:
                 }
               }
             ]
-          }" $SLACK_WEBHOOK_URL
+          }" ${{ secrets.SLACK_WEBHOOK_URL }}
   release:
     name: Release
     needs: mtest
