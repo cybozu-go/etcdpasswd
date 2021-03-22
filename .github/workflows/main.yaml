@@ -57,7 +57,7 @@ jobs:
           if [[ ${{ github.event_name }} = "pull_request" ]]; then
             GITHUB_SHA=$(cat ${GITHUB_EVENT_PATH} | jq -r '.pull_request.head.sha')
           fi
-          ./bin/run-mtest.sh ./functions
+          ./bin/run-mtest.sh
       - name: Set the instance lifetime
         if: ${{ failure() ||  cancelled() }}
         run: |
