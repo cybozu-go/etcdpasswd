@@ -29,7 +29,7 @@ jobs:
             TAG=${GITHUB_REF#refs/tags/v}
           fi
           echo "::set-output name=tag::${TAG}"
-      - run: make deb VERSION=${{ steps.tag-name.outputs.tag }}
+      - run: make deb VERSION=v${{ steps.tag-name.outputs.tag }}
       - name: Upload etcdpasswd deb package
         uses: actions/upload-artifact@v2
         with:
@@ -108,7 +108,7 @@ jobs:
           name: etcdpasswd
           path: /tmp/upload
       - run: |
-          TAG=${GITHUB_REF#refs/tags/v}
+          TAG=${GITHUB_REF#refs/tags/}
           OWNER=$(echo ${{ github.repository }} | cut -d '/' -f 1)
           REPOSITORY=$(echo ${{ github.repository }} | cut -d '/' -f 2)
           if ${{ contains(github.ref, '-') }}; then
