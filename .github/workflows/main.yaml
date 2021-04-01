@@ -21,20 +21,20 @@ jobs:
       - run: docker run -d --network host quay.io/coreos/etcd:v3.3
       - run: make SUDO="sudo" setup
       - run: make test
-      - name: Set tag name
-        id: tag-name
+      - name: Set version name
+        id: version
         run: |
-          TAG=0.1
+          VERSION=0.1
           if ${{ startsWith(github.ref, 'refs/tags/v') }}; then
-            TAG=${GITHUB_REF#refs/tags/v}
+            VERSION=${GITHUB_REF#refs/tags/v}
           fi
-          echo "::set-output name=tag::${TAG}"
-      - run: make deb VERSION=v${{ steps.tag-name.outputs.tag }}
+          echo "::set-output name=version::${VERSION}"
+      - run: make deb VERSION=v${{ steps.version.outputs.version }}
       - name: Upload etcdpasswd deb package
         uses: actions/upload-artifact@v2
         with:
           name: etcdpasswd
-          path: etcdpasswd_${{ steps.tag-name.outputs.tag }}-1_amd64.deb
+          path: etcdpasswd_${{ steps.version.outputs.version }}-1_amd64.deb
           retention-days: 1
   mtest:
     name: Mtest
@@ -108,10 +108,9 @@ jobs:
           name: etcdpasswd
           path: /tmp/upload
       - run: |
-          TAG=${GITHUB_REF#refs/tags/}
           OWNER=$(echo ${{ github.repository }} | cut -d '/' -f 1)
           REPOSITORY=$(echo ${{ github.repository }} | cut -d '/' -f 2)
           if ${{ contains(github.ref, '-') }}; then
             PRERELEASE="-prerelease"
           fi
-          ghr -t ${{ secrets.GITHUB_TOKEN }} -u ${OWNER} -r ${REPOSITORY} -n ${TAG} ${PRERELEASE} -b "See [CHANGELOG.md](./CHANGELOG.md) for details." ${TAG} /tmp/upload
+          ghr -t ${{ secrets.GITHUB_TOKEN }} -u ${OWNER} -r ${REPOSITORY} -n v${{ needs.mtest.outputs.version }} ${PRERELEASE} -b "See [CHANGELOG.md](./CHANGELOG.md) for details." v${{ needs.mtest.outputs.version }} /tmp/upload
