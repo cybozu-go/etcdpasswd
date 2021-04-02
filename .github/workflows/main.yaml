@@ -99,7 +99,7 @@ jobs:
     runs-on: ubuntu-20.04
     if: startsWith(github.ref, 'refs/tags/v')
     container:
-      image: 1.16.2.1_focal
+      image: quay.io/cybozu/golang:1.16-focal
     steps:
       - run: mkdir -p /tmp/upload
       - name: Download etcdpasswd deb package
