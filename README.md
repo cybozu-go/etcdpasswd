@@ -1,6 +1,6 @@
 [![GitHub release](https://img.shields.io/github/release/cybozu-go/etcdpasswd.svg?maxAge=60)][releases]
 [![GoDoc](https://godoc.org/github.com/cybozu-go/etcdpasswd?status.svg)][godoc]
-[![CircleCI](https://circleci.com/gh/cybozu-go/etcdpasswd.svg?style=svg)](https://circleci.com/gh/cybozu-go/etcdpasswd)
+[![CI](https://github.com/cybozu-go/etcdpasswd/workflows/main/badge.svg)](https://github.com/cybozu-go/etcdpasswd/actions)
 [![Go Report Card](https://goreportcard.com/badge/github.com/cybozu-go/etcdpasswd)](https://goreportcard.com/report/github.com/cybozu-go/etcdpasswd)
 
 etcdpasswd
@@ -24,7 +24,7 @@ Installation
 
 1. Prepare an etcd cluster.
 
-1. Create `/etc/etcdpasswd/config.yml`.
+2. Create `/etc/etcdpasswd/config.yml`.
 
     This file provides parameters to connect to the etcd cluster.
     A sample configuration looks like this:
@@ -39,7 +39,7 @@ Installation
     tls-key-file: /etc/etcdpasswd/etcd.key
     ```
 
-1. Run `ep-agent`.
+3. Run `ep-agent`.
 
     A sample systemd unit file is available at [cmd/ep-agent/ep-agent.service](cmd/ep-agent/ep-agent.service).
     Use it to run `ep-agent` as a systemd service as follows:
@@ -52,7 +52,7 @@ Installation
     $ sudo systemctl start ep-agent.service
     ```
 
-1. Use `etcdpasswd` to initialize the database.
+4. Use `etcdpasswd` to initialize the database.
 
     ```console
     $ etcdpasswd set start-uid 2000

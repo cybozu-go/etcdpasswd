@@ -57,7 +57,7 @@ Bump version
 Publish GitHub release page
 ---------------------------
 
-Once a new tag is pushed to GitHub, [CircleCI][] automatically
+Once a new tag is pushed to GitHub, [GitHub Actions][] automatically
 builds a deb package for the new release, and uploads it to GitHub
 releases page.
 
@@ -66,4 +66,4 @@ the result.  You may manually edit the page to describe the release.
 
 [semver]: https://semver.org/spec/v2.0.0.html
 [example]: https://github.com/cybozu-go/etcdpasswd/commit/77d95384ac6c97e7f48281eaf23cb94f68867f79
-[CircleCI]: https://circleci.com/gh/cybozu-go/etcdpasswd
+[GitHub Actions]: https://github.com/cybozu-go/etcdpasswd/actions

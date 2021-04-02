@@ -48,7 +48,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 - Add this file.
-- Build and upload deb package on CircleCI.
+- Build and upload deb package on GitHub Actions.
 
 ## [0.2] - 2018-07-20
 
