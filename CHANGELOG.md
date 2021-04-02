@@ -5,6 +5,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- Upgrade go version to 1.16 (#38)
+
 ## [1.1.0] - 2021-02-01
 
 ### Changed
