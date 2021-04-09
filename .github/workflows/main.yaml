@@ -110,7 +110,8 @@ jobs:
       - run: |
           OWNER=$(echo ${{ github.repository }} | cut -d '/' -f 1)
           REPOSITORY=$(echo ${{ github.repository }} | cut -d '/' -f 2)
+          VERSION=${GITHUB_REF#refs/tags/v}
           if ${{ contains(github.ref, '-') }}; then
             PRERELEASE="-prerelease"
           fi
-          ghr -t ${{ secrets.GITHUB_TOKEN }} -u ${OWNER} -r ${REPOSITORY} -n v${{ needs.mtest.outputs.version }} ${PRERELEASE} -b "See [CHANGELOG.md](./CHANGELOG.md) for details." v${{ needs.mtest.outputs.version }} /tmp/upload
+          ghr -t ${{ secrets.GITHUB_TOKEN }} -u ${OWNER} -r ${REPOSITORY} -n v${VERSION} ${PRERELEASE} -b "See [CHANGELOG.md](./CHANGELOG.md) for details." v${VERSION} /tmp/upload
