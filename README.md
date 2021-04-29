@@ -1,5 +1,5 @@
 [![GitHub release](https://img.shields.io/github/release/cybozu-go/etcdpasswd.svg?maxAge=60)][releases]
-[![GoDoc](https://godoc.org/github.com/cybozu-go/etcdpasswd?status.svg)][godoc]
+[![Go Reference](https://pkg.go.dev/badge/github.com/cybozu-go/etcdpasswd.svg)](https://pkg.go.dev/github.com/cybozu-go/etcdpasswd)
 [![CI](https://github.com/cybozu-go/etcdpasswd/workflows/main/badge.svg)](https://github.com/cybozu-go/etcdpasswd/actions)
 [![Go Report Card](https://goreportcard.com/badge/github.com/cybozu-go/etcdpasswd)](https://goreportcard.com/report/github.com/cybozu-go/etcdpasswd)
 
