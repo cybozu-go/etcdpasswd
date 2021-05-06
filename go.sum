@@ -23,6 +23,8 @@ github.com/coreos/pkg v0.0.0-20180928190104-399ea9e2e55f h1:lBNOc5arjvs8E5mO2tbp
 github.com/coreos/pkg v0.0.0-20180928190104-399ea9e2e55f/go.mod h1:E3G3o1h8I7cfcXa63jLwjI0eiQQMgzzUDFVpN/nH/eA=
 github.com/cybozu-go/etcdutil v1.3.5 h1:Tq+PyVACGDHqMEJNl7U7YmrT1TA/9u4GhL1gSEsKQ7A=
 github.com/cybozu-go/etcdutil v1.3.5/go.mod h1:4TmpwzgBnmucZgJT2pv97yresdoM67DjX0P6bnUUthE=
+github.com/cybozu-go/etcdutil v1.3.6 h1:0JVzGIIXqqu7xhzMlDPhOW5PafbvVk/sQs4NFfD9ViI=
+github.com/cybozu-go/etcdutil v1.3.6/go.mod h1:4TmpwzgBnmucZgJT2pv97yresdoM67DjX0P6bnUUthE=
 github.com/cybozu-go/log v1.5.0/go.mod h1:zpfovuCgUx+a/ErvQrThoT+/z1RVQoLDOf95wkBeRiw=
 github.com/cybozu-go/log v1.6.0 h1:4pFNEdcdfDg2NpvdQhetROskivCyJemwL/i1RpzL4/s=
 github.com/cybozu-go/log v1.6.0/go.mod h1:2iAEvn2cL5dy/1uP5Jfb0Ao9+DUnDr//V0Bk3WDJX1U=
