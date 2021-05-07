@@ -6,7 +6,7 @@ replace google.golang.org/grpc => google.golang.org/grpc v1.26.0
 
 require (
 	github.com/coreos/etcd v3.3.25+incompatible
-	github.com/cybozu-go/etcdutil v1.3.5
+	github.com/cybozu-go/etcdutil v1.3.6
 	github.com/cybozu-go/log v1.6.0
 	github.com/cybozu-go/well v1.10.0
 	github.com/google/subcommands v1.2.0
