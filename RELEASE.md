@@ -37,20 +37,20 @@ Bump version
 2. Make a branch to release
 
     ```console
-    $ git neco dev "$VERSION"`
+    $ git neco dev "$VERSION"
     ```
 
-4. Update `version.go`.
-5. Edit `CHANGELOG.md` for the new version ([example][]).
-6. Commit the change and push it.
+3. Update `version.go`.
+4. Edit `CHANGELOG.md` for the new version ([example][]).
+5. Commit the change and push it.
 
     ```console
     $ git commit -a -m "Bump version to $VERSION"
     $ git neco review
     ```
 
-7. Merge this branch.
-6. Add a git tag to the main HEAD, then push it.
+6. Merge this branch.
+7. Add a git tag to the main HEAD, then push it.
 
     ```console
     $ git checkout main
