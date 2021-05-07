@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.1.2] - 2021-05-07
+
+### Changed
+- Update etcdutil version to 1.3.6 (#47)
+
 ## [1.1.1] - 2021-04-12
 
 ### Changed
@@ -63,7 +68,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 [placemat]: https://github.com/cybozu-go/placemat
 [etcdutil]: https://github.com/cybozu-go/etcdutil
-[Unreleased]: https://github.com/cybozu-go/etcdpasswd/compare/v1.1.1...HEAD
+[Unreleased]: https://github.com/cybozu-go/etcdpasswd/compare/v1.1.2...HEAD
+[1.1.2]: https://github.com/cybozu-go/etcdpasswd/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/cybozu-go/etcdpasswd/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/cybozu-go/etcdpasswd/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/cybozu-go/etcdpasswd/compare/v0.7...v1.0.0
