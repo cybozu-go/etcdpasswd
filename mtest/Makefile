@@ -7,7 +7,7 @@ HOST2 = 10.0.0.102
 HOST3 = 10.0.0.103
 PLACEMAT = /usr/bin/placemat2
 GINKGO = $(GOPATH)/bin/ginkgo
-ETCD_VERSION = 3.3.12
+ETCD_VERSION = 3.4.16
 PLACEMAT_DATADIR = /var/scratch/placemat
 SUDO = sudo
 
@@ -51,7 +51,7 @@ all:
 	@echo "'make test' accepts SUITE."
 
 $(ETCD_ARCHIVE):
-	curl -sSLf -o $@ https://github.com/coreos/etcd/releases/download/v$(ETCD_VERSION)/etcd-v$(ETCD_VERSION)-linux-amd64.tar.gz
+	curl -sSLf -o $@ https://github.com/etcd-io/etcd/releases/download/v$(ETCD_VERSION)/etcd-v$(ETCD_VERSION)-linux-amd64.tar.gz
 
 $(UBUNTU_IMAGE):
 	curl -sSLf -o $@ https://cloud-images.ubuntu.com/releases/20.04/release/$@
@@ -110,6 +110,6 @@ clean:
 	rm -rf $(OUTPUT)
 
 setup:
-	go install github.com/onsi/ginkgo/ginkgo
+	go install github.com/onsi/ginkgo/ginkgo@latest
 
 .PHONY: all test placemat stop clean setup

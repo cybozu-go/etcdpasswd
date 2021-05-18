@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/coreos/etcd/clientv3"
+	"go.etcd.io/etcd/clientv3"
 )
 
 func TestLock(t *testing.T) {

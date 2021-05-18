@@ -5,7 +5,7 @@ DOCDIR := debian/usr/share/doc/etcdpasswd
 CONTROL := debian/DEBIAN/control
 SUDO = sudo
 
-ETCD_VER=3.3.10
+ETCD_VER=3.4.16
 
 all: test
 
