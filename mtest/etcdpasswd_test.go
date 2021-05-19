@@ -18,7 +18,7 @@ func testEtcdpasswd() {
 
 		By("create group and node users")
 		etcdpasswdSafe("group", "add", group)
-		etcdpasswdSafe("user", "add", "-group", group, user)
+		etcdpasswdSafe("user", "add", "--group", group, user)
 
 		By("should create group and user")
 		stdout, stderr, err := etcdpasswd("user", "list")
