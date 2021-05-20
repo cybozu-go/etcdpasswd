@@ -56,7 +56,6 @@ git checkout -qf ${GITHUB_SHA}
 cd mtest
 cp /assets/etcd-*.tar.gz .
 cp /assets/ubuntu-*.img .
-make setup
 make placemat
 sleep 3
 exec make test TARGET="${TARGET}"

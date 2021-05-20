@@ -19,10 +19,6 @@ Synopsis
 
 [`Makefile`](../mtest/Makefile) setup virtual machine environment and runs mtest.
 
-* `make setup`
-
-    Install mtest required components.
-
 * `make clean`
 
     Delete generated files in `output/` directory.
