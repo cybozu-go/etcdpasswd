@@ -6,12 +6,11 @@ HOST1 = 10.0.0.101
 HOST2 = 10.0.0.102
 HOST3 = 10.0.0.103
 PLACEMAT = /usr/bin/placemat2
-GINKGO = $(GOPATH)/bin/ginkgo
 ETCD_VERSION = 3.4.16
 PLACEMAT_DATADIR = /var/scratch/placemat
 SUDO = sudo
 
-export HOST1 HOST2 HOST3 PLACEMAT GINKGO
+export HOST1 HOST2 HOST3 PLACEMAT
 
 # non-configuration variables
 ETCD_ARCHIVE := etcd-v$(ETCD_VERSION)-linux-amd64.tar.gz
@@ -40,6 +39,7 @@ PLACEMAT_DEPS = \
 	$(OUTPUT)/network3.yml \
 	$(UBUNTU_IMAGE)
 
+.PHONY: all
 all:
 	@echo "Specify one of these targets:"
 	@echo
@@ -90,15 +90,18 @@ $(OUTPUT)/network3.yml: network.yml
             -e 's/@HOST@/$(HOST3)/' $< > $@
 
 # Targets
+.PHONY: test
 test: $(TEST_DEPS)
 	./test.sh "$(TARGET)"
 
+.PHONY: placemat
 placemat: $(PLACEMAT_DEPS) $(TEST_DEPS)
 	sudo rm -rf $(PLACEMAT_DATADIR)
 	sudo rm -rf $(VM_SHARED_DIR)
 	sudo systemd-run --unit=placemat.service $(PLACEMAT) $(abspath output/cluster.yml)
 	@echo 'Placemat is running.  To kill it, do "make stop".'
 
+.PHONY: stop
 stop:
 	sudo systemctl stop placemat.service
 	sudo systemctl disable placemat.service
@@ -106,10 +109,6 @@ stop:
 	sudo systemctl daemon-reload
 	sudo systemctl reset-failed placemat.service
 
+.PHONY: clean
 clean:
 	rm -rf $(OUTPUT)
-
-setup:
-	go install github.com/onsi/ginkgo/ginkgo@latest
-
-.PHONY: all test placemat stop clean setup

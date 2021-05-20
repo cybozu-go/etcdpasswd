@@ -7,3 +7,6 @@
 /debian
 !/debian/DEBIAN
 .vscode/
+
+# ignore binaries
+/bin
