@@ -31,7 +31,7 @@ var userUpdateCmd = &cobra.Command{
 			user.Group = userUpdateConfig.group
 		}
 		if len(userUpdateConfig.groups) > 0 {
-			user.Groups = []string(userUpdateConfig.groups)
+			user.Groups = userUpdateConfig.groups
 		}
 		if len(userUpdateConfig.shell) > 0 {
 			user.Shell = userUpdateConfig.shell

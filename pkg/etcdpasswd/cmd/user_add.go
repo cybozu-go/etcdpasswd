@@ -23,7 +23,7 @@ var userAddCmd = &cobra.Command{
 			Name:        name,
 			DisplayName: userAddConfig.displayName,
 			Group:       userAddConfig.group,
-			Groups:      []string(userAddConfig.groups),
+			Groups:      userAddConfig.groups,
 			Shell:       userAddConfig.shell,
 		}
 
