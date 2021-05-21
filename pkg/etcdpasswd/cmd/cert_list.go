@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -23,7 +22,7 @@ var certListCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		name := args[0]
-		user, _, err := client.GetUser(context.Background(), name)
+		user, _, err := client.GetUser(cmd.Context(), name)
 		if err != nil {
 			return err
 		}

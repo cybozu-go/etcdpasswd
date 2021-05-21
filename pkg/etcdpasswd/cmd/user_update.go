@@ -1,15 +1,13 @@
 package cmd
 
 import (
-	"context"
-
 	"github.com/spf13/cobra"
 )
 
 var userUpdateConfig struct {
 	displayName string
 	group       string
-	groups      commaStrings
+	groups      []string
 	shell       string
 }
 
@@ -19,7 +17,7 @@ var userUpdateCmd = &cobra.Command{
 	Long:  "update an existing user.",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx := context.Background()
+		ctx := cmd.Context()
 		name := args[0]
 		user, rev, err := client.GetUser(ctx, name)
 		if err != nil {
@@ -49,6 +47,6 @@ func init() {
 	f := userUpdateCmd.Flags()
 	f.StringVar(&userUpdateConfig.displayName, "display", "", "display name")
 	f.StringVar(&userUpdateConfig.group, "group", "", "primary group")
-	f.Var(&userUpdateConfig.groups, "groups", "comma-separated supplementary groups")
+	f.StringSliceVar(&userUpdateConfig.groups, "groups", []string{}, "comma-separated supplementary groups")
 	f.StringVar(&userUpdateConfig.shell, "shell", "", "shell program")
 }

@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -13,7 +12,7 @@ var lockerListCmd = &cobra.Command{
 	Long:  "list password-locked users.",
 	Args:  cobra.NoArgs,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		users, err := client.ListLocked(context.Background())
+		users, err := client.ListLocked(cmd.Context())
 		if err != nil {
 			return err
 		}

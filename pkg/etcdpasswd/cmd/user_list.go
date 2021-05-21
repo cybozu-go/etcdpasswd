@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -14,7 +13,7 @@ var userListCmd = &cobra.Command{
 
 	Args: cobra.NoArgs,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		users, err := client.ListUsers(context.Background())
+		users, err := client.ListUsers(cmd.Context())
 		if err != nil {
 			return err
 		}

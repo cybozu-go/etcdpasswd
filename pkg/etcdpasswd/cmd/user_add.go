@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"context"
-
 	"github.com/cybozu-go/etcdpasswd"
 	"github.com/spf13/cobra"
 )
@@ -10,7 +8,7 @@ import (
 var userAddConfig struct {
 	displayName string
 	group       string
-	groups      commaStrings
+	groups      []string
 	shell       string
 }
 
@@ -29,7 +27,7 @@ var userAddCmd = &cobra.Command{
 			Shell:       userAddConfig.shell,
 		}
 
-		return client.AddUser(context.Background(), user)
+		return client.AddUser(cmd.Context(), user)
 	},
 }
 
@@ -39,6 +37,6 @@ func init() {
 	f := userAddCmd.Flags()
 	f.StringVar(&userAddConfig.displayName, "display", "", "display name")
 	f.StringVar(&userAddConfig.group, "group", "", "primary group")
-	f.Var(&userAddConfig.groups, "groups", "comma-separated supplementary groups")
+	f.StringSliceVar(&userAddConfig.groups, "groups", []string{}, "comma-separated supplementary groups")
 	f.StringVar(&userAddConfig.shell, "shell", "", "shell program")
 }

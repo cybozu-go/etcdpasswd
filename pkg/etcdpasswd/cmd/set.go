@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"context"
 	"errors"
 	"strconv"
 	"strings"
@@ -13,7 +12,7 @@ import (
 var setCmd = &cobra.Command{
 	Use:   "set CONFIG VALUE",
 	Short: "set configuration",
-	Long: `Usage: etcdpasswd set CONFIG VALUE
+	Long: `set configuration.
 
 CONFIG is one of:
     start-uid:      the beginning UID assigned to managed users.
@@ -26,7 +25,7 @@ CONFIG is one of:
 	RunE: func(cmd *cobra.Command, args []string) error {
 		configName := args[0]
 		configValue := args[1]
-		ctx := context.Background()
+		ctx := cmd.Context()
 
 	RETRY:
 		config, rev, err := client.GetConfig(ctx)

@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"context"
 	"fmt"
 
 	"github.com/spf13/cobra"
@@ -13,7 +12,7 @@ var groupListCmd = &cobra.Command{
 	Long:  "list groups",
 	Args:  cobra.NoArgs,
 	RunE: func(cmd *cobra.Command, args []string) error {
-		groups, err := client.ListGroups(context.Background())
+		groups, err := client.ListGroups(cmd.Context())
 		if err != nil {
 			return err
 		}

@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"context"
 	"errors"
 	"strconv"
 
@@ -14,7 +13,7 @@ var certRemoveCmd = &cobra.Command{
 	Long:  "remove a SSH public key of a user.",
 	Args:  cobra.ExactArgs(2),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		ctx := context.Background()
+		ctx := cmd.Context()
 		name := args[0]
 		index, err := strconv.Atoi(args[1])
 		if err != nil {

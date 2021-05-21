@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"bytes"
-	"context"
 	"io"
 	"os"
 
@@ -41,7 +40,7 @@ If FILE is not specified, public key is read from stdin.`,
 			return err
 		}
 
-		ctx := context.Background()
+		ctx := cmd.Context()
 		user, rev, err := client.GetUser(ctx, name)
 		if err != nil {
 			return err

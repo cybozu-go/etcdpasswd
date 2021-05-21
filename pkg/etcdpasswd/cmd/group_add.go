@@ -1,8 +1,6 @@
 package cmd
 
 import (
-	"context"
-
 	"github.com/spf13/cobra"
 )
 
@@ -13,7 +11,7 @@ var groupAddCmd = &cobra.Command{
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		name := args[0]
-		return client.AddGroup(context.Background(), name)
+		return client.AddGroup(cmd.Context(), name)
 	},
 }
 
