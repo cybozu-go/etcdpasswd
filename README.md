@@ -74,7 +74,7 @@ Read [docs/spec.md](docs/spec.md).
 License
 -------
 
-MIT
+etcdpasswd is licensed under the Apache License, Version 2.0.
 
 [releases]: https://github.com/cybozu-go/etcdpasswd/releases
 [godoc]: https://godoc.org/github.com/cybozu-go/etcdpasswd
