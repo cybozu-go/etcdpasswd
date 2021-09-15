@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.2.1] - 2021-09-15
+
+## Changed
+- upgrade golang to 1.17 (#53)
+
 ## [1.2.0] - 2021-05-26
 
 ### Changed
@@ -74,7 +79,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 [placemat]: https://github.com/cybozu-go/placemat
 [etcdutil]: https://github.com/cybozu-go/etcdutil
-[Unreleased]: https://github.com/cybozu-go/etcdpasswd/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/cybozu-go/etcdpasswd/compare/v1.2.1...HEAD
+[1.2.1]: https://github.com/cybozu-go/etcdpasswd/compare/v1.2.0...v1.2.1
 [1.2.0]: https://github.com/cybozu-go/etcdpasswd/compare/v1.1.2...v1.2.0
 [1.1.2]: https://github.com/cybozu-go/etcdpasswd/compare/v1.1.1...v1.1.2
 [1.1.1]: https://github.com/cybozu-go/etcdpasswd/compare/v1.1.0...v1.1.1
