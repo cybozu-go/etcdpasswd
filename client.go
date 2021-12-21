@@ -4,8 +4,8 @@ import (
 	"context"
 	"strconv"
 
-	"go.etcd.io/etcd/clientv3"
-	"go.etcd.io/etcd/clientv3/clientv3util"
+	clientv3 "go.etcd.io/etcd/client/v3"
+	"go.etcd.io/etcd/client/v3/clientv3util"
 )
 
 // Client provides high-level API to edit etcd database.

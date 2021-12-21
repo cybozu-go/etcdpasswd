@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"go.etcd.io/etcd/clientv3"
+	clientv3 "go.etcd.io/etcd/client/v3"
 )
 
 func testGroupPrepare(t *testing.T, client Client) {

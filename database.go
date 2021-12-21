@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"strconv"
 
-	"go.etcd.io/etcd/clientv3"
+	clientv3 "go.etcd.io/etcd/client/v3"
 )
 
 // Database is a on-memory snapshot of users and groups in etcd database.
