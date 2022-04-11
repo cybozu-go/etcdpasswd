@@ -16,8 +16,13 @@ ETCD := $(BIN_DIR)/etcd
 
 all: test
 
+.PHONY: check-generate
+check-generate:
+	go mod tidy
+	git diff --exit-code --name-only
+
 .PHONY: test
-test: test-tools
+test:
 	test -z "$$(gofmt -s -l . | tee /dev/stderr)"
 	$(STATICCHECK) ./...
 	$(NILERR) ./...
