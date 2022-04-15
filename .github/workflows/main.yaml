@@ -18,7 +18,7 @@ jobs:
       - uses: actions/setup-go@v3
         with:
           go-version: ${{ env.go-version }}
-      - run: docker run -d --network host gcr.io/etcd-development/etcd:v3.5.2
+      - run: docker run -d --network host gcr.io/etcd-development/etcd:v3.5.3
       - run: make SUDO="sudo" setup
       - run: make test-tools
       - run: make check-generate
