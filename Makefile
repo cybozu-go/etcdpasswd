@@ -5,7 +5,7 @@ DOC_DIR := debian/usr/share/doc/etcdpasswd
 CONTROL := debian/DEBIAN/control
 SUDO = sudo
 
-ETCD_VER=3.5.1
+ETCD_VER=3.5.3
 
 # Test tools
 BIN_DIR := $(shell pwd)/bin
@@ -16,8 +16,13 @@ ETCD := $(BIN_DIR)/etcd
 
 all: test
 
+.PHONY: check-generate
+check-generate:
+	go mod tidy
+	git diff --exit-code --name-only
+
 .PHONY: test
-test: test-tools
+test:
 	test -z "$$(gofmt -s -l . | tee /dev/stderr)"
 	$(STATICCHECK) ./...
 	$(NILERR) ./...
