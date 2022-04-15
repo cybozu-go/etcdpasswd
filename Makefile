@@ -5,7 +5,7 @@ DOC_DIR := debian/usr/share/doc/etcdpasswd
 CONTROL := debian/DEBIAN/control
 SUDO = sudo
 
-ETCD_VER=3.5.1
+ETCD_VER=3.5.3
 
 # Test tools
 BIN_DIR := $(shell pwd)/bin
