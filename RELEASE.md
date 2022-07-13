@@ -44,7 +44,7 @@ Bump version
 2. Make a branch to release
 
     ```console
-    $ git neco dev "$VERSION"
+    $ git neco dev "bump-$VERSION"
     ```
 
 3. Update `version.go`.
