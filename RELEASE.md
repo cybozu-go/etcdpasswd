@@ -61,7 +61,7 @@ Bump version
 
     ```console
     # Set VERSION again.
-    $ VERSION=x.y.x
+    $ VERSION=x.y.z
     $ echo $VERSION
 
     $ git checkout main
