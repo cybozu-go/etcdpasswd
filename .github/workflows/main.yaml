@@ -30,7 +30,7 @@ jobs:
           if ${{ startsWith(github.ref, 'refs/tags/v') }}; then
             VERSION=${GITHUB_REF#refs/tags/v}
           fi
-          echo "::set-output name=version::${VERSION}"
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
       - run: make deb VERSION=v${{ steps.version.outputs.version }}
       - name: Upload etcdpasswd deb package
         uses: actions/upload-artifact@v3
