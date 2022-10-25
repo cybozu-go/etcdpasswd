@@ -10,7 +10,6 @@ ETCD_VER=3.5.4
 # Test tools
 BIN_DIR := $(shell pwd)/bin
 STATICCHECK := $(BIN_DIR)/staticcheck
-NILERR := $(BIN_DIR)/nilerr
 CUSTOM_CHECKER := $(BIN_DIR)/custom-checker
 ETCD := $(BIN_DIR)/etcd
 
@@ -25,7 +24,6 @@ check-generate:
 test:
 	test -z "$$(gofmt -s -l . | tee /dev/stderr)"
 	$(STATICCHECK) ./...
-	$(NILERR) ./...
 	test -z "$$($(CUSTOM_CHECKER) -restrictpkg.packages=html/template,log $$(go list ./...) 2>&1 | tee /dev/stderr)"
 	go test -race -count=1 -v ./...
 	go vet ./...
@@ -48,7 +46,7 @@ deb: $(CONTROL)
 	fakeroot dpkg-deb --build debian .
 
 .PHONY: test-tools
-test-tools: $(STATICCHECK) $(NILERR) $(CUSTOM_CHECKER) $(ETCD)
+test-tools: $(STATICCHECK) $(CUSTOM_CHECKER) $(ETCD)
 
 .PHONY: clean
 clean:
@@ -64,10 +62,6 @@ setup:
 $(STATICCHECK):
 	mkdir -p $(BIN_DIR)
 	GOBIN=$(BIN_DIR) go install honnef.co/go/tools/cmd/staticcheck@latest
-
-$(NILERR):
-	mkdir -p $(BIN_DIR)
-	GOBIN=$(BIN_DIR) go install github.com/gostaticanalysis/nilerr/cmd/nilerr@latest
 
 $(CUSTOM_CHECKER):
 	mkdir -p $(BIN_DIR)
