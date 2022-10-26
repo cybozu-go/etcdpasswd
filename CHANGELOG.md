@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.4.1] - 2022-10-25
 
+### Changed
 - Update dependencies (#61, #63)
     - Update etcd to v3.5.4
     - Upgrade Golang to 1.19
