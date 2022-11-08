@@ -3,13 +3,13 @@ module github.com/cybozu-go/etcdpasswd
 go 1.19
 
 require (
-	github.com/cybozu-go/etcdutil v1.6.1
+	github.com/cybozu-go/etcdutil v1.6.2
 	github.com/cybozu-go/log v1.6.1
 	github.com/cybozu-go/well v1.11.1
 	github.com/onsi/ginkgo v1.16.5
 	github.com/onsi/gomega v1.22.1
 	github.com/spf13/cobra v1.6.1
-	go.etcd.io/etcd/client/v3 v3.5.4
+	go.etcd.io/etcd/client/v3 v3.5.5
 	golang.org/x/crypto v0.1.0
 	sigs.k8s.io/yaml v1.3.0
 )

@@ -7,6 +7,8 @@
 /debian
 !/debian/DEBIAN
 .vscode/
+.idea/
+/vendor
 
 # ignore binaries
 /bin
