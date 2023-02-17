@@ -13,7 +13,7 @@ fin() {
 }
 trap fin INT TERM HUP 0
 
-go test -v -count 1 . -ginkgo.v -ginkgo.progress -ginkgo.focus="${TARGET}"
+go test -v -count 1 . -ginkgo.v -ginkgo.focus="${TARGET}"
 RET=$?
 
 exit $RET

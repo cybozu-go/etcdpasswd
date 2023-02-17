@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- Update dependencies in [#67](https://github.com/cybozu-go/etcdpasswd/pull/67)
+    - Update etcd to v3.5.7
+    - Update testing/building environments
+
 ## [1.4.1] - 2022-10-25
 
 ### Changed
