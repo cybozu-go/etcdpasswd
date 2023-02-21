@@ -5,67 +5,72 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+- Update dependencies in [#67](https://github.com/cybozu-go/etcdpasswd/pull/67)
+    - Update etcd to v3.5.7
+    - Update testing/building environments
+
 ## [1.4.1] - 2022-10-25
 
 ### Changed
-- Update dependencies (#61, #63)
+- Update dependencies ([#61](https://github.com/cybozu-go/etcdpasswd/pull/61), [#63](https://github.com/cybozu-go/etcdpasswd/pull/63))
     - Update etcd to v3.5.4
     - Upgrade Golang to 1.19
 
 ## [1.4.0] - 2022-04-15
 
 ### Changed
-- Update dependencies (#57)
+- Update dependencies ([#57](https://github.com/cybozu-go/etcdpasswd/pull/57))
 
 ## [1.3.0] - 2021-12-21
 
 ### Changed
-- update for etcd 3.5.1 (#55)
+- update for etcd 3.5.1 ([#55](https://github.com/cybozu-go/etcdpasswd/pull/55))
 
 ## [1.2.1] - 2021-09-15
 
 ### Changed
-- upgrade golang to 1.17 (#53)
+- upgrade golang to 1.17 ([#53](https://github.com/cybozu-go/etcdpasswd/pull/53))
 
 ## [1.2.0] - 2021-05-26
 
 ### Changed
-- Support etcd 3.4 as a backend store in addtion to etcd 3.3 (#49).
-- Flags for `etcdpasswd` command is changed from single dash (`-config`) to double dash (`--config`) (#50).
+- Support etcd 3.4 as a backend store in addtion to etcd 3.3 ([#49](https://github.com/cybozu-go/etcdpasswd/pull/49)).
+- Flags for `etcdpasswd` command is changed from single dash (`-config`) to double dash (`--config`) ([#50](https://github.com/cybozu-go/etcdpasswd/pull/50)).
 
 ## [1.1.2] - 2021-05-07
 
 ### Changed
-- Update etcdutil version to 1.3.6 (#47)
+- Update etcdutil version to 1.3.6 ([#47](https://github.com/cybozu-go/etcdpasswd/pull/47))
 
 ## [1.1.1] - 2021-04-12
 
 ### Changed
-- Upgrade go version to 1.16 (#38)
-- Update release workflow (#39)
+- Upgrade go version to 1.16 ([#38](https://github.com/cybozu-go/etcdpasswd/pull/38))
+- Update release workflow ([#39](https://github.com/cybozu-go/etcdpasswd/pull/39))
 
 ## [1.1.0] - 2021-02-01
 
 ### Changed
-- Update etcdutil to 1.3.5 and other dependencies (#36)
-- Test on Ubuntu 20.04 (#36)
+- Update etcdutil to 1.3.5 and other dependencies ([#36](https://github.com/cybozu-go/etcdpasswd/pull/36))
+- Test on Ubuntu 20.04 ([#36](https://github.com/cybozu-go/etcdpasswd/pull/36))
 
 ## [1.0.0] - 2019-08-19
 
 ### Changed
-- Update etcdutil to 1.3.2 (#27).
+- Update etcdutil to 1.3.2 ([#27](https://github.com/cybozu-go/etcdpasswd/pull/27)).
 
 ## [0.7] - 2019-01-16
 
 ### Changed
-- Change location of config files (#16).
+- Change location of config files ([#16](https://github.com/cybozu-go/etcdpasswd/pull/16)).
 
 ### Added
-- Opt in to [Go modules](https://github.com/golang/go/wiki/Modules) (#12).
+- Opt in to [Go modules](https://github.com/golang/go/wiki/Modules) ([#12](https://github.com/cybozu-go/etcdpasswd/pull/12)).
 
 ### Changed
-- Update etcdutil to v1.3.1 (#14).
-- Use cybozu-go/well (#15).
+- Update etcdutil to v1.3.1 ([#14](https://github.com/cybozu-go/etcdpasswd/pull/14)).
+- Use cybozu-go/well ([#15](https://github.com/cybozu-go/etcdpasswd/pull/15)).
 
 ## [0.6] - 2019-01-16
 
@@ -81,7 +86,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Added
 
-- Support for TLS client authentication for etcd using etcdutil(#8).
+- Support for TLS client authentication for etcd using etcdutil([#8](https://github.com/cybozu-go/etcdpasswd/pull/8)).
 
 ## [0.3] - 2018-07-25
 
