@@ -63,7 +63,7 @@ $(DATA_DIR)/etcd $(DATA_DIR)/etcdctl: $(ETCD_ARCHIVE)
 
 $(DATA_DIR)/etcdpasswd $(DATA_DIR)/ep-agent:
 	mkdir -p $(DATA_DIR)
-	cd ..; GOBIN=$(realpath $(DATA_DIR)) go install ./pkg/$(notdir $@)
+	cd ..; GOBIN=$(realpath $(DATA_DIR)) CGO_ENABLED=0 go install ./pkg/$(notdir $@)
 
 $(OUTPUT)/cluster.yml: cluster.yml
 	mkdir -p $(OUTPUT)

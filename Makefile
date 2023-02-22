@@ -34,10 +34,10 @@ $(CONTROL): control
 .PHONY: deb
 deb: $(CONTROL)
 	mkdir -p debian/usr/bin
-	GOBIN=$(CURDIR)/debian/usr/bin go install ./pkg/etcdpasswd
+	GOBIN=$(CURDIR)/debian/usr/bin CGO_ENABLED=0 go install -ldflags="-s -w" ./pkg/etcdpasswd
 	mkdir -p debian/usr/sbin
-	GOBIN=$(CURDIR)/debian/usr/sbin go install ./pkg/ep-agent
-	mkdir -p debian/usr/share/doc/etcdpasswd
+	GOBIN=$(CURDIR)/debian/usr/sbin CGO_ENABLED=0 go install -ldflags="-s -w" ./pkg/ep-agent
+	mkdir -p $(DOC_DIR)
 	cp config.yml.example README.md LICENSE $(DOC_DIR)
 	cp pkg/etcdpasswd/USAGE.md $(DOC_DIR)/etcdpasswd.md
 	mkdir -p debian/lib/systemd/system
