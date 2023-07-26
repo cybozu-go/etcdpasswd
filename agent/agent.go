@@ -37,6 +37,10 @@ func (a *Agent) StartWatching(ctx context.Context, updateCh chan<- struct{}) err
 		clientv3.WithProgressNotify(),
 	)
 	for wresp := range rch {
+		if err := wresp.Err(); err != nil {
+			return err
+		}
+
 		atomic.StoreInt64(&a.rev, wresp.Header.Revision)
 
 		// notify updater if possible
