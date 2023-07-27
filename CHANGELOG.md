@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.4.3] - 2023-07-28
+
+### Fixed
+
+- Fix to check error of watch response in [#74](https://github.com/cybozu-go/etcdpasswd/pull/74)
+
 ## [1.4.2] - 2023-02-24
 
 ### Changed
@@ -104,7 +110,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 [placemat]: https://github.com/cybozu-go/placemat
 [etcdutil]: https://github.com/cybozu-go/etcdutil
-[Unreleased]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.2...HEAD
+[Unreleased]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.3...HEAD
+[1.4.3]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.2...v1.4.3
 [1.4.2]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.1...v1.4.2
 [1.4.1]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.0...v1.4.1
 [1.4.0]: https://github.com/cybozu-go/etcdpasswd/compare/v1.3.0...v1.4.0
