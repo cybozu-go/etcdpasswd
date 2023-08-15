@@ -65,7 +65,8 @@ $(STATICCHECK):
 
 $(CUSTOM_CHECKER):
 	mkdir -p $(BIN_DIR)
-	GOBIN=$(BIN_DIR) go install github.com/cybozu/neco-containers/golang/analyzer/cmd/custom-checker@latest
+	GOBIN=$(BIN_DIR) go install github.com/cybozu-go/golang-custom-analyzer/cmd/custom-checker@latest
+
 
 $(ETCD):
 	mkdir -p $(BIN_DIR)
