@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.4.4] - 2023-11-27
+
+### Changed
+- Update dependencies in [#77](https://github.com/cybozu-go/etcdpasswd/pull/77)
+    - Update etcd to v3.5.10
+
 ## [1.4.3] - 2023-07-28
 
 ### Fixed
@@ -110,7 +116,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 [placemat]: https://github.com/cybozu-go/placemat
 [etcdutil]: https://github.com/cybozu-go/etcdutil
-[Unreleased]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.3...HEAD
+[Unreleased]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.4...HEAD
+[1.4.4]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.3...v1.4.4
 [1.4.3]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.2...v1.4.3
 [1.4.2]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.1...v1.4.2
 [1.4.1]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.0...v1.4.1
