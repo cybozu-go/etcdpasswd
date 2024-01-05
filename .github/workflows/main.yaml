@@ -100,7 +100,7 @@ jobs:
     runs-on: ubuntu-22.04
     if: startsWith(github.ref, 'refs/tags/v')
     container:
-      image: quay.io/cybozu/golang:1.21-jammy # used for ghr, not for go command
+      image: ghcr.io/cybozu/golang:1.21-jammy # used for ghr, not for go command
     steps:
       - run: mkdir -p /tmp/upload
       - name: Download etcdpasswd deb package
