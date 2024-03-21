@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.4.7] - 2024-03-21
+
 ### Fixed
 - Update actions/upload-artifact in [#84](https://github.com/cybozu-go/etcdpasswd/pull/84)
 
@@ -130,7 +132,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 [placemat]: https://github.com/cybozu-go/placemat
 [etcdutil]: https://github.com/cybozu-go/etcdutil
-[Unreleased]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.6...HEAD
+[Unreleased]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.7...HEAD
+[1.4.7]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.6...v1.4.7
 [1.4.6]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.5...v1.4.6
 [1.4.5]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.4...v1.4.5
 [1.4.4]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.3...v1.4.4
