@@ -5,6 +5,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Fixed
+- Update actions/upload-artifact in [#84](https://github.com/cybozu-go/etcdpasswd/pull/84)
+
 ## [1.4.6] - 2024-03-21
 
 ### Changed

@@ -32,7 +32,7 @@ jobs:
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
       - run: make deb VERSION=v${{ steps.version.outputs.version }}
       - name: Upload etcdpasswd deb package
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: etcdpasswd
           path: etcdpasswd_${{ steps.version.outputs.version }}-1_amd64.deb
