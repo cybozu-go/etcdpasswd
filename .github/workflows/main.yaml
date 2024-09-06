@@ -17,7 +17,7 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
-      - run: docker run -d --network host gcr.io/etcd-development/etcd:v3.5.10
+      - run: docker run -d --network host gcr.io/etcd-development/etcd:v3.5.15
       - run: make SUDO="sudo" setup
       - run: make test-tools
       - run: make check-generate
@@ -47,11 +47,11 @@ jobs:
         with:
           go-version-file: go.mod
       - id: auth
-        uses: google-github-actions/auth@v1
+        uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.NECO_TEST_SERVICE_ACCOUNT }}
       - name: Set up Cloud SDK for etcdpasswd
-        uses: google-github-actions/setup-gcloud@v1
+        uses: google-github-actions/setup-gcloud@v2
       - name: Set GCP instance name
         run: echo "INSTANCE_NAME=etcdpasswd-${{ github.run_number }}-$(TZ=Asia/Tokyo date +%H%M%S)" >> $GITHUB_ENV
       - run: |
@@ -100,7 +100,7 @@ jobs:
     runs-on: ubuntu-22.04
     if: startsWith(github.ref, 'refs/tags/v')
     container:
-      image: ghcr.io/cybozu/golang:1.21-jammy # used for ghr, not for go command
+      image: ghcr.io/cybozu/golang:1.22-jammy # used for ghr, not for go command
     steps:
       - run: mkdir -p /tmp/upload
       - name: Download etcdpasswd deb package
