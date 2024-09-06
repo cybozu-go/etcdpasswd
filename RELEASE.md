@@ -44,7 +44,9 @@ Bump version
 2. Make a branch to release
 
     ```console
-    $ git neco dev "bump-$VERSION"
+    $ git checkout main
+    $ git pull
+    $ git checkout -b "bump-$VERSION"
     ```
 
 3. Update `version.go`.
@@ -53,7 +55,8 @@ Bump version
 
     ```console
     $ git commit -a -m "Bump version to $VERSION"
-    $ git neco review
+    $ git push -u origin HEAD
+    $ gh pr create -f
     ```
 
 6. Merge this branch.
