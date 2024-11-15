@@ -17,7 +17,7 @@ ETCD_ARCHIVE := etcd-v$(ETCD_VERSION)-linux-amd64.tar.gz
 SSH_PRIVKEY = $(realpath ./mtest_key)
 OUTPUT := ./output
 DATA_DIR := $(abspath $(OUTPUT))/data
-UBUNTU_IMAGE := ubuntu-22.04-server-cloudimg-amd64.img
+UBUNTU_IMAGE := ubuntu-24.04-server-cloudimg-amd64.img
 ETCD := $(DATA_DIR)/etcd
 ETCDCTL := $(DATA_DIR)/etcdctl
 ETCDPASSWD := $(DATA_DIR)/etcdpasswd
@@ -54,7 +54,7 @@ $(ETCD_ARCHIVE):
 	curl -sSLf -o $@ https://github.com/etcd-io/etcd/releases/download/v$(ETCD_VERSION)/etcd-v$(ETCD_VERSION)-linux-amd64.tar.gz
 
 $(UBUNTU_IMAGE):
-	curl -sSLf -o $@ https://cloud-images.ubuntu.com/releases/22.04/release/$@
+	curl -sSLf -o $@ https://cloud-images.ubuntu.com/releases/24.04/release/$@
 
 $(DATA_DIR)/etcd $(DATA_DIR)/etcdctl: $(ETCD_ARCHIVE)
 	mkdir -p $(DATA_DIR)
