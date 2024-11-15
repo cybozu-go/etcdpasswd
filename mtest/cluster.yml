@@ -7,7 +7,7 @@ address: @BRIDGE_ADDRESS@/24
 ---
 kind: Image
 name: ubuntu
-file: ../ubuntu-22.04-server-cloudimg-amd64.img
+file: ../ubuntu-24.04-server-cloudimg-amd64.img
 ---
 kind: Node
 name: host1

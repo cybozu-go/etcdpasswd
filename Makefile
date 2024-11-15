@@ -5,7 +5,7 @@ DOC_DIR := debian/usr/share/doc/etcdpasswd
 CONTROL := debian/DEBIAN/control
 SUDO = sudo
 
-ETCD_VER=3.5.10
+ETCD_VER=3.5.17
 
 # Test tools
 BIN_DIR := $(shell pwd)/bin
@@ -66,7 +66,6 @@ $(STATICCHECK):
 $(CUSTOM_CHECKER):
 	mkdir -p $(BIN_DIR)
 	GOBIN=$(BIN_DIR) go install github.com/cybozu-go/golang-custom-analyzer/cmd/custom-checker@latest
-
 
 $(ETCD):
 	mkdir -p $(BIN_DIR)
