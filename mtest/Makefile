@@ -6,7 +6,7 @@ HOST1 = 10.0.0.101
 HOST2 = 10.0.0.102
 HOST3 = 10.0.0.103
 PLACEMAT = /usr/bin/placemat2
-ETCD_VERSION = 3.5.10
+ETCD_VERSION = 3.5.17
 PLACEMAT_DATADIR = /var/scratch/placemat
 SUDO = sudo
 
