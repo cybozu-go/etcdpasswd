@@ -67,7 +67,6 @@ $(CUSTOM_CHECKER):
 	mkdir -p $(BIN_DIR)
 	GOBIN=$(BIN_DIR) go install github.com/cybozu-go/golang-custom-analyzer/cmd/custom-checker@latest
 
-
 $(ETCD):
 	mkdir -p $(BIN_DIR)
 	curl -sL https://github.com/etcd-io/etcd/releases/download/v${ETCD_VER}/etcd-v${ETCD_VER}-linux-amd64.tar.gz -o /tmp/etcd-v${ETCD_VER}-linux-amd64.tar.gz
