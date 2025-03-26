@@ -17,7 +17,7 @@ jobs:
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
-      - run: docker run -d --network host gcr.io/etcd-development/etcd:v3.5.17
+      - run: docker run -d --network host gcr.io/etcd-development/etcd:v3.5.20
       - run: make SUDO="sudo" setup
       - run: make test-tools
       - run: make check-generate
@@ -100,7 +100,7 @@ jobs:
     runs-on: ubuntu-24.04
     if: startsWith(github.ref, 'refs/tags/v')
     container:
-      image: ghcr.io/cybozu/golang:1.23-noble # used for ghr, not for go command
+      image: ghcr.io/cybozu/golang:1.24-noble # used for ghr, not for go command
     steps:
       - run: mkdir -p /tmp/upload
       - name: Download etcdpasswd deb package
