@@ -13,11 +13,11 @@ jobs:
     name: Build
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
-      - run: docker run -d --network host gcr.io/etcd-development/etcd:v3.6.1
+      - run: docker run -d --network host gcr.io/etcd-development/etcd:v3.6.5
       - run: make SUDO="sudo" setup
       - run: make test-tools
       - run: make check-generate
@@ -32,7 +32,7 @@ jobs:
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
       - run: make deb VERSION=v${{ steps.version.outputs.version }}
       - name: Upload etcdpasswd deb package
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: etcdpasswd
           path: etcdpasswd_${{ steps.version.outputs.version }}-1_amd64.deb
@@ -42,16 +42,16 @@ jobs:
     needs: build
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: actions/checkout@v5
+      - uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
       - id: auth
-        uses: google-github-actions/auth@v2
+        uses: google-github-actions/auth@v3
         with:
           credentials_json: ${{ secrets.NECO_TEST_SERVICE_ACCOUNT }}
       - name: Set up Cloud SDK for etcdpasswd
-        uses: google-github-actions/setup-gcloud@v2
+        uses: google-github-actions/setup-gcloud@v3
       - name: Set GCP instance name
         run: echo "INSTANCE_NAME=etcdpasswd-${{ github.run_number }}-$(TZ=Asia/Tokyo date +%H%M%S)" >> $GITHUB_ENV
       - run: |
@@ -104,7 +104,7 @@ jobs:
     steps:
       - run: mkdir -p /tmp/upload
       - name: Download etcdpasswd deb package
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           name: etcdpasswd
           path: /tmp/upload
