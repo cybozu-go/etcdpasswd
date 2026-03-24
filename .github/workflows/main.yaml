@@ -13,7 +13,7 @@ jobs:
     name: Build
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
@@ -32,7 +32,7 @@ jobs:
           echo "version=${VERSION}" >> $GITHUB_OUTPUT
       - run: make deb VERSION=v${{ steps.version.outputs.version }}
       - name: Upload etcdpasswd deb package
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v7
         with:
           name: etcdpasswd
           path: etcdpasswd_${{ steps.version.outputs.version }}-1_amd64.deb
@@ -42,7 +42,7 @@ jobs:
     needs: build
     runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: actions/setup-go@v6
         with:
           go-version-file: go.mod
@@ -104,7 +104,7 @@ jobs:
     steps:
       - run: mkdir -p /tmp/upload
       - name: Download etcdpasswd deb package
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v8
         with:
           name: etcdpasswd
           path: /tmp/upload
