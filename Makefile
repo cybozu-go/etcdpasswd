@@ -6,6 +6,7 @@ CONTROL := debian/DEBIAN/control
 SUDO = sudo
 
 ETCD_VER=3.6.9
+ETCD_SHA256=633136f13fcadac52e5c0ddcb97912643af6fcb9cb362e75774d0f96f7666396
 
 # Test tools
 BIN_DIR := $(shell pwd)/bin
@@ -61,15 +62,16 @@ setup:
 
 $(STATICCHECK):
 	mkdir -p $(BIN_DIR)
-	GOBIN=$(BIN_DIR) go install honnef.co/go/tools/cmd/staticcheck@latest
+	GOBIN=$(BIN_DIR) go install honnef.co/go/tools/cmd/staticcheck@v0.7.0
 
 $(CUSTOM_CHECKER):
 	mkdir -p $(BIN_DIR)
-	GOBIN=$(BIN_DIR) go install github.com/cybozu-go/golang-custom-analyzer/cmd/custom-checker@latest
+	GOBIN=$(BIN_DIR) go install github.com/cybozu-go/golang-custom-analyzer/cmd/custom-checker@v0.1.5
 
 $(ETCD):
 	mkdir -p $(BIN_DIR)
 	curl -sL https://github.com/etcd-io/etcd/releases/download/v${ETCD_VER}/etcd-v${ETCD_VER}-linux-amd64.tar.gz -o /tmp/etcd-v${ETCD_VER}-linux-amd64.tar.gz
+	echo "${ETCD_SHA256}  /tmp/etcd-v${ETCD_VER}-linux-amd64.tar.gz" | sha256sum -c -
 	mkdir /tmp/etcd
 	tar xzvf /tmp/etcd-v${ETCD_VER}-linux-amd64.tar.gz -C /tmp/etcd --strip-components=1
 	$(SUDO) mv /tmp/etcd/etcd $(ETCD)
