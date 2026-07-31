@@ -6,8 +6,9 @@ import (
 	"os/user"
 	"strconv"
 
-	"github.com/cybozu-go/etcdpasswd"
 	"github.com/cybozu-go/log"
+
+	"github.com/cybozu-go/etcdpasswd"
 )
 
 // DummySyncer emulates synchronization with OS-local users/groups.

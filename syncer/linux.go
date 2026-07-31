@@ -6,9 +6,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cybozu-go/etcdpasswd"
 	"github.com/cybozu-go/log"
 	"github.com/cybozu-go/well"
+
+	"github.com/cybozu-go/etcdpasswd"
 )
 
 func gid2Name(gid string) string {

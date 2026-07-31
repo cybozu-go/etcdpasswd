@@ -58,7 +58,7 @@ func savePubKeys(homedir string, uid, gid int, pubkeys []string) error {
 		if !os.IsNotExist(err) {
 			return err
 		}
-		err = os.Mkdir(sshDir, 0700)
+		err = os.Mkdir(sshDir, 0o700)
 		if err != nil {
 			return err
 		}
@@ -86,7 +86,7 @@ func savePubKeys(homedir string, uid, gid int, pubkeys []string) error {
 	if err != nil {
 		return err
 	}
-	err = f.Chmod(0600)
+	err = f.Chmod(0o600)
 	if err != nil {
 		return err
 	}

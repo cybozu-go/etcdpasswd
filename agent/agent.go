@@ -4,9 +4,10 @@ import (
 	"context"
 	"sync/atomic"
 
-	"github.com/cybozu-go/etcdpasswd"
 	"github.com/cybozu-go/log"
 	clientv3 "go.etcd.io/etcd/client/v3"
+
+	"github.com/cybozu-go/etcdpasswd"
 )
 
 // Agent watches etcd database and synchornizes system

@@ -4,8 +4,9 @@ import (
 	"context"
 	"sort"
 
-	"github.com/cybozu-go/etcdpasswd"
 	"github.com/cybozu-go/log"
+
+	"github.com/cybozu-go/etcdpasswd"
 )
 
 func equalStringSlice(a, b []string) bool {

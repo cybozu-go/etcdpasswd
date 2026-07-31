@@ -32,7 +32,7 @@ func TestGetPubKeys(t *testing.T) {
 	}
 	defer os.RemoveAll(d)
 
-	err = os.Mkdir(filepath.Join(d, ".ssh"), 0755)
+	err = os.Mkdir(filepath.Join(d, ".ssh"), 0o755)
 	if err != nil {
 		t.Fatal(err)
 	}

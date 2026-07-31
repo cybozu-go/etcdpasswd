@@ -7,8 +7,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cybozu-go/etcdpasswd"
 	"github.com/cybozu-go/well"
+
+	"github.com/cybozu-go/etcdpasswd"
 )
 
 // UbuntuSyncer synchronizes with local users/groups of Debian/Ubuntu OS.

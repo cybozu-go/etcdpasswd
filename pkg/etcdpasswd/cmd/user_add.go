@@ -1,8 +1,9 @@
 package cmd
 
 import (
-	"github.com/cybozu-go/etcdpasswd"
 	"github.com/spf13/cobra"
+
+	"github.com/cybozu-go/etcdpasswd"
 )
 
 var userAddConfig struct {

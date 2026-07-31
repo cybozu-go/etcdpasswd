@@ -42,7 +42,6 @@ func (m *exitMatcher) Match(actual interface{}) (success bool, err error) {
 	default:
 		return false, fmt.Errorf("invalid type: %T", actual)
 	}
-
 }
 
 func (m *exitMatcher) FailureMessage(actual interface{}) (message string) {
