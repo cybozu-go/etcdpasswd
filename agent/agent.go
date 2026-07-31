@@ -62,9 +62,11 @@ func (a *Agent) StartUpdater(ctx context.Context, updateCh <-chan struct{}) erro
 		select {
 		case <-updateCh:
 			rev := atomic.LoadInt64(&a.rev)
-			log.Info("start sync", map[string]interface{}{
+			if err := log.Info("start sync", map[string]interface{}{
 				"rev": rev,
-			})
+			}); err != nil {
+				return err
+			}
 
 			db, err := etcdpasswd.GetDatabase(ctx, a.Client, rev)
 			if err != nil {
@@ -75,9 +77,11 @@ func (a *Agent) StartUpdater(ctx context.Context, updateCh <-chan struct{}) erro
 				return err
 			}
 
-			log.Info("finish sync", map[string]interface{}{
+			if err := log.Info("finish sync", map[string]interface{}{
 				"rev": rev,
-			})
+			}); err != nil {
+				return err
+			}
 		case <-ctx.Done():
 			return nil
 		}

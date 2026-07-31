@@ -43,9 +43,11 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 		if err != nil {
 			return err
 		}
-		log.Info("locked password", map[string]interface{}{
+		if err := log.Info("locked password", map[string]interface{}{
 			"user": name,
-		})
+		}); err != nil {
+			return err
+		}
 	}
 
 	// remove users
@@ -61,10 +63,12 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 		if err != nil {
 			return err
 		}
-		log.Info("removed a user", map[string]interface{}{
+		if err := log.Info("removed a user", map[string]interface{}{
 			"user": name,
 			"uid":  lu.UID,
-		})
+		}); err != nil {
+			return err
+		}
 	}
 
 	// remove groups
@@ -80,10 +84,12 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 		if err != nil {
 			return err
 		}
-		log.Info("removed a group", map[string]interface{}{
+		if err := log.Info("removed a group", map[string]interface{}{
 			"group": name,
 			"gid":   lg.GID,
-		})
+		}); err != nil {
+			return err
+		}
 	}
 
 	// add groups
@@ -104,20 +110,24 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 			if err != nil {
 				return err
 			}
-			log.Info("removed a group", map[string]interface{}{
+			if err := log.Info("removed a group", map[string]interface{}{
 				"group": lg.Name,
 				"gid":   lg.GID,
-			})
+			}); err != nil {
+				return err
+			}
 		}
 
 		err = sc.AddGroup(ctx, g)
 		if err != nil {
 			return err
 		}
-		log.Info("added a group", map[string]interface{}{
+		if err := log.Info("added a group", map[string]interface{}{
 			"group": g.Name,
 			"gid":   g.GID,
-		})
+		}); err != nil {
+			return err
+		}
 	}
 
 	// add or update users
@@ -138,28 +148,34 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 			if err != nil {
 				return err
 			}
-			log.Info("removed a user", map[string]interface{}{
+			if err := log.Info("removed a user", map[string]interface{}{
 				"user": lu.Name,
 				"uid":  lu.UID,
-			})
+			}); err != nil {
+				return err
+			}
 		}
 
 		err = sc.AddUser(ctx, u)
 		if err != nil {
 			return err
 		}
-		log.Info("added a user", map[string]interface{}{
+		if err := log.Info("added a user", map[string]interface{}{
 			"user": u.Name,
 			"uid":  u.UID,
-		})
+		}); err != nil {
+			return err
+		}
 		if len(u.PubKeys) > 0 {
 			err = sc.SetPubKeys(ctx, u.Name, u.PubKeys)
 			if err != nil {
 				return err
 			}
-			log.Info("install public keys", map[string]interface{}{
+			if err := log.Info("install public keys", map[string]interface{}{
 				"user": u.Name,
-			})
+			}); err != nil {
+				return err
+			}
 		}
 		continue
 
@@ -169,9 +185,11 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 			if err != nil {
 				return err
 			}
-			log.Info("updated display name", map[string]interface{}{
+			if err := log.Info("updated display name", map[string]interface{}{
 				"user": u.Name,
-			})
+			}); err != nil {
+				return err
+			}
 		}
 
 		if lu.Group != u.Group {
@@ -179,9 +197,11 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 			if err != nil {
 				return err
 			}
-			log.Info("updated primary group", map[string]interface{}{
+			if err := log.Info("updated primary group", map[string]interface{}{
 				"user": u.Name,
-			})
+			}); err != nil {
+				return err
+			}
 		}
 
 		if !equalStringSlice(lu.Groups, u.Groups) {
@@ -189,9 +209,11 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 			if err != nil {
 				return err
 			}
-			log.Info("updated supplementary groups", map[string]interface{}{
+			if err := log.Info("updated supplementary groups", map[string]interface{}{
 				"user": u.Name,
-			})
+			}); err != nil {
+				return err
+			}
 		}
 
 		if lu.Shell != u.Shell {
@@ -199,9 +221,11 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 			if err != nil {
 				return err
 			}
-			log.Info("updated shell", map[string]interface{}{
+			if err := log.Info("updated shell", map[string]interface{}{
 				"user": u.Name,
-			})
+			}); err != nil {
+				return err
+			}
 		}
 
 		if !equalStringSlice(lu.PubKeys, u.PubKeys) {
@@ -209,9 +233,11 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 			if err != nil {
 				return err
 			}
-			log.Info("updated public keys", map[string]interface{}{
+			if err := log.Info("updated public keys", map[string]interface{}{
 				"user": u.Name,
-			})
+			}); err != nil {
+				return err
+			}
 		}
 	}
 
