@@ -10,9 +10,9 @@ ETCD_SHA256=633136f13fcadac52e5c0ddcb97912643af6fcb9cb362e75774d0f96f7666396
 
 # Test tools
 BIN_DIR := $(shell pwd)/bin
-STATICCHECK := $(BIN_DIR)/staticcheck
-CUSTOM_CHECKER := $(BIN_DIR)/custom-checker
 ETCD := $(BIN_DIR)/etcd
+
+GOLANGCI_LINT := go tool -modfile=tools/go.mod github.com/golangci/golangci-lint/v2/cmd/golangci-lint
 
 all: test
 
@@ -22,12 +22,16 @@ check-generate:
 	git diff --exit-code --name-only
 
 .PHONY: test
-test:
-	test -z "$$(gofmt -s -l . | tee /dev/stderr)"
-	$(STATICCHECK) ./...
-	test -z "$$($(CUSTOM_CHECKER) -restrictpkg.packages=html/template,log $$(go list ./...) 2>&1 | tee /dev/stderr)"
+test: lint
 	go test -race -count=1 -v ./...
-	go vet ./...
+
+.PHONY: lint
+lint:
+	$(GOLANGCI_LINT) run -vvv
+
+.PHONY: lint-fix
+lint-fix:
+	$(GOLANGCI_LINT) run -vvv --fix
 
 $(CONTROL): control
 	sed 's/@VERSION@/$(patsubst v%,%,$(VERSION))/' $< > $@
@@ -59,14 +63,6 @@ clean:
 setup:
 	$(SUDO) apt-get update
 	$(SUDO) apt-get -y --no-install-recommends install $(PACKAGES)
-
-$(STATICCHECK):
-	mkdir -p $(BIN_DIR)
-	GOBIN=$(BIN_DIR) go install honnef.co/go/tools/cmd/staticcheck@v0.7.0
-
-$(CUSTOM_CHECKER):
-	mkdir -p $(BIN_DIR)
-	GOBIN=$(BIN_DIR) go install github.com/cybozu-go/golang-custom-analyzer/cmd/custom-checker@v0.1.5
 
 $(ETCD):
 	mkdir -p $(BIN_DIR)
