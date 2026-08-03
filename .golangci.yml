@@ -22,7 +22,11 @@ linters:
             - pkg: ^html/template$
               desc: stdlib html/template must not be used
             - pkg: ^log$
-              desc: stdlib log must not be used
+              desc: log must not be used
+    errcheck:
+      exclude-functions:
+        - github.com/cybozu-go/log.Info
+        - github.com/cybozu-go/log.Warn
 formatters:
   enable:
     - gofumpt
