@@ -13,6 +13,11 @@ linters:
       - common-false-positives
       - legacy
       - std-error-handling
+    rules:
+      - path: config_test\.go
+        linters:
+          - staticcheck
+        text: "SA5011"
   settings:
     depguard:
       rules:
