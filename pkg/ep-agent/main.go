@@ -39,10 +39,7 @@ func loadConfig(p string) (*etcdutil.Config, error) {
 
 func main() {
 	flag.Parse()
-	err := well.LogConfig{}.Apply()
-	if err != nil {
-		log.ErrorExit(err)
-	}
+	well.LogConfig{}.Apply()
 
 	if *flgVersion {
 		fmt.Println(etcdpasswd.Version)

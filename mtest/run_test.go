@@ -159,7 +159,7 @@ func stopEPAgent() error {
 				return err
 			}
 			defer sess.Close()
-			_ = sess.Run("sudo systemctl reset-failed ep-agent.service; sudo systemctl stop ep-agent.service")
+			sess.Run("sudo systemctl reset-failed ep-agent.service; sudo systemctl stop ep-agent.service")
 			return nil // Ignore error if ep-agent was not running
 		})
 	}
@@ -200,7 +200,7 @@ func doExec(agent *sshAgent, input io.Reader, args ...string) ([]byte, []byte, e
 	if err != nil {
 		return nil, nil, err
 	}
-	defer func() { _ = agent.conn.SetDeadline(time.Time{}) }()
+	defer agent.conn.SetDeadline(time.Time{})
 
 	sess, err := agent.client.NewSession()
 	if err != nil {

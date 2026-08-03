@@ -40,8 +40,8 @@ func testMain(m *testing.M) int {
 		log.ErrorExit(err)
 	}
 	defer func() {
-		_ = cmd.Process.Kill()
-		_ = cmd.Wait()
+		cmd.Process.Kill()
+		cmd.Wait()
 		os.RemoveAll(etcdPath)
 	}()
 

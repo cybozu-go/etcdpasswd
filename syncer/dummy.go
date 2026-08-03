@@ -164,11 +164,9 @@ func (s *DummySyncer) SetPubKeys(ctx context.Context, name string, pubkeys []str
 // LockPassword implements etcdpasswd.Syncer interface.
 func (s *DummySyncer) LockPassword(ctx context.Context, name string) error {
 	if _, ok := s.users[name]; ok {
-		if err := log.Warn("dummy: lock password", map[string]interface{}{
+		log.Warn("dummy: lock password", map[string]interface{}{
 			"user": name,
-		}); err != nil {
-			return err
-		}
+		})
 	}
 	return nil
 }
