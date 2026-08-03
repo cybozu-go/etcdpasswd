@@ -5,6 +5,7 @@ linters:
     - depguard
     - ginkgolinter
     - nilerr
+    - modernize
   exclusions:
     generated: lax
     presets:

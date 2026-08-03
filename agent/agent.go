@@ -15,7 +15,7 @@ import (
 type Agent struct {
 	*clientv3.Client
 	etcdpasswd.Syncer
-	rev int64
+	rev atomic.Int64
 }
 
 // StartWatching is a goroutine to watch etcd and notify updater.
@@ -29,7 +29,7 @@ func (a *Agent) StartWatching(ctx context.Context, updateCh chan<- struct{}) err
 
 	// notify updater for the initial sync
 	rev := resp.Header.Revision
-	atomic.StoreInt64(&a.rev, rev)
+	a.rev.Store(rev)
 	updateCh <- struct{}{}
 
 	rch := a.Watch(ctx, "",
@@ -42,7 +42,7 @@ func (a *Agent) StartWatching(ctx context.Context, updateCh chan<- struct{}) err
 			return err
 		}
 
-		atomic.StoreInt64(&a.rev, wresp.Header.Revision)
+		a.rev.Store(wresp.Header.Revision)
 
 		// notify updater if possible
 		select {
@@ -61,8 +61,8 @@ func (a *Agent) StartUpdater(ctx context.Context, updateCh <-chan struct{}) erro
 	for {
 		select {
 		case <-updateCh:
-			rev := atomic.LoadInt64(&a.rev)
-			log.Info("start sync", map[string]interface{}{
+			rev := a.rev.Load()
+			log.Info("start sync", map[string]any{
 				"rev": rev,
 			})
 
@@ -75,7 +75,7 @@ func (a *Agent) StartUpdater(ctx context.Context, updateCh <-chan struct{}) erro
 				return err
 			}
 
-			log.Info("finish sync", map[string]interface{}{
+			log.Info("finish sync", map[string]any{
 				"rev": rev,
 			})
 		case <-ctx.Done():

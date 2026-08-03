@@ -71,7 +71,7 @@ func savePubKeys(homedir string, uid, gid int, pubkeys []string) error {
 	// remove alternative file, if any.
 	err = os.Remove(filepath.Join(sshDir, "authorized_keys2"))
 	if err == nil {
-		log.Info("removed authorized_keys2", map[string]interface{}{
+		log.Info("removed authorized_keys2", map[string]any{
 			"dir": sshDir,
 		})
 	}
