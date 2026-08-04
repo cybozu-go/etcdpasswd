@@ -4,8 +4,9 @@ import (
 	"context"
 	"sort"
 
-	"github.com/cybozu-go/etcdpasswd"
 	"github.com/cybozu-go/log"
+
+	"github.com/cybozu-go/etcdpasswd"
 )
 
 func equalStringSlice(a, b []string) bool {
@@ -42,7 +43,7 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 		if err != nil {
 			return err
 		}
-		log.Info("locked password", map[string]interface{}{
+		log.Info("locked password", map[string]any{
 			"user": name,
 		})
 	}
@@ -60,7 +61,7 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 		if err != nil {
 			return err
 		}
-		log.Info("removed a user", map[string]interface{}{
+		log.Info("removed a user", map[string]any{
 			"user": name,
 			"uid":  lu.UID,
 		})
@@ -79,7 +80,7 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 		if err != nil {
 			return err
 		}
-		log.Info("removed a group", map[string]interface{}{
+		log.Info("removed a group", map[string]any{
 			"group": name,
 			"gid":   lg.GID,
 		})
@@ -103,7 +104,7 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 			if err != nil {
 				return err
 			}
-			log.Info("removed a group", map[string]interface{}{
+			log.Info("removed a group", map[string]any{
 				"group": lg.Name,
 				"gid":   lg.GID,
 			})
@@ -113,7 +114,7 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 		if err != nil {
 			return err
 		}
-		log.Info("added a group", map[string]interface{}{
+		log.Info("added a group", map[string]any{
 			"group": g.Name,
 			"gid":   g.GID,
 		})
@@ -137,7 +138,7 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 			if err != nil {
 				return err
 			}
-			log.Info("removed a user", map[string]interface{}{
+			log.Info("removed a user", map[string]any{
 				"user": lu.Name,
 				"uid":  lu.UID,
 			})
@@ -147,7 +148,7 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 		if err != nil {
 			return err
 		}
-		log.Info("added a user", map[string]interface{}{
+		log.Info("added a user", map[string]any{
 			"user": u.Name,
 			"uid":  u.UID,
 		})
@@ -156,7 +157,7 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 			if err != nil {
 				return err
 			}
-			log.Info("install public keys", map[string]interface{}{
+			log.Info("install public keys", map[string]any{
 				"user": u.Name,
 			})
 		}
@@ -168,7 +169,7 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 			if err != nil {
 				return err
 			}
-			log.Info("updated display name", map[string]interface{}{
+			log.Info("updated display name", map[string]any{
 				"user": u.Name,
 			})
 		}
@@ -178,7 +179,7 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 			if err != nil {
 				return err
 			}
-			log.Info("updated primary group", map[string]interface{}{
+			log.Info("updated primary group", map[string]any{
 				"user": u.Name,
 			})
 		}
@@ -188,7 +189,7 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 			if err != nil {
 				return err
 			}
-			log.Info("updated supplementary groups", map[string]interface{}{
+			log.Info("updated supplementary groups", map[string]any{
 				"user": u.Name,
 			})
 		}
@@ -198,7 +199,7 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 			if err != nil {
 				return err
 			}
-			log.Info("updated shell", map[string]interface{}{
+			log.Info("updated shell", map[string]any{
 				"user": u.Name,
 			})
 		}
@@ -208,7 +209,7 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 			if err != nil {
 				return err
 			}
-			log.Info("updated public keys", map[string]interface{}{
+			log.Info("updated public keys", map[string]any{
 				"user": u.Name,
 			})
 		}

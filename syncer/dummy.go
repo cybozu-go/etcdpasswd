@@ -6,8 +6,9 @@ import (
 	"os/user"
 	"strconv"
 
-	"github.com/cybozu-go/etcdpasswd"
 	"github.com/cybozu-go/log"
+
+	"github.com/cybozu-go/etcdpasswd"
 )
 
 // DummySyncer emulates synchronization with OS-local users/groups.
@@ -163,7 +164,7 @@ func (s *DummySyncer) SetPubKeys(ctx context.Context, name string, pubkeys []str
 // LockPassword implements etcdpasswd.Syncer interface.
 func (s *DummySyncer) LockPassword(ctx context.Context, name string) error {
 	if _, ok := s.users[name]; ok {
-		log.Warn("dummy: lock password", map[string]interface{}{
+		log.Warn("dummy: lock password", map[string]any{
 			"user": name,
 		})
 	}

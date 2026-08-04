@@ -6,13 +6,14 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/cybozu-go/etcdpasswd"
-	"github.com/cybozu-go/etcdpasswd/agent"
-	"github.com/cybozu-go/etcdpasswd/syncer"
 	"github.com/cybozu-go/etcdutil"
 	"github.com/cybozu-go/log"
 	"github.com/cybozu-go/well"
 	"sigs.k8s.io/yaml"
+
+	"github.com/cybozu-go/etcdpasswd"
+	"github.com/cybozu-go/etcdpasswd/agent"
+	"github.com/cybozu-go/etcdpasswd/syncer"
 )
 
 var (
@@ -38,7 +39,9 @@ func loadConfig(p string) (*etcdutil.Config, error) {
 
 func main() {
 	flag.Parse()
-	well.LogConfig{}.Apply()
+	if err := (well.LogConfig{}).Apply(); err != nil {
+		log.ErrorExit(err)
+	}
 
 	if *flgVersion {
 		fmt.Println(etcdpasswd.Version)

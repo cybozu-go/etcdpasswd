@@ -5,8 +5,9 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cybozu-go/etcdpasswd"
 	"github.com/spf13/cobra"
+
+	"github.com/cybozu-go/etcdpasswd"
 )
 
 var setCmd = &cobra.Command{

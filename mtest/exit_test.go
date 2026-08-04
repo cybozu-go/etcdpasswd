@@ -23,7 +23,7 @@ type exitMatcher struct {
 	actualExitCode int
 }
 
-func (m *exitMatcher) Match(actual interface{}) (success bool, err error) {
+func (m *exitMatcher) Match(actual any) (success bool, err error) {
 	if m.exitCode == 0 && actual == nil {
 		return true, nil
 	}
@@ -42,13 +42,12 @@ func (m *exitMatcher) Match(actual interface{}) (success bool, err error) {
 	default:
 		return false, fmt.Errorf("invalid type: %T", actual)
 	}
-
 }
 
-func (m *exitMatcher) FailureMessage(actual interface{}) (message string) {
+func (m *exitMatcher) FailureMessage(actual any) (message string) {
 	return format.Message(m.actualExitCode, "to match exit code:", m.exitCode)
 }
 
-func (m *exitMatcher) NegatedFailureMessage(actual interface{}) (message string) {
+func (m *exitMatcher) NegatedFailureMessage(actual any) (message string) {
 	return format.Message(m.actualExitCode, "not to match exit code:", m.exitCode)
 }

@@ -26,8 +26,10 @@ func TestEqualStringSlice(t *testing.T) {
 	}
 }
 
-type User = etcdpasswd.User
-type Group = etcdpasswd.Group
+type (
+	User  = etcdpasswd.User
+	Group = etcdpasswd.Group
+)
 
 func TestSynchronize(t *testing.T) {
 	t.Parallel()

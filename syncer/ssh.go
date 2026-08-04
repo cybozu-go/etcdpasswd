@@ -58,7 +58,7 @@ func savePubKeys(homedir string, uid, gid int, pubkeys []string) error {
 		if !os.IsNotExist(err) {
 			return err
 		}
-		err = os.Mkdir(sshDir, 0700)
+		err = os.Mkdir(sshDir, 0o700)
 		if err != nil {
 			return err
 		}
@@ -71,7 +71,7 @@ func savePubKeys(homedir string, uid, gid int, pubkeys []string) error {
 	// remove alternative file, if any.
 	err = os.Remove(filepath.Join(sshDir, "authorized_keys2"))
 	if err == nil {
-		log.Info("removed authorized_keys2", map[string]interface{}{
+		log.Info("removed authorized_keys2", map[string]any{
 			"dir": sshDir,
 		})
 	}
@@ -86,7 +86,7 @@ func savePubKeys(homedir string, uid, gid int, pubkeys []string) error {
 	if err != nil {
 		return err
 	}
-	err = f.Chmod(0600)
+	err = f.Chmod(0o600)
 	if err != nil {
 		return err
 	}
