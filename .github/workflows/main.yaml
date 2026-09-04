@@ -99,8 +99,6 @@ jobs:
     needs: mtest
     runs-on: ubuntu-24.04
     if: startsWith(github.ref, 'refs/tags/v')
-    container:
-      image: ghcr.io/cybozu/golang:1.27-noble # used for ghr, not for go command
     steps:
       - run: mkdir -p /tmp/upload
       - name: Download etcdpasswd deb package
@@ -108,11 +106,12 @@ jobs:
         with:
           name: etcdpasswd
           path: /tmp/upload
-      - run: |
-          OWNER=$(echo ${{ github.repository }} | cut -d '/' -f 1)
-          REPOSITORY=$(echo ${{ github.repository }} | cut -d '/' -f 2)
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
           VERSION=${GITHUB_REF#refs/tags/v}
           if ${{ contains(github.ref, '-') }}; then
-            PRERELEASE="-prerelease"
+            PRERELEASE="--prerelease"
           fi
-          ghr -t ${{ secrets.GITHUB_TOKEN }} -u ${OWNER} -r ${REPOSITORY} -n v${VERSION} ${PRERELEASE} -b "See [CHANGELOG.md](./CHANGELOG.md) for details." v${VERSION} /tmp/upload
+          gh release create v${VERSION} -t v${VERSION} ${PRERELEASE} -n "See [CHANGELOG.md](./CHANGELOG.md) for details." /tmp/upload/*

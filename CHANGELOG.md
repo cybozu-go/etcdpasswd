@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - Introduce golangci-lint in [#99](https://github.com/cybozu-go/etcdpasswd/pull/99)
 - Update dependencies in [#100](https://github.com/cybozu-go/etcdpasswd/pull/100)
+- Use gh instead of ghr in release workflow in [#100](https://github.com/cybozu-go/etcdpasswd/pull/100)
 
 ## [1.4.13] - 2026-03-25
 
