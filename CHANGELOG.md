@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.4.14] - 2026-09-08
+
 ### Changed
 
 - Introduce golangci-lint in [#99](https://github.com/cybozu-go/etcdpasswd/pull/99)
@@ -174,7 +176,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 [placemat]: https://github.com/cybozu-go/placemat
 [etcdutil]: https://github.com/cybozu-go/etcdutil
-[Unreleased]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.13...HEAD
+[Unreleased]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.14...HEAD
+[1.4.14]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.13...v1.4.14
 [1.4.13]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.12...v1.4.13
 [1.4.12]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.11...v1.4.12
 [1.4.11]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.10...v1.4.11
