@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- Enable Takumi Guard in mtest in [#106](https://github.com/cybozu-go/etcdpasswd/pull/106)
+
 ## [1.4.15] - 2026-09-14
 
 ### Fixed

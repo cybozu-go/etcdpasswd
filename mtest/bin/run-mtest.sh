@@ -33,6 +33,9 @@ for i in $(seq 300); do
   sleep 1
 done
 
+# Copy .netrc to pass the Takumi Guard credentials to the GCE instance.
+$GCLOUD compute scp --zone=${ZONE} ~/.netrc cybozu@${INSTANCE_NAME}:takumi-guard.netrc
+
 cat >run.sh <<EOF
 #!/bin/sh -e
 
@@ -47,6 +50,12 @@ GOPATH=\$HOME/go
 export GOPATH
 PATH=/usr/local/go/bin:\$GOPATH/bin:\$PATH
 export PATH
+
+# Enable Takumi Guard with the passed credentials.
+mv /home/cybozu/takumi-guard.netrc \$HOME/.netrc
+chmod 600 \$HOME/.netrc
+GOPROXY=https://golang.flatt.tech
+export GOPROXY
 
 git clone https://github.com/${GITHUB_REPOSITORY} \
     \$HOME/go/src/github.com/${GITHUB_REPOSITORY}
