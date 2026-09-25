@@ -33,8 +33,11 @@ for i in $(seq 300); do
   sleep 1
 done
 
-# Copy .netrc to pass the Takumi Guard credentials to the GCE instance.
-$GCLOUD compute scp --zone=${ZONE} ~/.netrc cybozu@${INSTANCE_NAME}:takumi-guard.netrc
+# Copy the Takumi Guard credentials to the GCE instance. Extract just its
+# entry from ~/.netrc first, since that file may contain other hosts too.
+grep "^machine golang.flatt.tech " ~/.netrc > takumi-guard.netrc
+$GCLOUD compute scp --zone=${ZONE} takumi-guard.netrc cybozu@${INSTANCE_NAME}:takumi-guard.netrc
+rm -f takumi-guard.netrc
 
 cat >run.sh <<EOF
 #!/bin/sh -e
