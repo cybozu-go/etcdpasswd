@@ -8,6 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 - Enable Takumi Guard in mtest in [#106](https://github.com/cybozu-go/etcdpasswd/pull/106)
+- Clean up GCP settings in mtest in [#107](https://github.com/cybozu-go/etcdpasswd/pull/107)
 
 ## [1.4.15] - 2026-09-14
 
