@@ -74,14 +74,10 @@ jobs:
           ./mtest/bin/run-mtest.sh
       - name: Set the instance lifetime
         if: ${{ failure() ||  cancelled() }}
-        run: |
-          . ./mtest/bin/env
-          $GCLOUD compute instances add-metadata ${INSTANCE_NAME} --zone ${ZONE} \
-            --metadata shutdown-at=$(date -Iseconds -d+30minutes)
+        run: ./mtest/bin/set-lifetime.sh
       - name: Notify to Slack
         if: ${{ failure() ||  cancelled() }}
         run: |
-          . ./mtest/bin/env
           if [[ ${{ github.event_name }} == 'pull_request' ]]; then
               BRANCH_NAME=${GITHUB_HEAD_REF}
           else
