@@ -15,7 +15,9 @@ import (
 type Agent struct {
 	*clientv3.Client
 	etcdpasswd.Syncer
-	rev atomic.Int64
+	// KeepSupplementaryGroups makes the agent keep the supplementary groups of existing users.
+	KeepSupplementaryGroups bool
+	rev                     atomic.Int64
 }
 
 // StartWatching is a goroutine to watch etcd and notify updater.
@@ -70,7 +72,7 @@ func (a *Agent) StartUpdater(ctx context.Context, updateCh <-chan struct{}) erro
 			if err != nil {
 				return err
 			}
-			err = synchronize(ctx, db, a.Syncer)
+			err = synchronize(ctx, db, a.Syncer, a.KeepSupplementaryGroups)
 			if err != nil {
 				return err
 			}

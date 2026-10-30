@@ -29,7 +29,7 @@ func equalStringSlice(a, b []string) bool {
 	return true
 }
 
-func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syncer) error {
+func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syncer, keepSupplementaryGroups bool) error {
 	// lock passwords
 	for _, name := range db.LockedUsers {
 		lu, err := sc.LookupUser(ctx, name)
@@ -184,7 +184,7 @@ func synchronize(ctx context.Context, db *etcdpasswd.Database, sc etcdpasswd.Syn
 			})
 		}
 
-		if !equalStringSlice(lu.Groups, u.Groups) {
+		if !keepSupplementaryGroups && !equalStringSlice(lu.Groups, u.Groups) {
 			err = sc.SetSupplementalGroups(ctx, u.Name, u.Groups)
 			if err != nil {
 				return err

@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Added
+
+- Add keep-supplementary-groups to keep supplementary groups managed elsewhere in [#108](https://github.com/cybozu-go/etcdpasswd/pull/108)
+
 ### Changed
 
 - Enable Takumi Guard in mtest in [#106](https://github.com/cybozu-go/etcdpasswd/pull/106)

@@ -111,7 +111,7 @@ func TestSynchronize(t *testing.T) {
 	expected.LockedUsers["system-user1"] = true
 
 	// initial sync
-	err = synchronize(ctx, db, sc)
+	err = synchronize(ctx, db, sc, false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -132,7 +132,7 @@ func TestSynchronize(t *testing.T) {
 		Group: "group3",
 	}
 
-	err = synchronize(ctx, db, sc)
+	err = synchronize(ctx, db, sc, false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -145,7 +145,7 @@ func TestSynchronize(t *testing.T) {
 	db.DeletedUsers = []string{"user3"}
 	delete(expected.Users, "user3")
 
-	err = synchronize(ctx, db, sc)
+	err = synchronize(ctx, db, sc, false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -169,7 +169,7 @@ func TestSynchronize(t *testing.T) {
 		Shell:       "/bin/zsh",
 	}
 
-	err = synchronize(ctx, db, sc)
+	err = synchronize(ctx, db, sc, false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -197,7 +197,7 @@ func TestSynchronize(t *testing.T) {
 		PubKeys:     []string{"pubkey1", "pubkey2"},
 	}
 
-	err = synchronize(ctx, db, sc)
+	err = synchronize(ctx, db, sc, false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -209,7 +209,7 @@ func TestSynchronize(t *testing.T) {
 	db.Groups = append(db.Groups, Group{Name: "group4", GID: 3003})
 	expected.Groups["group4"] = &Group{Name: "group4", GID: 3003}
 
-	err = synchronize(ctx, db, sc)
+	err = synchronize(ctx, db, sc, false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -222,7 +222,7 @@ func TestSynchronize(t *testing.T) {
 	db.DeletedGroups = append(db.DeletedGroups, "group4")
 	delete(expected.Groups, "group4")
 
-	err = synchronize(ctx, db, sc)
+	err = synchronize(ctx, db, sc, false)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -234,11 +234,76 @@ func TestSynchronize(t *testing.T) {
 	db.Groups[0] = Group{Name: "group1", GID: 3004}
 	expected.Groups["group1"] = &Group{Name: "group1", GID: 3004}
 
-	err = synchronize(ctx, db, sc)
+	err = synchronize(ctx, db, sc, false)
 	if err != nil {
 		t.Fatal(err)
 	}
 	if !reflect.DeepEqual(sc, expected) {
 		t.Errorf(`!reflect.DeepEqual(sc, expected): %#v`, sc)
+	}
+}
+
+func TestSynchronizeKeepSupplementaryGroups(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		name    string
+		keep    bool
+		current []string
+		want    []string
+	}{
+		{
+			name:    "replace groups by default",
+			current: []string{"group2", "group3"},
+			want:    []string{"group1"},
+		},
+		{
+			name:    "keep extra groups",
+			keep:    true,
+			current: []string{"group1", "group2", "group3"},
+			want:    []string{"group1", "group2", "group3"},
+		},
+		{
+			name:    "do not add missing groups",
+			keep:    true,
+			current: []string{"group2"},
+			want:    []string{"group2"},
+		},
+	}
+
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			ctx := context.Background()
+			sc := syncer.NewMockSyncer()
+			for i, g := range []string{"group1", "group2", "group3"} {
+				if err := sc.AddGroup(ctx, Group{Name: g, GID: 3000 + i}); err != nil {
+					t.Fatal(err)
+				}
+			}
+			if err := sc.AddUser(ctx, &User{Name: "user1", UID: 2000, Group: "group1", Groups: tc.current}); err != nil {
+				t.Fatal(err)
+			}
+
+			db := &etcdpasswd.Database{
+				Users: []*User{
+					{Name: "user1", UID: 2000, Group: "group1", Groups: []string{"group1"}},
+				},
+				Groups: []Group{
+					{Name: "group1", GID: 3000},
+					{Name: "group2", GID: 3001},
+					{Name: "group3", GID: 3002},
+				},
+			}
+			if err := synchronize(ctx, db, sc, tc.keep); err != nil {
+				t.Fatal(err)
+			}
+
+			got := sc.Users["user1"].Groups
+			if !equalStringSlice(got, tc.want) {
+				t.Errorf("groups = %v, want %v", got, tc.want)
+			}
+		})
 	}
 }
