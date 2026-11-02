@@ -22,13 +22,18 @@ var (
 	flgVersion    = flag.Bool("version", false, "version")
 )
 
-func loadConfig(p string) (*etcdutil.Config, error) {
+type agentConfig struct {
+	*etcdutil.Config
+	KeepSupplementaryGroups bool `json:"keep-supplementary-groups"`
+}
+
+func loadConfig(p string) (*agentConfig, error) {
 	b, err := os.ReadFile(p)
 	if err != nil {
 		return nil, err
 	}
 
-	cfg := etcdpasswd.NewEtcdConfig()
+	cfg := &agentConfig{Config: etcdpasswd.NewEtcdConfig()}
 	err = yaml.Unmarshal(b, cfg)
 	if err != nil {
 		return nil, err
@@ -53,7 +58,7 @@ func main() {
 		log.ErrorExit(err)
 	}
 
-	etcd, err := etcdutil.NewClient(cfg)
+	etcd, err := etcdutil.NewClient(cfg.Config)
 	if err != nil {
 		log.ErrorExit(err)
 	}
@@ -70,7 +75,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	agent := agent.Agent{Client: etcd, Syncer: sc}
+	agent := agent.Agent{Client: etcd, Syncer: sc, KeepSupplementaryGroups: cfg.KeepSupplementaryGroups}
 
 	updateCh := make(chan struct{}, 1)
 	well.Go(func(ctx context.Context) error {

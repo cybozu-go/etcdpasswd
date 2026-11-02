@@ -11,6 +11,12 @@ Name     | Type   | Required | Description
 -------- | ------ | -------- | -----------
 `prefix` | string | No       | Key prefix of etcd objects.  Default is `/passwd/`.
 
+`ep-agent` also reads the following parameter from this file.
+
+Name                        | Type | Required | Description
+--------------------------- | ---- | -------- | -----------
+`keep-supplementary-groups` | bool | No       | If true, `ep-agent` does not change the supplementary groups of existing users.  Default is `false`.
+
 etcd schema
 -----------
 
