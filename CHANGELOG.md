@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [1.5.0] - 2026-11-02
+
 ### Added
 
 - Add keep-supplementary-groups to keep supplementary groups managed elsewhere in [#108](https://github.com/cybozu-go/etcdpasswd/pull/108)
@@ -191,7 +193,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 [placemat]: https://github.com/cybozu-go/placemat
 [etcdutil]: https://github.com/cybozu-go/etcdutil
-[Unreleased]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.15...HEAD
+[Unreleased]: https://github.com/cybozu-go/etcdpasswd/compare/v1.5.0...HEAD
+[1.5.0]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.15...v1.5.0
 [1.4.15]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.14...v1.4.15
 [1.4.14]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.13...v1.4.14
 [1.4.13]: https://github.com/cybozu-go/etcdpasswd/compare/v1.4.12...v1.4.13
