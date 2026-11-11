@@ -5,8 +5,8 @@ DOC_DIR := debian/usr/share/doc/etcdpasswd
 CONTROL := debian/DEBIAN/control
 SUDO = sudo
 
-ETCD_VER=3.6.11
-ETCD_SHA256=8756f7a4eaf921668a83de0bf13c0f65cae9186a165696e3ae8396afe6f557ed
+ETCD_VER=3.6.16
+ETCD_SHA256=c8c0d96d8292ef085deabbf735e9561d3d396768e4d606df005aa25964f21911
 
 # Test tools
 BIN_DIR := $(shell pwd)/bin
